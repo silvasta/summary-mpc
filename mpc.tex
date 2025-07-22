@@ -1,0 +1,62 @@
+
+% Needed  for fontspec
+%! TeX program = lualatex
+%-----------------------------------------------------------------
+% Document type
+%-----------------------------------------------------------------
+\documentclass[layout=tight, columns=4,secnumdepth=1]{sst-custom}
+% \documentclass{sst-custom}
+% \documentclass[layout=regular, columns=2]{sst-custom}
+% \documentclass[layout=preview,secnumdepth=1]{sst-custom}
+%-----------------------------------------------------------------
+% Toggle
+%-----------------------------------------------------------------
+\newtoggle{showLecture}
+% \toggletrue{showLecture}
+% \togglefalse{showLecture}
+%-----------------------------------------------------------------
+\newtoggle{showSummary}
+\toggletrue{showSummary}
+k% \togglefalse{showSummary}
+%-----------------------------------------------------------------
+
+%--------------\--------------------------------------------------
+\begin{document}
+
+\iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
+		%-----------------------------------------------------------------
+		\input{title-blue-grey.tex}
+		%-----------------------------------------------------------------
+		% \tableofcontents
+		%-----------------------------------------------------------------
+		% %%% Debug
+		% The column width is: \the\columnwidth
+		%-----------------------------------------------------------------
+		\iftoggle{use-small-font}{
+			\footnotesize}{}
+		%-----------------------------------------------------------------
+		\foreach \lecture / \summary in {
+		{lecture/Introduction.tex}/
+		{summary/Introduction.tex},
+		{lecture/Nominal-MPC.tex}/
+		{summary/Nominal-MPC.tex},
+		{lecture/Practical-MPC.tex}/
+		{summary/Practical-MPC.tex}m
+		{lecture/Robust-MPC.tex}/
+		{summary/Robust-MPC.tex},
+		{lecture/Implementation.tex}/
+		{summary/Implementation.tex},
+		}{
+		\iftoggle{showLecture}{
+			\typeout{Including lecture: \lecture}
+			\input\lecture
+		}{}
+		\iftoggle{showSummary}{
+			\typeout{Including summary: \summary}
+			\input\summary
+		}{}
+		}
+		%-----------------------------------------------------------------
+		\iftoggle{do-multicol}{\end{multicols*}}{}
+
+\end{document}
