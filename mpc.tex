@@ -4,20 +4,21 @@
 %-----------------------------------------------------------------
 % Document type
 %-----------------------------------------------------------------
-\documentclass[layout=tight, columns=4,secnumdepth=1]{sst-custom}
 % \documentclass{sst-custom}
 % \documentclass[layout=regular, columns=2]{sst-custom}
-% \documentclass[layout=preview,secnumdepth=1]{sst-custom}
+% \documentclass[layout=summary, columns=4,secnumdepth=1,tight]{sst-custom}
+% \documentclass[layout=preview,secnumdepth=4]{sst-custom}
+\documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
 %-----------------------------------------------------------------
 % Toggle
 %-----------------------------------------------------------------
 \newtoggle{showLecture}
-% \toggletrue{showLecture}
+\toggletrue{showLecture}
 % \togglefalse{showLecture}
 %-----------------------------------------------------------------
 \newtoggle{showSummary}
 \toggletrue{showSummary}
-k% \togglefalse{showSummary}
+% \togglefalse{showSummary}
 %-----------------------------------------------------------------
 
 %--------------\--------------------------------------------------
@@ -27,13 +28,13 @@ k% \togglefalse{showSummary}
 		%-----------------------------------------------------------------
 		\input{title-blue-grey.tex}
 		%-----------------------------------------------------------------
-		% \tableofcontents
+		\tableofcontents
 		%-----------------------------------------------------------------
 		% %%% Debug
 		% The column width is: \the\columnwidth
 		%-----------------------------------------------------------------
-		\iftoggle{use-small-font}{
-			\footnotesize}{}
+		% defined with [tight] argument
+		\iftoggle{use-small-font}{\footnotesize}{}
 		%-----------------------------------------------------------------
 		\foreach \lecture / \summary in {
 		{lecture/Introduction.tex}/
