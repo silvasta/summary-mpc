@@ -2,35 +2,66 @@
 %-----------------------------------------------------------------
 % two boxes centered with date below
 %-----------------------------------------------------------------
+\begin{tcolorbox}[
+		colback=RoyalBlue,
+		colframe=RoyalBlue,
+		arc=0mm,
+		boxrule=0mm,
+		left=0pt,
+		right=0pt,
+		bottom=5pt,
+		top=5pt,
+		beforeafter skip=0mm
+	]
+	\center\textbf{\LARGE\color{white}
+		Model Predictive Control
+	}\end{tcolorbox}
+
+\begin{tcolorbox}[
+		colback=lightgray,
+		colframe=lightgray,
+		arc=0mm,
+		boxrule=0mm,
+		left=0pt,
+		bottom=1mm,
+		right=0mm,
+		top=1mm,
+		beforeafter skip=0.5mm
+	]
+	\center{\normalsize
+		\textbf{Silvan Stadelmann}
+		- \selectlanguage{german}{\today}
+		- v0.1.0
+	}\end{tcolorbox}
+
 \begin{center}
-	\colorbox{RoyalBlue}{\textcolor{white}
-		{\makebox[\linewidth][c]{\LARGE{\textbf{
-						Model Predictive Control
-					}}}}}
-	\colorbox{lightgray}{\textcolor{Black}
-		% \colorbox{BrickRed}{\textcolor{White}
-		{\makebox[\linewidth][c]{\normalsize{
-					\selectlanguage{german}{\today}
-					- v0.1.0 -
-					\textbf{Silvan Stadelmann}
-					% \url{silvasta@ethz.ch}
-				} }}}
-	{\footnotesize
-		\url{github.com/silvasta/summary-mpc}}
-
-	\includegraphics[width=\columnwidth]{images/header-1.jpg}
-
-
+	{\scriptsize\url{github.com/silvasta/summary-mpc}}
 \end{center}
+\vspace{1mm}
+\includegraphics[width=\columnwidth]{images/header-1.jpg}
+
+%-----------------------------------------------------------------
+% initial version - overfull hbox
+%-----------------------------------------------------------------
+% \colorbox{RoyalBlue}{
+% 	\textcolor{white}
+% 	{\makebox[\linewidth][c]{\LARGE{\textbf{
+% 					Model Predictive Control
+% 				}}}}}
+% \colorbox{lightgray}{\textcolor{Black}
+% 	% \colorbox{BrickRed}{\textcolor{White}
+% 	{\makebox[\linewidth][c]{\normalsize{
+% 				\textbf{Silvan Stadelmann}
+% 				- \selectlanguage{german}{\today}
+% 				- v0.1.0
+% 				% \url{silvasta@ethz.ch}
+% 			} }}}
+% \begin{center}
+% 	\vspace{-1mm}
+% 	{\scriptsize\url{github.com/silvasta/summary-mpc}}
+% 	% \includegraphics[width=.85\columnwidth]{images/header-1.jpg}
+% 	\includegraphics[width=\columnwidth]{images/header-1.jpg}
+% \end{center}
 
 
 
-
-% \normalsize{
-% 	% \textbf{Stadelmann Silvan}}
-% 	Stadelmann Silvan}
-% \small{
-% 	\url{silvasta@ethz.ch}
-% 	\selectlanguage{german}{\today{}}
-% 	% \today{}
-% }}}}

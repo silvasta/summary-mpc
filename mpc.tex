@@ -1,16 +1,39 @@
-
-% Needed  for fontspec
+% Needed  for babelfont
 %! TeX program = lualatex
 %-----------------------------------------------------------------
-% Document type
+% README
+%-----------------------------------------------------------------
+% There are 3 types of layout [default=regular]
+%-----------------------------------------------------------------
+% + regular - a4 paper with regular paddings
+% + summary - a4 landscape with minimal padding
+% + preview - long format for 1col display view
+%-----------------------------------------------------------------
+% Further options
+% + columns - [default=1] number of columns for multicol
+% + secnumdepth - [default=2] depth of section numbering in document and toc
+%-----------------------------------------------------------------
+% Further arguments
+% + tight - if used, spacing is minimized
+%-----------------------------------------------------------------
+
+%-----------------------------------------------------------------
+% Document Type
+%-----------------------------------------------------------------
+% choose one of the examples or create new one
 %-----------------------------------------------------------------
 % \documentclass{sst-custom}
 % \documentclass[layout=regular, columns=2]{sst-custom}
-% \documentclass[layout=summary, columns=4,secnumdepth=1,tight]{sst-custom}
+\documentclass[layout=summary, columns=4,secnumdepth=4,tight]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=4]{sst-custom}
-\documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
+% \documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
 %-----------------------------------------------------------------
-% Toggle
+
+%-----------------------------------------------------------------
+% Toggles
+%-----------------------------------------------------------------
+% choose which content should be displayed
+% (in alterning order)
 %-----------------------------------------------------------------
 \newtoggle{showLecture}
 \toggletrue{showLecture}
@@ -28,13 +51,13 @@
 		%-----------------------------------------------------------------
 		\input{title-blue-grey.tex}
 		%-----------------------------------------------------------------
+		% defined with [tight] argument
+		\iftoggle{use-small-font}{\footnotesize}{}
+		%-----------------------------------------------------------------
 		\tableofcontents
 		%-----------------------------------------------------------------
 		% %%% Debug
 		% The column width is: \the\columnwidth
-		%-----------------------------------------------------------------
-		% defined with [tight] argument
-		\iftoggle{use-small-font}{\footnotesize}{}
 		%-----------------------------------------------------------------
 		\foreach \lecture / \summary in {
 		{lecture/Introduction.tex}/
@@ -49,8 +72,10 @@
 		{summary/Implementation.tex},
 		}{
 		\iftoggle{showLecture}{
+			\color{blue} % temp, distinguish between lecture and summary
 			\typeout{Including lecture: \lecture}
 			\input\lecture
+			\color{black}
 		}{}
 		\iftoggle{showSummary}{
 			\typeout{Including summary: \summary}

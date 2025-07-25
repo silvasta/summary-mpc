@@ -16,6 +16,7 @@
 \RequirePackage{booktabs}
 \RequirePackage{calc}
 \RequirePackage{caption}
+\RequirePackage{empheq}
 \RequirePackage{csquotes}
 \RequirePackage{float}
 \RequirePackage{graphicx}
@@ -50,24 +51,6 @@
 \DeclareStringOption[1]{columns}      % Default: 1 column
 \DeclareStringOption[2]{secnumdepth}
 \ProcessKeyvalOptions*
-%-----------------------------------------------------------------
-% Multicol and other toggle and settings
-%-----------------------------------------------------------------
-\newtoggle{do-multicol}
-\ifnum\myclass@columns=1
-	\togglefalse{do-multicol}
-\else
-	\toggletrue{do-multicol}
-	\def\numcolumns{\myclass@columns}
-\fi
-%-----------------------------------------------------------------
-\newtoggle{use-small-font}
-\togglefalse{use-small-font}
-%-----------------------------------------------------------------
-% Section depth
-%-----------------------------------------------------------------
-\RequirePackage{sectsty}
-\setcounter{secnumdepth}{\myclass@secnumdepth}
 %-----------------------------------------------------------------
 % LAYOUTS
 %-----------------------------------------------------------------
@@ -119,26 +102,25 @@
 	]{geometry}
 }{}
 %-----------------------------------------------------------------
-% Chapter
+% Columns
 %-----------------------------------------------------------------
-\newcounter{Chapcounter}
-\newcommand\showmycounter{\addtocounter{Chapcounter}{1}\themycounter}
-% Add chapter functionality in article class
-\iftoggle{use-tight}{
-	\newcommand{\chapter}[1] {
-		\addtocounter{Chapcounter}{1}{\large\textbf{~#1}}
-		\addcontentsline{toc}{section}{#1}
-	}}{
-	% for non-tight chaptes
-	\newcommand{\chapter}[1] {
-		\addtocounter{Chapcounter}{1}{\Large\textbf{~#1}}
-		\addcontentsline{toc}{section}{#1}
-	}}
-% %%% style ideas
-% \addtocounter{Chapcounter}{1}\Large{\textbf{\color{RoyalBlue}#1}}
-% \addcontentsline{toc}{section}{ \color{blue} Chapter:~\theChapcounter~~ #1}    
+\newtoggle{do-multicol}
+\ifnum\myclass@columns=1
+	\togglefalse{do-multicol}
+\else
+	\toggletrue{do-multicol}
+	\def\numcolumns{\myclass@columns}
+\fi
+%-----------------------------------------------------------------
+% Section depth
+%-----------------------------------------------------------------
+\RequirePackage{sectsty}
+\setcounter{secnumdepth}{\myclass@secnumdepth}
 %-----------------------------------------------------------------
 % TIGHT
+%-----------------------------------------------------------------
+\newtoggle{use-small-font}
+\togglefalse{use-small-font}
 %-----------------------------------------------------------------
 \iftoggle{use-tight}{
 	%-----------------------------------------------------------------
@@ -166,13 +148,12 @@
 	% \setlength{\abovedisplayshortskip}{0pt}
 	% \setlength{\belowdisplayshortskip}{0pt}
 	%----------------------------------------------------------------
-	% changed less, maybe the 2.
+	% 1. changed less, maybe the 2. useful
 	% \setlength{\mathsurround}{0pt}
 	% \setlength{\jot}{0mm}
 	% -----------------------------------------------------------------
 	% space around title and fontsize
 	% -----------------------------------------------------------------
-	% \makeatother
 	\renewcommand{\section}{\@startsection{section}{1}{\z@}
 		{.5mm}% Space before
 		{.5mm}% Space after
@@ -181,41 +162,56 @@
 		{.25mm}%
 		{.25mm}%
 		{\normalfont\small\bfseries}}
-	% \makeatother
 	\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
 		{.15mm}%
 		{.15mm}%
 		{\normalfont\footnotesize\bfseries}}
-	% \makeatother
 }{}
 %-----------------------------------------------------------------
 % FONT
 %-----------------------------------------------------------------
-\usepackage{fontspec}
-% \usepackage[ngerman]{babel}
-\usepackage[english]{babel}
+% \RequirePackage{fontspec}
+% \RequirePackage[ngerman]{babel}
+\RequirePackage[english]{babel}
 % \babelfont{rm}{Lato}
 % \babelfont{rm}{Roboto}
 \babelfont{rm}{Roboto Condensed}
 \babelprovide{ngerman}
 %-----------------------------------------------------------------
-% font of math
-% \usepackage{lmodern} # default
-% \usepackage{newtxmath}
-% \usepackage{mathpazo}
+% Date
+%-----------------------------------------------------------------
 \RequirePackage[ddmmyyyy]{datetime}
-\renewcommand{\dateseparator}{.}
+\renewcommand{\dateseparator}{.} % has to be after language
 %-----------------------------------------------------------------
-% color
+% COLOR
+%-----------------------------------------------------------------
 \RequirePackage{soul}
-% \sethlcolor{RoyalBlue}%!90}
 \sethlcolor{BrickRed}%!90}
+% \sethlcolor{RoyalBlue}%!90}
 \definecolor{hltext}{rgb}{256,256,256}
+\colorlet{default-box-color}{RoyalBlue}
 %-----------------------------------------------------------------
-% Custom commands
+% Color frames
 %-----------------------------------------------------------------
-\newcommand{\T}{^\textnormal{\scriptsize T}}
-\DeclareMathOperator{\argmin}{argmin}
+\newtcolorbox{sstFrame}[1][default-box-color]{
+	colframe=#1,
+	colback=#1,
+	left=0pt,
+	bottom=0pt,
+	right=0pt,
+	top=0pt,
+}
+\newtcolorbox{sstTitleBox}[2][default-box-color]{
+	colframe=#1,
+	colback=#1!20,
+	bottom=0pt,
+	left=0pt,
+	right=0pt,
+	top=2pt,
+	title=#2,
+}
+%-----------------------------------------------------------------
+% CUSTOM COMMANDS
 %-----------------------------------------------------------------
 % Theorem styles
 %-----------------------------------------------------------------
@@ -227,4 +223,25 @@
 \newtheorem{corollary}{Corollary}
 \newtheorem{remark}{Remark}
 \newtheorem{lemma}{Lemma}
-
+%-----------------------------------------------------------------
+\newcommand{\T}{^\textnormal{\scriptsize T}}%TODO: remove
+\DeclareMathOperator{\argmin}{argmin}
+%-----------------------------------------------------------------
+% Chapter
+%-----------------------------------------------------------------
+% Add chapter functionality in article class
+\newcounter{Chapcounter}
+\newcommand\showmycounter{\addtocounter{Chapcounter}{1}\themycounter}
+%%% style ideas
+% \addtocounter{Chapcounter}{1}\Large{\textbf{\color{RoyalBlue}#1}}
+% \addcontentsline{toc}{section}{ \color{blue} Chapter:~\theChapcounter~~ #1}    
+\iftoggle{use-tight}{
+	\newcommand{\chapter}[1] {
+		\addtocounter{Chapcounter}{1}{\large\textbf{~#1}}
+		\addcontentsline{toc}{section}{#1}
+	}}{
+	% for non-tight chaptes
+	\newcommand{\chapter}[1] {
+		\addtocounter{Chapcounter}{1}{\Large\textbf{~#1}}
+		\addcontentsline{toc}{section}{#1}
+	}}
