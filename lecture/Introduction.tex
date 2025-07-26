@@ -276,8 +276,7 @@ $t_{k+1} = t_k + T_s$ and $T_s$ is called the sampling time
 \subsection{Analysis of Discrete-Time Nonlinear-Systems}
 \subsubsection{Stability}
 \subsubsection{Lyapunov}
-%TODO: Lyapunov
-%TODO: Lyapunov direct, indirect
+%HACK: Lyapunov direct, indirect
 
 \subsection{Recap}
 %TODO: lecture 01c(s63) add recap
@@ -314,7 +313,7 @@ in order to apply it to a system with a given initial state x(0).
 The objective, or cost, function is often defined as a
 \textbf{sum of stage costs} $l(x_i,u_i)$and,
 when the horizon has finite length N,
-terminal cost lf (xN ):
+terminal cost $I_f(x_N)$:
 $$
 	J(x_0,U) :=  I_f(x_N) +
 	\sum_{i=0}^{N-1}I((x_i,u_i)
@@ -641,15 +640,7 @@ However, can extend this concept to much more complex systems (MPC)
 
 \subsubsection{Infinite Horizon Control Problem}
 
-%TODO: J infinity
-
-%TODO: u star
-
-%TODO: J star
-
-%TODO: ARE
-
-%TODO: LQR
+%HACK: J infinity u star J star ARE LQR
 
 \subsubsection{Stability of Infinite Horizon LQR}
 
@@ -738,10 +729,12 @@ polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},C^{r\times 
 %TODO: check
 
 polytope
-
+%TODO: Polyh, conversion hyperplane to A
 %TODO: Elipsoid
 
-%TODO: Norm Ball
+%WARN: Ellipsoid
+
+%HACK: Norm Ball
 
 \textbf{Intersection}
 $\mathcal{C}_1, \mathcal{C}_2$ cv

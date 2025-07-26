@@ -1,4 +1,144 @@
 \section{Nominal-MPC}
-\lipsum
 
 
+\subsection{CFTOC}
+
+\begin{sstTitleBox}[ForestGreen]{\textbf{\large
+			CFTOC
+		}
+		Constrained Finite Time Optimal Control problem
+	}
+	\[
+		J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
+	\]
+	\begin{centering}
+		\begin{sstFrame}[ForestGreen]
+			\vspace{-1.5mm}
+			\color{white}
+			\[ \begin{aligned}
+					J^\star (x(k)) = & \min_{U}  I_f(x_N) + \sum_{i=0}^{N-1} I(x_{i}, u_{i}) \\
+				\end{aligned} \]
+			\vspace{-2.5mm}
+		\end{sstFrame}
+		\[ \begin{aligned}
+				\text{s.t} \quad & x_{i+1} = A x_{i} + Bu_{i},\ i = 0,\dots,N-1                                                  \\
+				                 & x_{i} \in \mathcal{X},\ u_{i} \in \mathcal{U},\ \mathcal{X}_N \in \mathcal{X}_f, \ x_0 = x(k)
+			\end{aligned} \]
+		N is the time horizon and X , U, Xf are polyhedral regions
+		%TODO: feasible set
+	\end{centering}
+\end{sstTitleBox}
+
+%TODO: Without Substitution
+
+%TODO: With Substitution
+
+%TODO: Rest of CFTOC
+%
+
+\subsection{Invariance}
+
+%HACK: Definitions
+
+%HACK: Invariance + feedback law
+%HACK: Control Invariance
+%HACK: Polytopes, definition r6 sum
+%HACK: Ellipsoid 
+
+\subsection{Feasibility and Stability}
+
+%TODO: move to proper place
+The first reason is that re-optimization provides robustness to any noise or modeling errors,
+while the second is that the solution at time k = 0 is sub-optimal because it is over a finite
+horizon. Re-optimizing can provide a control law with better performance.
+
+\begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
+			MPC Mathematical Formulation
+		}
+		% small text
+	}
+
+	\begin{sstFrame}[ForestGreen]
+		\small
+		\color{white}
+		\vspace{-1mm}
+		\[
+			%HACK: Make u instead j
+			J^\star(x(k))= \min\sum_{i=0}^{N-1}
+			x_i^\top Q x_i + u_i^\top R u_i\]
+		\vspace{-2mm}
+	\end{sstFrame}
+
+	\[\begin{aligned}
+			\mathrm{subj.\ to }\   x_{i+1} & = Ax_i + Bu_i \\
+			x_0                            & = x(k)
+			\quad x_i \in \mathcal{X},
+			\quad u_i \in \mathcal{U}
+		\end{aligned}\]
+
+
+\end{sstTitleBox}
+
+
+%TODO: Lyapunov Stability Theorem
+%
+%HACK: MPC Proof 1,2
+
+
+\begin{sstTitleBox}
+	{	\subsubsection{Stability of MPC - Main Result}}
+	\begin{theorem}
+		The closed-loop system under the MPC control law $u_0^\star(x)$
+		is asymptotically stable and the set $\mathcal{X}_f$
+		is positive invariant for the system
+		$x(k+1) = Ax(k) + Bu_0^\star(x(k))$
+		under the following assumptions:
+
+		1. Stage cost is positive definite, i.e. it is strictly positive and only zero at
+		the origin
+
+		2. Terminal set is \textbf{invariant}
+		under the local control law $\kappa_f(x_i)$:
+
+		\[
+			x_{i+1} = Ax_i + B\kappa_f(x_i) \in \mathcal{X}_f
+			\text\forall x_i \in \mathcal{X}_f
+		\]
+
+		All state and input \textbf{constraints are satisfied} in $\mathcal{X}_f$:
+
+		\[
+			\mathcal{X}_f \in X, \kappa_f(x_i) \in U
+			\text\forall x_i \in \mathcal{X}_f
+		\]
+
+		3. Terminal cost is a continuous \textbf{Lyapunov function}
+		in the terminal set $\mathcal{X}_f$ and satisfies:
+		\[
+			I_f(x_{i+1}) - I_f(x_i) \leq
+			- I(x_i, \kappa_f(x_i)) \quad
+			\forall x_i \in \mathcal{X}_f
+		\]
+	\end{theorem}
+\end{sstTitleBox}
+
+%TODO: choice of terminal set
+
+%TODO: Extension to nonlinear MPC
+
+\begin{sstFrame}[ForestGreen!20]
+	% \center
+
+	\textbf{Finite-horizon MPC may not satisfy constraints for all time!}
+
+	\textbf{Finite-horizon MPC may not be stable!}
+
+	-	An infinite-horizon provides stability and invariance.
+
+	-	Infinite-horizon \textit{faked} by forcing final state
+	into an invariant set for which there exists
+	invariance-inducing controller,
+	whose infinite-horizon cost can be expressed in closed-form.
+
+	-	Extends to non-linear systems, but compute sets is difficult!
+\end{sstFrame}

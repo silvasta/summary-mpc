@@ -1,14 +1,17 @@
 \section{Introduction}
 
+%TODO: introtext
+
 \subsection{Exact  Solution}
 
 $x(t) = e^{A^c(t-t_0)}x_0 +
 	\textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau$
 
+TAYLOR % TODO: taylor
 
 \subsection{Linearization}
 
-%TODO: efficient ordering of values
+%HACK: efficient ordering of values
 $\dot{x_s}=g(x_s,u_s) = 0$
 $y_s= h(x_s,u_s)$
 
@@ -24,11 +27,10 @@ $D= \left.\frac{\partial h}{\partial u^T}\right|_{\substack{x_s \\u_s}} $
 
 \subsection{Discretization}
 %
-%TODO: Euler
+%HACK: Euler
 
 \subsection{Lyapunov}
-%TODO: Lyapunov
-%TODO: Lyapunov direct, indirect
+%WARN: Lyapunov, direct, indirect
 
 \subsection{Optimal Control}
 
@@ -94,7 +96,9 @@ $$ U^\star(x(0)) =
 	}_ {F^\top}
 	x(0)
 $$
-%TODO Derivation batch
+
+%HACK: Batch Approach
+
 \textbf{Optimal Cost}
 
 \scalebox{0.97}[1]{$
@@ -109,11 +113,40 @@ $$
 
 \subsection{Recursive Approach}
 
-%TODO: Recursive Approach
+%HACK: Recursive Approach
+
+%HACK: comparison batch,recursivje
 
 
-\subsection{Infinite Horizon LQR}
-%TODO: LQR
+\begin{sstTitleBox}[ForestGreen]{\textbf{\large
+			\subsection{Infinite Horizon LQR}
+		}
+		% small text
+	}
+
+	\[ \begin{aligned}
+			J_\infty^\star(x(k))  & = \min \sum_{i=0}^\infty
+			%HACK: LQR min ?
+			x_i^\top Q x_i + u_i^\top R u_i                  \\
+			\mathrm{subj.\ to }\  & x_{i+1} = Ax_i + Bu_i    \\
+			                      & x_0 = x(k)
+		\end{aligned} \]
+
+	% \begin{centering}
+	% 	\begin{sstFrame}[ForestGreen]
+	% 		\vspace{-1.5mm}
+	% 		\color{white}
+	% 		\[ \begin{aligned}
+	%        % formula
+	% 			\end{aligned} \]
+	% 		\vspace{-2.5mm}
+	% 	\end{sstFrame}
+	% 	\[ \begin{aligned}
+	%      %formula
+	% 		\end{aligned} \]
+	% \end{centering}
+
+\end{sstTitleBox}
 
 \section{Optimization}
 
@@ -155,7 +188,7 @@ polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},C^{r\times 
 
 polytope
 
-%TODO: Elipsoid
+%WARN: Ellipsoid
 
 %TODO: Norm Ball
 
