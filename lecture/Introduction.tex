@@ -138,7 +138,9 @@ Control keeps the system around some operating point
 $\rightarrow$
 replace nonlinear by a linearized system around operating point
 
-TAYLOR % TODO: taylor
+First Order Taylor expansion
+$f(\bar{x}) + \left. \frac{\partial f}{\partial x^\top} \right
+	\rvert_{\bar{x}} (x-\bar{x})$
 
 \textbf{Linearization}
 
@@ -260,23 +262,102 @@ $t_{k+1} = t_k + T_s$ and $T_s$ is called the sampling time
 
 \subsubsection{Discretization}
 
-%TODO: Euler Discretization
+Approximate
+$\dot{x}^c \approx \frac{x^c(t + T_s)-x^c(t)}{T_s}$
 
 \subsubsection{Recap}
-%TODO: lecture 01c(s29) add recap
+
+Continuous time systems:
+
+- Continuous time state space models provide
+framework for representing general class of models
+
+- Analysis and control synthesis is generally hard
+
+- Linearization of nonlinear system to
+facilitate controller design and analysis
+
+- Linearization only valid in a small neighborhood
+of the linearization point
+
+- Continuous time system requires system
+integration to predict model behavior
+
+Discrete time systems:
+
+- Discrete time models most suited for MPC
+
+- Solution of discrete time model is a linear
+function of the initial state and the input sequence
+
+- Zero-order-hold provides exact discretization
+for linear systems
+
+- For general nonlinear systems only approximate
+discretization methods exist, such as Euler
+discretization, quality depends on sampling time
 
 \subsection{Analysis of Discrete-Time LTI-Systems}
 
-%TODO: lecture 01c(s30+) add recap
 \subsubsection{Coordinate Transform}
+%NOTE: Coordinate  Transform
+
 \subsubsection{Stability}
+\textbf{Controllabe}
+$
+	\text{if rank}(\mathcal{C}) = n
+	,\;
+	\mathcal{C} =
+	\begin{bmatrix}
+		B & \cdots & A^{n-1} B
+	\end{bmatrix}
+$
+
+$\forall(x(0),x^*)\exists$ finite time $N$
+with inputs $\mathcal{U}$, s.t. $x(N)=x^*$
+
+\textbf{Stabilizable} iff all uncontrollable modes stable
+
 \subsubsection{Controllability}
-\subsubsection{Observability}
+\textbf{Observable}
+$
+	\text{if rank}(\mathcal{O}) = n
+	,\;
+	\begin{bmatrix}
+		C^\top & \cdots & (CA^{n-1})^\top
+	\end{bmatrix}^\top
+$
+
+$\forall x(0)\exists$ finite time $N$, s.t. the measurements
+
+$y(0), \dots, y(N-1)$
+uniquely distinguish initial state $x(0)$
+
+\textbf{Detectablitiy} iff all unobservable modes stable
+
+%NOTE: Detailed Controllability Observability
 
 \subsection{Analysis of Discrete-Time Nonlinear-Systems}
-\subsubsection{Stability}
+
 \subsubsection{Lyapunov}
 %HACK: Lyapunov direct, indirect
+
+- We consider first the stability of a nonlinear,
+time-invariant, discrete-time system
+$x(k +1) = g(x(k))$
+with an equilibrium point at x̄, i.e. g(x̄) = x̄.
+
+- For nonlinear systems there are many definitions of stability.
+- Informally, we define a system to be stable in the sense of Lyapunov, if it
+stays in any arbitrarily small neighborhood of the equilibrium when it is
+disturbed slightly.
+- In the following we always mean “stability” in the sense of Lyapunov.
+- Note that system (1) encompasses any open- or closed-loop autonomous
+system.
+- We will then derive simpler stability conditions for the specific case of LTI
+systems.
+- Note that stability is a property of an equilibrium point of a system.
+
 
 \subsection{Recap}
 %TODO: lecture 01c(s63) add recap

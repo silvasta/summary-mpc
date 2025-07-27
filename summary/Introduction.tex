@@ -1,26 +1,18 @@
 \section{Introduction}
 
-\textbf{Requirements for MPC}
+%TODO: introtext
+
+\subsection{Exact  Solution}
 
 1. A model of the system
 
-2. A state estimator
-
-3. Define the optimal control problem
-
-4. Set up the optimization problem
-
-5. Get the optimal control sequence (solve the optimization problem)
-
-6. Verify that the closed-loop system performs as desired
-
-%TODO: models of system,table, (non)linear
+TAYLOR % TODO: taylor
 
 \subsection{Linearization}
 
-\textbf{Exact solution}
-$x(t) = e^{A^c(t-t_0)}x_0 +
-	\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau$
+%HACK: efficient ordering of values
+$\dot{x_s}=g(x_s,u_s) = 0$
+$y_s= h(x_s,u_s)$
 
 \textbf{Problem} Most physical systems are nonlinear
 % but linear systems are much better understood
