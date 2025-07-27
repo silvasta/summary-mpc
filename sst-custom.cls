@@ -89,11 +89,17 @@
 %-----------------------------------------------------------------
 % Preview
 %-----------------------------------------------------------------
+\newlength{\previewwidth}
+\setlength\previewwidth{83.5mm}
+
 \ifdefstring{\myclass@layout}{preview}{
+
+	\iftoggle{use-tight}{\setlength\previewwidth{73.5mm}}{}
+	% }{% else
+	% 	\setlength\previewwidth{83.5mm}}
 	\RequirePackage[
 		paperheight=210mm,
-		% paperwidth=95mm, % Standard
-		paperwidth=73.5mm, % fit tight 4col
+		paperwidth=\previewwidth,
 		top=1mm,
 		bottom=1mm,
 		inner=1mm,
