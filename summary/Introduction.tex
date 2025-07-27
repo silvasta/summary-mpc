@@ -1,37 +1,174 @@
 \section{Introduction}
 
-%TODO: introtext
+\textbf{Requirements for MPC}
 
-\subsection{Exact  Solution}
+1. A model of the system
 
-$x(t) = e^{A^c(t-t_0)}x_0 +
-	\textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau$
+2. A state estimator
 
-TAYLOR % TODO: taylor
+3. Define the optimal control problem
+
+4. Set up the optimization problem
+
+5. Get the optimal control sequence (solve the optimization problem)
+
+6. Verify that the closed-loop system performs as desired
+
+%TODO: models of system,table, (non)linear
 
 \subsection{Linearization}
 
-%HACK: efficient ordering of values
-$\dot{x_s}=g(x_s,u_s) = 0$
-$y_s= h(x_s,u_s)$
+\textbf{Exact solution}
+$x(t) = e^{A^c(t-t_0)}x_0 +
+	\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau$
 
-$\Delta \dot{x} =\dot{x} -\dot{x_s} = A^c\Delta x + B^c\Delta u$
+\textbf{Problem} Most physical systems are nonlinear
+% but linear systems are much better understood
 
-$\Delta y = y - y_s  = C\Delta x + D\Delta u $
+\textbf{Idea} use First Order Taylor expansion
+$f(\bar{x}) + \left. \frac{\partial f}{\partial x^\top} \right
+	\rvert_{\bar{x}} (x-\bar{x})$
+
+\[\begin{aligned}
+		\dot{x_s} & =g(x_s,u_s) = 0
+		          & \Delta \dot{x}  =\dot{x} -\dot{x_s}
+		          & = A^c\Delta x + B^c\Delta u
+		\\
+		y_s       & = h(x_s,u_s)
+		          & \Delta y        = y - y_s
+		          & = C\Delta x + D\Delta u
+	\end{aligned} \]
 
 $A^c= \left.\frac{\partial g}{\partial x^T}\right|_{\substack{x_s \\u_s}} $
 $B^c= \left.\frac{\partial g}{\partial u^T}\right|_{\substack{x_s \\u_s}} $
 $C= \left.\frac{\partial h}{\partial x^T}\right|_{\substack{x_s \\u_s}} $
 $D= \left.\frac{\partial h}{\partial u^T}\right|_{\substack{x_s \\u_s}} $
+
 %TODO: Example linearization
 
 \subsection{Discretization}
-%
-%HACK: Euler
+
+For general nonlinear systems only approximate discretization methods
+exist, such as Euler, quality depends on sampling time
+
+\begin{minipage}[c]{0.5\linewidth}
+	\textbf{Approximation}\\
+	\[
+		\dot{x}^c \approx \frac{x^c(t + T_s)-x^c(t)}{T_s}
+	\]
+\end{minipage}
+\begin{minipage}[c]{0.45\linewidth}
+	\center\textbf{Notation}
+	$x(k):= x^c(t_0+kT_s)$\\
+	$u(k):= u^c(t_0+kT_s)$\\
+\end{minipage}
+\textbf{Exact Discretization of Linear Time-Invariant Models}
+\[\begin{aligned}
+		x(t_{k+1}) & =
+		\underbrace{e^{A^c T_s}}
+		_{=A} x(t_k) +
+		\underbrace{\textstyle\int_{0}^{T_s}
+			e^{A^c(T_s - \tau)}B^c d\tau}
+		_{B=(A^c)^{-1}(A-\mathbb{I})B^c} u(t_k)
+		\\
+		x(k+N)     & = A^N x(k) + \textstyle\sum_{i=0}^{N-1}
+		A^i B u(k+N-1-i)
+	\end{aligned} \]
+
+\subsection{Analysis of LTI Discrete-Time Systems}
+
+%NOTE: Coordinate  Transform
+
+
+\textbf{Controllabe}
+$
+	\text{if rank}(\mathcal{C}) = n
+	,\;
+	\mathcal{C} =
+	\begin{bmatrix}
+		B & \cdots & A^{n-1} B
+	\end{bmatrix}
+$
+
+$\forall(x(0),x^*)\exists$ finite time $N$
+with inputs $\mathcal{U}$, s.t. $x(N)=x^*$
+
+\textbf{Stabilizable} iff all uncontrollable modes stable
+
+\textbf{Observable}
+$
+	\text{if rank}(\mathcal{O}) = n
+	,\;
+	\begin{bmatrix}
+		C^\top & \cdots & (CA^{n-1})^\top
+	\end{bmatrix}^\top
+$
+
+$\forall x(0)\exists$ finite time $N$, s.t. the measurements
+
+$y(0), \dots, y(N-1)$
+uniquely distinguish initial state $x(0)$
+
+\textbf{Detectablitiy} iff all unobservable modes stable
 
 \subsection{Lyapunov}
 %WARN: Lyapunov, direct, indirect
 
+Stability is a property of an
+\textbf{equilibrium point} $\bar{\mathbf{x}}$
+of a system
+
+\begin{definition}[Lyapunov Stability]
+	$\bar{\mathbf{x}}$ is \textbf{Lyapunov stable} if:
+
+	$\forall\ \epsilon>0\ \exists\ \delta(\epsilon)$ s.t.
+	$\lvert\lvert x(0) - \bar{x} \rvert\rvert < \delta(\epsilon) \to
+		\lvert\lvert x(k) - \bar{x} \rvert\rvert < \epsilon$
+\end{definition}
+
+\begin{definition}[Globally asymptotic stability]
+	If $\bar{\mathbf{x}}$ is Lyapunov stable and attractive, i.e.,
+	$\lim_{k\to\infty} ||x(k)-\bar{x}||=0,\ \forall x(0)$
+	then $\bar{\mathbf{x}}$ is \textbf{globally asymptotic stable}.
+\end{definition}
+
+\begin{sstFrame}[RoyalBlue!50]
+	\begin{definition}[Global Lyapunov function]
+		For  $\bar{\mathbf{x}}=0$,
+		function $V:\mathbb{R}^n\to \mathbb{R}$ is called
+		\textbf{Lyapunov function} if it is continuous at the origin,
+		finite $\forall\ x\in \mathbb{R}^{n}$,
+		\[
+			||x||\to\infty\Rightarrow V(x)\to\infty
+		\]
+		\[
+			V(x)>0\ \forall\ x\in\mathbb{R}^n \setminus\{0\}\quad V(0)=0
+		\]
+		\[
+			V(g(x)) - V(x) \leq -\alpha(x) \quad \forall x \in \mathbb{R}^n
+		\]
+
+		where $\alpha:\mathbb{R}^n\to \mathbb{R}$
+		continuous positive definite
+	\end{definition}
+\end{sstFrame}
+
+\begin{sstTitleBox}[Plum]{\center\textbf{\large
+			Lyapunov Theorem
+		}}
+	\begin{theorem}
+		%TODO: system (1)
+		If a system admits a Lyapunov function $V(x)$,
+		then $\bar{\mathbf{x}} = 0$ is
+		\textbf{globally asymptotically stable}.
+	\end{theorem}
+	\begin{theorem}[Lyapunov indirect method]
+		For linearization of system around $\bar{\mathbf{x}}=0$
+		and resulting matrix
+		$A=\left.\frac{\partial g}{\partial x^T}\right|_{x=0}$
+		$|\lambda_i|<1$ %HACK: finish Lyapunov indirect
+	\end{theorem}
+\end{sstTitleBox}
 \subsection{Optimal Control}
 
 Unconstrained Finite Horizon Control Problem
