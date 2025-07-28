@@ -29,6 +29,7 @@
 \RequirePackage{siunitx}
 \RequirePackage{subcaption}
 \RequirePackage{tcolorbox}
+\RequirePackage{colortbl}
 %-----------------------------------------------------------------
 % OPTIONS
 %-----------------------------------------------------------------
@@ -141,8 +142,8 @@
 	\setlength{\textfloatsep}{0.2mm} % Space between floats
 	\setlength{\floatsep}{0.2mm} % Space between floats
 	%-----------------------------------------------------------------
-	\setlength{\parindent}{0mm}
-	\setlength{\parskip}{0mm}
+	\setlength{\parindent}{1mm}
+	\setlength{\parskip}{1mm}
 	%-----------------------------------------------------------------
 	\setlist{itemsep=0mm, topsep=0mm} % For all itemize/enumerate
 	\setlist[itemize]{itemsep=0pt, leftmargin=3mm}
@@ -156,7 +157,7 @@
 	%----------------------------------------------------------------
 	% 1. changed less, maybe the 2. useful
 	% \setlength{\mathsurround}{0pt}
-	% \setlength{\jot}{0mm}
+	\setlength{\jot}{0mm}
 	% -----------------------------------------------------------------
 	% space around title and fontsize
 	% -----------------------------------------------------------------
@@ -206,6 +207,31 @@
 	bottom=0pt,
 	right=0pt,
 	top=0pt,
+	%%%
+	arc=0mm,%FIX: arc
+	boxrule=0mm,
+}
+\newtcolorbox{sstOnlyFrame}[1][default-box-color]{
+	colframe=#1,
+	colback=white,
+	left=0pt,
+	bottom=0pt,
+	right=0pt,
+	top=0pt,
+	%%%
+	arc=0mm,
+	boxrule=.25mm,
+}
+\newtcolorbox{sstFullFrame}[1][default-box-color]{
+	colframe=#1,
+	colback=#1,
+	left=0pt,
+	bottom=0pt,
+	right=0pt,
+	top=0pt,
+	%%%
+	arc=0mm,
+	boxrule=.25mm,
 }
 \newtcolorbox{sstTitleBox}[2][default-box-color]{
 	colframe=#1,
@@ -215,6 +241,9 @@
 	right=0pt,
 	top=2pt,
 	title=#2,
+	%%%
+	arc=0mm,%FIX: arc
+	% boxrule=0.2mm,
 }
 %-----------------------------------------------------------------
 % CUSTOM COMMANDS
@@ -232,6 +261,8 @@
 %-----------------------------------------------------------------
 \newcommand{\T}{^\textnormal{\scriptsize T}}%TODO: remove
 \DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\dom}{dom}
 %-----------------------------------------------------------------
 % Chapter
 %-----------------------------------------------------------------

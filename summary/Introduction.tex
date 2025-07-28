@@ -1,18 +1,28 @@
 \section{Introduction}
 
-%TODO: introtext
-
-\subsection{Exact  Solution}
+\textbf{Requirements for MPC}
 
 1. A model of the system
 
-TAYLOR % TODO: taylor
+2. A state estimator
 
-\subsection{Linearization}
+3. Define the optimal control problem
 
-%HACK: efficient ordering of values
-$\dot{x_s}=g(x_s,u_s) = 0$
-$y_s= h(x_s,u_s)$
+4. Set up the optimization problem
+
+5. Get the optimal control sequence
+
+(solve the optimization problem)
+
+6. Verify that the closed-loop system performs as desired
+%TODO: introtext
+
+\subsection{Exact ODE solution of a Linear System}
+
+\[
+	x(t) = e^{A^c(t-t_0)}x_0 +
+	\textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau
+\]
 
 \textbf{Problem} Most physical systems are nonlinear
 % but linear systems are much better understood
@@ -20,6 +30,9 @@ $y_s= h(x_s,u_s)$
 \textbf{Idea} use First Order Taylor expansion
 $f(\bar{x}) + \left. \frac{\partial f}{\partial x^\top} \right
 	\rvert_{\bar{x}} (x-\bar{x})$
+
+\subsection{Linearization}
+
 
 \[\begin{aligned}
 		\dot{x_s} & =g(x_s,u_s) = 0
@@ -31,12 +44,14 @@ $f(\bar{x}) + \left. \frac{\partial f}{\partial x^\top} \right
 		          & = C\Delta x + D\Delta u
 	\end{aligned} \]
 
+%HACK: efficient ordering of values
+
 $A^c= \left.\frac{\partial g}{\partial x^T}\right|_{\substack{x_s \\u_s}} $
 $B^c= \left.\frac{\partial g}{\partial u^T}\right|_{\substack{x_s \\u_s}} $
 $C= \left.\frac{\partial h}{\partial x^T}\right|_{\substack{x_s \\u_s}} $
 $D= \left.\frac{\partial h}{\partial u^T}\right|_{\substack{x_s \\u_s}} $
 
-%TODO: Example linearization
+%NOTE: Example linearization
 
 \subsection{Discretization}
 
@@ -104,7 +119,6 @@ uniquely distinguish initial state $x(0)$
 \textbf{Detectablitiy} iff all unobservable modes stable
 
 \subsection{Lyapunov}
-%WARN: Lyapunov, direct, indirect
 
 Stability is a property of an
 \textbf{equilibrium point} $\bar{\mathbf{x}}$
@@ -149,19 +163,44 @@ of a system
 			Lyapunov Theorem
 		}}
 	\begin{theorem}
-		%TODO: system (1)
+		%TODO: non linear system (1)
 		If a system admits a Lyapunov function $V(x)$,
 		then $\bar{\mathbf{x}} = 0$ is
 		\textbf{globally asymptotically stable}.
 	\end{theorem}
+
+	%WARN: Lyapunov, DIRECT?, indirect
+
 	\begin{theorem}[Lyapunov indirect method]
 		For linearization of system around $\bar{\mathbf{x}}=0$
 		and resulting matrix
 		$A=\left.\frac{\partial g}{\partial x^T}\right|_{x=0}$
-		$|\lambda_i|<1$ %HACK: finish Lyapunov indirect
+		with eigenvalues
+
+		$|\lambda_i| :=
+			\begin{cases}
+				\forall i := |\lambda_i| < 1 & \text{{x=0} is asymptotically stable} \\
+				\exists i := |\lambda_i| > 1 & \text{origin is unstable}             \\
+				\exists i := |\lambda_i| = 1 & \text{no info about stability}        \\
+			\end{cases}$
+	\end{theorem}
+	%FIX: indirect Lyapunov
+
+	\textbf{Discrete-Time Lyapunov equation}
+
+	\[A^TPA-P=-Q,\quad Q>0\]
+
+	\begin{theorem}[Existence of solution of DT Lyapunov equation]
+		The discrete-time Lyapunov equation (3) has a unique solution P > 0 if and
+		only if A has all eigenvalues inside the unit circle, i.e. if and only if the system
+		x(k + 1) = Ax(k) is stable.
+		%FIX: Lyapunov theorem3
 	\end{theorem}
 \end{sstTitleBox}
+
 \subsection{Optimal Control}
+
+%TODO: box for: Unconstrained Finite Horizon Control Problem
 
 Unconstrained Finite Horizon Control Problem
 
@@ -177,9 +216,20 @@ $$\begin{aligned}
 		       & x_0                    = x(0)
 	\end{aligned}$$
 
+$P\succeq0$, with $P=P^T$
+terminal weight
+
+$Q\succeq0$, with $Q = Q^T$
+state weight
+
+$R\succ0$, with $R = R^T$
+input weight
+
 \subsection{Batch Approach}
 
-$$ \begin{bmatrix}
+expresses cost function in terms of $x(0)$ and input sequence $U$
+
+\[ \begin{bmatrix}
 		x_0    \\
 		x_1    \\
 		\vdots \\
@@ -205,16 +255,18 @@ $$ \begin{bmatrix}
 		u_1    \\
 		\vdots \\
 		u_{N-1}
-	\end{bmatrix} $$
+	\end{bmatrix} \]
 
-\textbf{Cost}
 
 $\overline{Q} := \mathop{\mathrm{blockdiag}}(Q,\dots, Q,P)$
-
+\quad
 $\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
 
 \textbf{Optimal Input}
-$$ U^\star(x(0)) =
+(from $\nabla_UJ(x(0),U)=2HU+2F^\top x(0)=0$)
+%TODO: maybe derivation?
+%WARN: definition S, F unclear
+\[ U^\star(x(0)) =
 	- \bigl(
 	\underbrace{
 			(\mathcal{S}^u)^\top \overline{Q} \mathcal{S}^u + \overline{R}
@@ -224,9 +276,8 @@ $$ U^\star(x(0)) =
 		(\mathcal{S}^u)^\top \overline{Q}\mathcal{S}^x
 	}_ {F^\top}
 	x(0)
-$$
+\]
 
-%HACK: Batch Approach
 
 \textbf{Optimal Cost}
 
@@ -242,85 +293,246 @@ $$
 
 \subsection{Recursive Approach}
 
-%HACK: Recursive Approach
+uses dynamic programming to solve problem backwards from $N$
 
-%HACK: comparison batch,recursivje
-
+\[\begin{aligned}
+		J_j^\star(x(j)) :=
+		\min_{U_{j\to N}} & x_N^\top P x_N \!+
+		\sum_{i=j}^{N-1}x_i^\top Q x_i + u_i^\top R u_i
+	\end{aligned}\]
 
 \begin{sstTitleBox}[ForestGreen]{\textbf{\large
-			\subsection{Infinite Horizon LQR}
+			Ricatti Equations
+		}
+		% small text
+	}
+
+
+	\begin{sstTitleBox}[ForestGreen]
+		% \vspace{-1.5mm}
+		{\color{white}\textbf{RDE} - Riccati Difference Equation}
+
+		\scalebox{0.97}[1]{$
+				\scriptstyle
+				P_i = A^\top P_{i+1} A
+				+ Q - A^\top P_{i+1} B
+				(B^\top P_{i+1} B + R)^{-1}
+				B^\top P_{i+1} A$}
+		% \vspace{-2.5mm}
+	\end{sstTitleBox}
+
+	\begin{sstFrame}[ForestGreen]
+		% \vspace{-1.5mm}
+		\color{white}
+		{\textbf{RDE - Riccati Difference Equation} solved recursively}
+		\scalebox{0.97}[1]{$
+				\scriptstyle
+				P_i = A^\top P_{i+1} A
+				+ Q - A^\top P_{i+1} B
+				(B^\top P_{i+1} B + R)^{-1}
+				B^\top P_{i+1} A$}
+		% \vspace{-2.5mm}
+	\end{sstFrame}
+
+	\begin{sstFrame}[ForestGreen]
+		% \vspace{-1.5mm}
+		\color{white}
+		{\textbf{ARE - Algebraic Riccati Equation} solved analytically}
+		{\center$\scriptstyle
+				P_\infty = A^\top P_\infty A
+				+ Q - A^\top P_\infty B
+				(B^\top P_\infty B + R)^{-1}
+				B^\top P_\infty A$}
+		% \vspace{-2.5mm}
+	\end{sstFrame}
+
+\end{sstTitleBox}
+
+\begin{minipage}[t]{0.64\linewidth}
+	\textbf{From Principle Of Optimality}
+	\[
+		J_j^\star(x_j) =
+		\min_{u_j} I(x_i,u_i) + J_{j+1}^\star(x_{j+1})
+	\]
+\end{minipage}
+\begin{minipage}[t]{0.32\linewidth}
+	\textbf{Optimal Cost-To-Go}
+	\[
+		J_i^\star(x_i) = x_i^\top P_i x_i
+	\]
+\end{minipage}
+
+\textbf{Optimal Control Policy}
+\[
+	u_i^\star = F_i x_i =
+	-(B^\top P_{i+1}B + R)^{-1}
+	B^\top P_{i+1} A \cdot x(i)
+\]
+
+\subsection{Comparison of Batch and Recursive Approaches}
+
+Batch optimization returns sequence $U^\star(x(0))$
+of \textbf{numeric values} depending only on x(0),
+dynamic programming yields \textbf{feedback policies}
+$u_i^\star = F_i x_i$ depending on each $x_i$.
+
+\textbf{Choice of P}
+
+1. Match infinite solution, use ARE
+
+2. Assume no control needed after N, use Lyapunov Equation %TODO: Lyapunov link
+(makes only sense when asymptotically stable, otherwise P not positive definite)
+
+3. set constraint $x_{i+N}=0$
+
+\subsection{Infinite Horizon LQR}
+\begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
+			LQR
 		}
 		% small text
 	}
 
 	\[ \begin{aligned}
 			J_\infty^\star(x(k))  & = \min \sum_{i=0}^\infty
-			%HACK: LQR min ?
-			x_i^\top Q x_i + u_i^\top R u_i                  \\
-			\mathrm{subj.\ to }\  & x_{i+1} = Ax_i + Bu_i    \\
-			                      & x_0 = x(k)
+			x_i^\top Q x_i + u_i^\top R u_i                                   \\
+			\mathrm{subj.\ to }\  & x_{i+1} = Ax_i + Bu_i,\quad    x_0 = x(k)
 		\end{aligned} \]
 
-	% \begin{centering}
-	% 	\begin{sstFrame}[ForestGreen]
-	% 		\vspace{-1.5mm}
-	% 		\color{white}
-	% 		\[ \begin{aligned}
-	%        % formula
-	% 			\end{aligned} \]
-	% 		\vspace{-2.5mm}
-	% 	\end{sstFrame}
-	% 	\[ \begin{aligned}
-	%      %formula
-	% 		\end{aligned} \]
-	% \end{centering}
+	Same u as for finite problem but with ARE
+	Constant  Feedback Matrix $F\infty$
+	asymptotically stable for.. Q,R,stabi,detect
+	%TODO: details  LQR
+
+	%HACK: Lemma  Lyapunov (look at proof)
 
 \end{sstTitleBox}
 
-\section{Optimization}
-
-%TODO: epigraph
+\subsection{Optimization}
 
 A mathematical optimization problem is generally formulated as:
 
-\begin{equation}
-	\begin{aligned}
-		\min_{x\in\operatorname{dom}(f)}          & f(x)                      \\
-		\text{s.t. }                       g_i(x) & \le 0,\quad i = 1,\dots,m \\
-		h_i(x)                                    & = 0,\quad i = 1,\dots,p   \\
-	\end{aligned}
-	\label{eq:optimization}
-\end{equation}
+\begin{sstTitleBox}[Plum]{\textbf{\large
+			Mathematical Optimization Problem
+		}}
+	\begin{minipage}{0.70\linewidth}
+		\begin{sstOnlyFrame}[Plum]
+			\textbf{Decision variable} $x  \in \mathbb{R}^{n}$
 
-- $x = (x_1,...,x_n) \in \mathbb{R}^{n}$ decision variable
+			\textbf{Objectivce function} $f: \dom(f)\to\mathbb{R}$
 
-- $f: \operatorname{dom}(f)\to\mathbb{R}$ objectivce function
+			\textbf{Inequality constraints} $g_i$
+			$\scriptstyle(i \in \#\text{constraints})$
 
-- $\mathcal{X} = \{x \in \mathbb{R}^{n}: g(\xi)\le0,\ h(\xi)=0\}$ fesabile set
+			\textbf{Equality constraints} $h_i$
+			$\scriptstyle(i \in \#\text{constraints})$
 
-%TODO: further definitions
+			\textbf{Fesabile set}
+			$\mathcal{X}\!\!:=\!\!\{x|g(x)\!\!\le\!\!0,\!h(x)\!=\!0\}$
+		\end{sstOnlyFrame}
+	\end{minipage}
+	\begin{minipage}{0.28\linewidth}
+		\begin{sstFullFrame}[Plum]
+			{\color{white}
+				\vspace{-1mm}
+				\[ \begin{aligned}
+						 & \textbf{minimize }f(x)   \\
+						 & \ \ \ \text{subject to:} \\
+						 & \ \ \ g_i(x)  \le 0      \\
+						 & \ \ \ h_i(x)  = 0
+					\end{aligned} \]
+				\vspace{-1mm}
+			}
+		\end{sstFullFrame}
+	\end{minipage}
 
+	\begin{sstOnlyFrame}[Plum]
+		\textbf{Feasible point}
+		$x\in\dom(f)$ with
+		$g_i(x)\le 0,\ h_i(x)=0$
+
+		\textbf{Strictly feasible point}
+		%WARN: what  if no Inequality constraints?
+		$x$ with strict inequality
+		$g_i(x)<0$
+
+		\textbf{Optimal value}
+		$f^\star (\text{or } p^\star)=
+			\inf\{f(x)|
+			g_i(x)\le0,h_j=0 \}$
+		$f^\star=+\infty$: OP infeasible,
+		$f^\star=-\infty$: OP unbound below
+
+		\textbf{Optimizer}
+		% (is set)
+		set:
+		$\argmin_{x \in \mathcal{X}} f(x):=
+			\{ x\in\mathcal{X}|f(x)=f^\star\}$
+	\end{sstOnlyFrame}
+
+	\begin{sstOnlyFrame}[Plum]
+		$x^\star$ is a \textbf{Global Minimum} if $f(x^\star)\leq f(x)$
+
+		$x^\star$ is a \textbf{Local Minimum} if
+		$\exists\ \epsilon > 0$ s.t.
+		$f(x^\star)\leq f(x)$
+		$\forall x \in \mathcal{X} \cap B_\epsilon(x^\star)$,
+		open ball with center $x^\star$ and radius $\epsilon$
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
 \subsection{Convex Sets}
 
 \begin{definition}[Convex Set]
-	A set $\mathcal{C}$ is convex if and only if
-	$$\theta x + (1-\theta)y \in \mathcal{C}
-		\forall\ x,y \in \mathcal{C},\quad
-		\forall\ \theta \in [0,1]$$
+	Set $\mathcal{C}$ is convex if and only if
+	\[\theta x + (1-\theta)y \in \mathcal{C},
+		\ \forall\ x,y \in \mathcal{C},
+		\ \forall\ \theta \in [0,1]\]
 \end{definition}
 
-(hyperplane $\parallel$ half-space)
-$\{x \in \mathbb{R}^n \mid a\T x(=\parallel\le)b\}$
+\begin{definition}[Hyperplanes]
+	$\{x \in \mathbb{R}^n \mid a\T x=b\}$
+\end{definition}
+\begin{definition}[Halfspaces]
+	$\{x \in \mathbb{R}^n \mid a\T x\le b\}$
 
-polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},C^{r\times n}x=d^{r\times1}\}$
-%TODO: check
+	can be \textbf{open} (strict inequality)
+	or \textbf{closed} (non-strict inequality)
+\end{definition}
 
-polytope
+\begin{definition}[Polyhedra] intersection of
+	\textbf{finite} number of closed halfspaces:
+	polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},
+		% C^{r\times n}x=d^{r\times1}
+		\}$
+\end{definition}
 
-%WARN: Ellipsoid
+\begin{definition}[Polytope]
+	is a \textbf{bounded} polyhedron.
+\end{definition}
 
-%TODO: Norm Ball
+\begin{definition}[Convex hull]
+	for  $\{v_1,...,v_k\}\in \mathbb{R}^{d}$ is:
 
+	co$(\{v_1,...,v_k\}):=
+		\{ x|x=\sum_{i}\lambda_iv_i,
+		\lambda\ge0, \sum_{i}\lambda_i=1 \}$
+\end{definition}
+
+\begin{definition}[Ellipsoid]
+	set:
+	$\{ x | (x\!-\!x_c)^\top A^{-1}(x\!-\!x_c) \leq 1 \}$
+	where $x_c$ is center of ellipsoid,
+	$A \succ 0$ (i.e. positive definite)
+	(Semi-axis lengths are square roots of eigenvalues of $A$)
+\end{definition}
+
+\begin{definition}[Norm Ball]
+	$B_r(x):=
+		\{\xi\in\mathbb{R}^{n}:|\xi-x|_p<r\}$
+	where $p$ defines the $l_p$ norm, $p=\{1|2|..|\infty\}$
+	%TODO: norm p1,2,...
+\end{definition}
+
+%NOTE:intersection theorem? proof?
 \textbf{Intersection}
 $\mathcal{C}_1, \mathcal{C}_2$ cv
 $\Rightarrow \mathcal{C}_1 \cap \mathcal{C}_2$ convex \textbf{(cv)}
@@ -335,7 +547,22 @@ $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 
 \subsection{Convex Functions}
 
-%TODO: Convex Function Definition
+\begin{definition}[Convex Function]
+	$f: \mathcal{C}_{cv} \to\mathbb{R}$ is convex iff
+	\[
+		f(\theta x + (1-\theta)y)\le \theta f(x)+ (1-\theta)f(y),
+		\ \forall\ x,y \in \mathcal{C},
+		\ \forall\ \theta \in [0,1]\]
+	$f$ is strictly convex if this inequality is strict.
+\end{definition}
+
+
+\begin{definition}[Epigraph]
+	$f:\mathbb{R}^n \rightarrow \mathbb{R}$ cv
+	$\Leftrightarrow$
+	epi$(f)$ is cv set
+	$$\operatorname{epi}(f):=\{(x,t)\in \mathbb{R}^{n+1} | f(x)\le t\}$$
+\end{definition}
 
 \textbf{Check Convexity} $f$ is convex if it is
 composition of simple convex function
@@ -350,11 +577,8 @@ $g: \mathbb{R} \rightarrow \mathbb{R}$ with $g(t)=f(x+tv)$
 convex in $t\ \forall\ x,v \in \mathbb{R}^{n}$
 $\rightarrow f$ convex (restriction to a line)
 
-%TODO: Level set
+%NOTE: first, second order convexity
 
-%TODO: Example convex funcions
-
-\subsubsection{Operations that preserve convexity (functions)}
 
 - the point wise maximum of convex functions is convex
 
@@ -362,28 +586,29 @@ $\rightarrow f$ convex (restriction to a line)
 
 - $f(Ax+b)$ is convex if $f$ is convex
 
-\subsection{Convex Optimization Problems}
+%TODO: Level set sublevel set
 
-%TODO:Definition cvOP
+%NOTE: Example convex funcions
 
-Optimal value $f^\star =
-	\operatorname{inf}\{f(x)\mid
-	g_i(x)\le0,h_j=0 \}$
-$f^\star=+\infty$ OP is infeasible,
-$f^\star=-\infty$ OP is unbound below
+%NOTE:Definition cvOP
 
-%TODO: Local and Global Optimality
+\begin{theorem}
+	For a convex optimization problem,
+	\textbf{any} locally optimal solution is globally
+	optimal (local optima are global optima).
+\end{theorem}
 
-%TODO: Equivalent  OP, Slack
 
-\subsubsection{Linear Programming}
+%TODO: Equivalent OP, Slack
+
+\textbf{Linear Programming}
 $ \operatorname{minimize} c\T x
 	\text{ s.t. } Ax-b \ge 0,\ x\ge0$
 
 Step 1:
 $\mathcal{L}(x,\lambda_1,\lambda_2) =
 	c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
-
+%TODO: LP
 Step 2:
 $\underset{x \in \mathcal{\mathbb{R}}^n}{\operatorname{inf}}
 	\mathcal{L}=\lambda_1\T b$
@@ -395,68 +620,74 @@ s.t.
 $c-A\T\lambda\ge0,\lambda\ge0$
 (again LP)
 
-\subsubsection{Quadratic Programming}
+\textbf{Quadratic Programming}
+min ...
+%TODO: QP
 
 \subsection{Optimality Conditions}
 
-\begin{sstTitleBox}{\textbf{\large
+\begin{sstTitleBox}{\center\textbf{\large
 			Lagrange Duality
 		}}
 	\begin{centering}
-		We consider ...
-		\small
-		% \vspace{-3mm}
-		\begin{equation}
-			f^\star = \inf_{x\in\mathcal{\mathbb{R}}^n}f(x)
-			\;\text{ s.t. }\ g(x)\le0,h(x)=0
-			\label{eq:dual}
-		\end{equation}
-		%
-		% \vspace{-7mm}
+		\begin{sstOnlyFrame}
+			\vspace{-1.5mm}
+			\[ \text{Consider}\ \
+				f^\star = \inf_{x\in\mathcal{\mathbb{R}}^n}f(x)
+				\;\text{ s.t. }\ g(x)\le0,\ h(x)=0
+				\label{eq:dual}%FIX: label for Optimality Conditions
+			\]
+			% \vspace{-7mm}
+		\end{sstOnlyFrame}
+
 		%TODO: Definitions lambda...
 
 		\begin{sstFrame}
 			{\color{white}
-				\vspace{-3mm}
+				\vspace{-2mm}
 				\[\begin{aligned}
-						 & \textbf{Lagrange}      & \hspace{-6mm}	\mathcal{L}(x,\lambda,\nu) & = f(x) + \lambda\T g(x)+\nu\T h(x)
+						 & \textbf{Lagrangian}
+						 & \hspace{-4mm}	\mathcal{L}(x,\lambda,\nu)
+						 & = f(x) + \lambda\T g(x)+\nu\T h(x)
 						\\
-						 & \textbf{Dual Function} & \hspace{-6mm}		d(\lambda,\nu)            & = \inf_{x \in \mathcal{\mathbb{R}}^n}\mathcal{L}(x,\lambda,\nu)
+						\\
+						 & \textbf{Dual Function}
+						 & \hspace{-4mm}		d(\lambda,\nu)            & = \inf_{x \in \mathcal{\mathbb{R}}^n}\mathcal{L}(x,\lambda,\nu)
 					\end{aligned}\]
-				\vspace{-4mm}
+				\vspace{-2.7mm}
 			}
 		\end{sstFrame}
 	\end{centering}
 \end{sstTitleBox}
 
-$$\begin{aligned}
-		                           & \textbf{Lagrange }                                              &
-		\mathcal{L}(x,\lambda,\nu) & = f(x) + \lambda\T g(x)+\nu\T h(x)
-		\\
-		                           & \textbf{Dual Function }                                         &
-		d(\lambda,\nu)             & = \inf_{x \in \mathcal{\mathbb{R}}^n}\mathcal{L}(x,\lambda,\nu)
-	\end{aligned}$$
 
-%TODO: Primal Dual (P) (D)
+%HACK: Primal Dual (P) (D)
 
-%TODO: Example LP
+%TODO: Primal dual Example LP, Example QP
 
-%TODO: Example QP
-
-\subsubsection{Weak and Strong Duality}
 
 \begin{proposition}[Weak Duality]
 	$d(\lambda,\nu)\le f^\star,\forall\lambda\ge0,\nu\in\mathbb{R}^{h}$
 \end{proposition}
 
 \begin{definition}[Constraint qualification]
-	$\mathcal{C}$ convex, \textbf{Slaters Condition} holds if
-	$\exists\ \hat{x} \in \mathbb{R}^{n}$ s.t. $h(\hat{x})=0$ and $g(\hat{x})<0$
+	\textbf{Slaters Condition} holds if $\exists$
+	at least one
+	strictly feasible point
+	% \textbf{strictly feasible point}
+	$\hat{x}{\ (h(\hat{x})=0,\ g(\hat{x})<0)}$
 \end{definition}
+
+% \begin{definition}[Constraint qualification]
+% 	\textbf{Slaters Condition} holds if $\exists$
+% 	strictly feasible point
+% 	% \textbf{strictly feasible point}
+% 	$\hat{x}:= (h(\hat{x})=0$ and $g(\hat{x})<0$)
+% \end{definition}
 
 \begin{proposition}[Strong Duality]
 	If Slater's condition holds
-	and (\ref{eq:dual}) is convex
+	and OP is convex
 	$\Rightarrow$
 	$\exists \lambda \ge 0, \nu \in \mathbb{R}^{n_h}$ s.t. $d(\lambda,\nu)=f^\star$
 \end{proposition}
