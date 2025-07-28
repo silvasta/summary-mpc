@@ -340,7 +340,6 @@ uniquely distinguish initial state $x(0)$
 \subsection{Analysis of Discrete-Time Nonlinear-Systems}
 
 \subsubsection{Lyapunov}
-%HACK: Lyapunov direct, indirect
 
 - We consider first the stability of a nonlinear,
 time-invariant, discrete-time system
@@ -358,9 +357,64 @@ system.
 systems.
 - Note that stability is a property of an equilibrium point of a system.
 
+%TODO: Lyapunov direct, indirect (copy)
 
-\subsection{Recap}
-%TODO: lecture 01c(s63) add recap
+Remarks
+
+-  Note that the Lyapunov theorems only provide sufficient conditions
+
+-  Lyapunov theory is a powerful concept for proving stability of a control
+system, but for general nonlinear systems it is usually difficult to find a
+Lyapunov function
+
+-  Lyapunov functions can sometimes be derived from physical considerations
+
+-  One common approach:
+
+--  Decide on form of Lyapunov function (e.g., quadratic)
+
+--  Search for parameter values e.g. via optimization so that the required
+properties hold
+
+-  Will see: MPC allows for a stability guarantee for constrained systems:
+Lyapunov function is provided in the form of the optimal cost function
+(under certain assumptions on the problem setup).
+
+-  For linear systems there exist constructive theoretical results on the
+existence of a quadratic Lyapunov function
+%TODO: Lyapunov theorem 3
+
+• Therefore, for LTI systems global asymptotic Lyapunov stability is not
+only sufficient but also necessary, and it agrees with the notion of stability
+based on eigenvalue location.
+
+• Note that stability is always “global” for linear systems.
+
+%NOTE: L1.p56 Property  of P
+
+\subsection{Recap DT System}
+
+-  Lyapunov stability provides framework to analyze stability of general
+nonlinear systems
+
+-  Asymptotic stability captures convergence in the limit and is commonly
+used in MPC
+
+-  For LTI systems, asymptotic stability can be shown by eigenvalues of the
+dynamic matrix
+
+-  Lyapunov functions provide means to prove stability for nonlinear systems
+
+-  Key is how to find a Lyapunov function
+
+-  For linear systems there exists a quadratic Lyapunov function if and only if
+the system is stable
+
+-  MPC allows to prove stability by providing a Lyapunov function for the
+closed-loop system
+
+-  Controllability/Observability are necessary requirements for design of a
+controller/estimator (can be relaxed into stabilizability and detectability)
 
 \section{Unconstrained LQ Optimal Control}
 
@@ -545,7 +599,7 @@ $\overline{Q} := \mathop{\mathrm{blockdiag}}(Q,\dots, Q,P)$
 
 $\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
 
-%TODO Derivation batch
+%NOTE Derivation batch
 
 \textbf{Summary}
 
@@ -617,7 +671,7 @@ of the horizon after step $j$
 
 Start at time $N-1$
 
-% TODO: Steps N- {1,2,...}
+% NOTE: Steps N- {1,2,...}
 
 Iterate backwards
 
@@ -711,7 +765,7 @@ the current state.
 
 Receding horizon strategy introduces feedback.
 
-%TODO: Image  Feedback 02.26
+%NOTE: Image  Feedback 02.26
 
 For unconstrained systems, this is a \textbf{constant linear controller}
 However, can extend this concept to much more complex systems (MPC)
@@ -721,11 +775,9 @@ However, can extend this concept to much more complex systems (MPC)
 
 \subsubsection{Infinite Horizon Control Problem}
 
-%HACK: J infinity u star J star ARE LQR
-
 \subsubsection{Stability of Infinite Horizon LQR}
 
-%TODO: Stability
+%NOTE: LQR detailed
 
 \subsubsection{Choices of Terminal Weight P in Finite Horizon Control}
 
@@ -792,7 +844,6 @@ A mathematical optimization problem is generally formulated as:
 
 - $\mathcal{X} = \{x \in \mathbb{R}^{n}: g(\xi)\le0,\ h(\xi)=0\}$ fesabile set
 
-%TODO: further definitions
 
 \subsection{Convex Sets}
 
@@ -807,15 +858,10 @@ A mathematical optimization problem is generally formulated as:
 $\{x \in \mathbb{R}^n \mid a\T x(=\parallel\le)b\}$
 
 polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},C^{r\times n}x=d^{r\times1}\}$
-%TODO: check
 
 polytope
-%TODO: Polyh, conversion hyperplane to A
-%TODO: Elipsoid
 
-%WARN: Ellipsoid
 
-%HACK: Norm Ball
 
 \textbf{Intersection}
 $\mathcal{C}_1, \mathcal{C}_2$ cv
@@ -831,7 +877,6 @@ $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 
 \subsection{Convex Functions}
 
-%TODO: Convex Function Definition
 
 \textbf{Check Convexity} $f$ is convex if it is
 composition of simple convex function
@@ -846,9 +891,7 @@ $g: \mathbb{R} \rightarrow \mathbb{R}$ with $g(t)=f(x+tv)$
 convex in $t\ \forall\ x,v \in \mathbb{R}^{n}$
 $\rightarrow f$ convex (restriction to a line)
 
-%TODO: Level set
 
-%TODO: Example convex funcions
 
 \subsubsection{Operations that preserve convexity (functions)}
 
@@ -860,7 +903,7 @@ $\rightarrow f$ convex (restriction to a line)
 
 \subsection{Convex Optimization Problems}
 
-%TODO:Definition cvOP
+%NOTE:Definition cvOP
 
 Optimal value $f^\star =
 	\operatorname{inf}\{f(x)\mid
@@ -868,9 +911,9 @@ Optimal value $f^\star =
 $f^\star=+\infty$ OP is infeasible,
 $f^\star=-\infty$ OP is unbound below
 
-%TODO: Local and Global Optimality
+%NOTE: Local and Global Optimality
 
-%TODO: Equivalent  OP, Slack
+%NOTE: Equivalent  OP, Slack
 
 \subsubsection{Linear Programming}
 $ \operatorname{minimize} c\T x
@@ -901,7 +944,7 @@ $c-A\T\lambda\ge0,\lambda\ge0$
 	\;\text{ s.t. }\ g(x)\le0,h(x)=0
 	\label{eq:dual}
 \end{equation}
-%TODO: Definitions lambda...
+%NOTE: Definitions lambda...
 $$\begin{aligned}
 		                           & \textbf{Lagrange }                                              &
 		\mathcal{L}(x,\lambda,\nu) & = f(x) + \lambda\T g(x)+\nu\T h(x)
@@ -910,11 +953,11 @@ $$\begin{aligned}
 		d(\lambda,\nu)             & = \inf_{x \in \mathcal{\mathbb{R}}^n}\mathcal{L}(x,\lambda,\nu)
 	\end{aligned}$$
 
-%TODO: Primal Dual (P) (D)
+%NOTE: Primal Dual (P) (D)
 
-%TODO: Example LP
+%NOTE: Example LP
 
-%TODO: Example QP
+%NOTE: Example QP
 
 \subsubsection{Weak and Strong Duality}
 
@@ -972,9 +1015,9 @@ and $\lambda,\nu$ maximizes dual,
 but the converse is no longer true.
 There can be primal-minimizer/dual-maximizer not satisfy KKT.
 
-%TODO Example KKT QP
+%NOTE Example KKT QP
 
-%TODO: Sensitivity Analysis
+%NOTE: Sensitivity Analysis
 
 \subsection{Summary}
 
@@ -992,7 +1035,7 @@ There can be primal-minimizer/dual-maximizer not satisfy KKT.
 
 - For convex optimization problem: If slater condition holds,
 x ∗ optimal iff ∃(λ∗ , ν ∗ ) satisfying KKT conditions
-%TODO: symbols
+%NOTE: symbols
 - Convex optimization problems can be solved efficiently
 
 - Many problems can be written as convex opt. problems (with some effort)
@@ -1003,7 +1046,7 @@ extend to Convex Cone Programs
 \subsubsection{Why did we consider the dual problem?}
 
 - The dual problem is convex, even if the primal is not
-%TODO: symbols
+%NOTE: symbols
 –> can be ‘easier’ to solve than primal
 
 - The dual problem provides a

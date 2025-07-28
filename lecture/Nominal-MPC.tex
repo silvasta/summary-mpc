@@ -188,7 +188,7 @@ for $\mathcal{X}, \mathcal{U}, \mathcal{X}_f$
 	E_{in} =
 	\left[
 		\begin{smallmatrix}
-			-A_x^T \\%TODO: check
+			-A_x^T \\%NOTE : copy
 			0 \\
 			\cdots \\
 			0 \\
@@ -196,11 +196,9 @@ for $\mathcal{X}, \mathcal{U}, \mathcal{X}_f$
 		\right]
 \]
 
-%TODO: H bar QQQQPRRRR
 
 
 \subsubsection{Without Substitution}
-%TODO: QP with substitiution
 
 Step 1
 
@@ -208,26 +206,14 @@ Step 2
 
 Step 3
 
-%TODO: J star
-%TODO: Solution
 
 \subsubsection{Quadratic Cost State Feedback Solution}
 
-%TODO: J star
 
-%TODO: mp-QP
 
 \subsection{Constrained Optimal Control: 1-Norm and ∞-Norm Cost}
 
-%TODO: transform to LP
-
-%TODO: l_p norm
-
-%TODO: construct LP with substitution
-
-%TODO: mp-LP
-
-%TODO: Solution Properties
+%NOTE: transform to LP l_p norm construct LP with substitution mp-LP Solution Properties
 
 \subsection{Receding Horizon Control Notation}
 
@@ -236,14 +222,9 @@ Step 3
 
 \section{Invariance}
 
-
-
-
 \subsection{Objectives of Constrained Control}
 
-%TODO: constrained control
-
-%TODO: Limit of linear controller
+%NOTE: constrained control, Limit of linear controller
 
 \subsection{Learning Objectives}
 
@@ -263,23 +244,11 @@ Step 3
 
 Invariance: Which states are “good”?
 
-%TODO: Definition Positively Invariant set
-%TODO: Definition Maximum Positively Invariant set
-%TODO: Definition Preset
-%TODO: Theorem invarinat set conditions
-%TODO: Conceptual Algorithm
-%TODO: compute set
 
 \subsection{Control Invariance}
 
 Control Invariance: Does a good input exist?
 
-%TODO: definition control invariant set
-%TODO: definition maximal control invariant set
-%TODO: Conceptual Algorithm
-%TODO: projection operation?
-%TODO: compute set
-%TODO: Control law
 
 \subsubsection{Relation to MPC}
 
@@ -334,20 +303,12 @@ Special case: Linear system, polyhedral constraints.
 \subsection{Practical Computation of Invariant Sets}
 
 \subsubsection{Polytopes}
-%TODO: Polyhedra (in optimization)
-%TODO: Convex hull proposition
-%TODO: Minkowsky-Weyl Theorem
-%TODO: Most commen Polytopic constraint
-%TODO: Example?
-%TODO: Compute Polytopic Invariant Set, example e5
-%TODO: Intersection of Polytopes
-%TODO: Subset test
 \subsubsection{Ellipsoids}
-%TODO: Definition Elipsoid
-%TODO: Invariant set from lyapuno function
-%TODO: PROOF
-%TODO: Maximum Elipsoid set
-%TODO: Largest Invarian Elipsoid set (supplementary)
+
+Ellipsoids are useful because the complexity of evaluating containment is always
+quadratic in the dimension, whereas polyhedra can be arbitrarily complex.
+
+%NOTE: Largest Invarian Elipsoid set (supplementary)
 
 
 \section{Feasibility and Stability}
