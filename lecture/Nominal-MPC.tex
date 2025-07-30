@@ -303,17 +303,18 @@ Special case: Linear system, polyhedral constraints.
 \subsection{Practical Computation of Invariant Sets}
 
 \subsubsection{Polytopes}
+%NOTE: subsection Convex sets
 \subsubsection{Ellipsoids}
 
 Ellipsoids are useful because the complexity of evaluating containment is always
 quadratic in the dimension, whereas polyhedra can be arbitrarily complex.
 
-%NOTE: Largest Invarian Elipsoid set (supplementary)
+%TODO: Largest Invarian Elipsoid set (supplementary)
 
 
 \section{Feasibility and Stability}
 
-%TODO: Receding Horizon Control: The Motivation p2
+%NOTE: Receding Horizon Control: The Motivation p2
 
 \subsection{Learning Objectives}
 
@@ -350,7 +351,7 @@ on stability and constraint satisfaction
 Example Saturation
 
 LQR with saturated inputs unstable
-
+%NOTE: Example LQR MPC comparison
 MPC with input constraint not convergent to steady state but to limit cycle
 
 MPC + with rate constraints converges
@@ -394,13 +395,11 @@ converge to the origin.
 \textbf{Main idea} Introduce terminal cost and constraints to explicitly ensure
 feasibility and stability:
 
-%TODO: Feasibility Solution MPC
 
 \subsection{Feasibility and Stability Guarantees in MPC}
 
 \subsubsection{Lyapunov Stability}
 
-%TODO: Lyapunov Stability Theorem
 
 \subsubsection{Feasibility and Stability of MPC: Proof}
 
@@ -475,7 +474,7 @@ Goal: Use convex set $\mathcal{X}_f$ to increase the region of attraction
 
 %NOTE: outline of mpc stability proof
 
-%TODO: Choice of terminal set (derivation)
+%NOTE: Choice of terminal set (derivation)
 \subsubsection{Choice of Terminal Set and Cost: Summary}
 
 - Terminal constraint provides a sufficient condition
