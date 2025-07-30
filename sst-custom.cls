@@ -222,60 +222,44 @@
 \RequirePackage{listings}
 \RequirePackage{roboto-mono}
 
-\definecolor{backgroundcolor}{HTML}{222222}
-\definecolor{keywordcolor}{HTML}{ca4780}
-\definecolor{stringcolor}{HTML}{1fa25a}
-\definecolor{textcolor}{HTML}{6690d9}
-\definecolor{defcolor}{HTML}{a27fd9}
-\definecolor{commentcolor}{HTML}{b6b8bb}
-\definecolor{symbols}{HTML}{f2f4f8}
-\definecolor{deco}{HTML}{3ddbd9}
+\definecolor{text}{HTML}{f2f4f8}
+\definecolor{background}{HTML}{222222}
+\definecolor{string}{HTML}{1fa25a}
+\definecolor{comment}{HTML}{b6b8bb}%!20
+\definecolor{keyword}{HTML}{ca4780}
+\definecolor{function}{HTML}{6690d9}
+\definecolor{builtin}{HTML}{a27fd9}
+\definecolor{instantiate}{HTML}{3ddbd9}
+
+% %%% try to make it smaller
+% \newsavebox{\mybox}
+% \begin{lrbox}{\mybox}
+% \end{lrbox}
+% \scalebox{0.9}{\usebox{\mybox}}
 
 \lstdefinestyle{sst}
 {
 	language=Python,
-	basicstyle=\footnotesize\robotomono\color{textcolor},
-	stringstyle=\color{stringcolor},
-	commentstyle=\color{commentcolor},
-	backgroundcolor=\color{backgroundcolor},
-	keywordstyle=\color{keywordcolor},
-	keywordstyle=[2]\color{defcolor},
-	keywordstyle=[3]\color{symbols},
-	keywordstyle=[4]\color{deco},
+	basicstyle=\robotomono\scriptsize\color{text},
+	backgroundcolor=\color{background},
+	stringstyle=\color{string},
+	commentstyle=\color{comment},
+	keywordstyle=\color{keyword},
+	keywordstyle=[2]\color{builtin},
 	deletekeywords={def},
-	otherkeywords={def,:,(,),@},
 	morekeywords=[2]{def},
-	morekeywords=[3]{:,(,)},
-	morekeywords=[4]{@decorator},
-	showspaces=false,
+	keywordstyle=[3]\color{function},
+	morekeywords=[3]{hello_world,get_next_u, estimator, target_selector, mpc_regulator,},
+	keywordstyle=[4]\color{instantiate},
+	morekeywords=[4]{Measurement,Reference},
 	showstringspaces=false,
-	breaklines=true,
 	breakatwhitespace=true,
+	frame=true,
 	tabsize=4,
+	xleftmargin=1mm,
+	xrightmargin=1mm,
+	frame=tlbr,
 }
-% \lstdefinestyle{sst}
-% {
-% 	language=Python,
-% 	basicstyle=\footnotesize\robotomono\color{textcolor},
-% 	% basicstyle=\footnotesize\color{textcolor},%\robotomono,
-% 	stringstyle=\color{stringcolor},
-% 	commentstyle=\color{commentcolor},
-% 	backgroundcolor=\color{backgroundcolor},
-% 	keywordstyle=\color{keywordcolor},
-% 	keywordstyle = [2]\color{defcolor},
-% 	keywordstyle = [3]\color{symbols},
-% 	deletekeywords={def,)},
-% 	% deletechars={)}
-% 	otherkeywords = {def,:,(,),@},
-% 	morekeywords = [2]{def},
-% 	morekeywords = [3]{:,(,),@},
-% 	showspaces=false,
-% 	showstringspaces=false,
-% 	% frame=single,
-% 	breaklines=true,
-% 	breakatwhitespace=true,
-% 	tabsize=4
-% }
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 % Color frames
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

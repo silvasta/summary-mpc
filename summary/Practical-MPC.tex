@@ -1,2 +1,382 @@
 \section{Practical-MPC}
-\lipsum
+
+\subsection{Steady-state Target Problem}
+
+
+- Reference is achieved by the target
+state $x_s$ if $z_s = Hx_s = r$
+
+
+- Target state should be a steady-state,
+i.e. $x_s = Ax_s + Bu_s$
+
+
+\begin{align*}
+	\begin{aligned}
+		x_s & = Ax_s + Bu_s \\
+		z_s & = Hx_s = r
+	\end{aligned}
+	\ \Longleftrightarrow \
+	\begin{aligned}
+		\begin{bmatrix}
+			\mathbb{I} - A & -B \\
+			H              & 0
+		\end{bmatrix}
+		\begin{bmatrix}
+			x_s \\
+			u_s
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			0 \\
+			r
+		\end{bmatrix}
+	\end{aligned}
+\end{align*}
+
+$\nexists$ solution
+$\rightarrow$
+$\min (Hx_s - r)^\top Q_s (H x_s - r)$
+(closest $x$ to $r$)
+
+If $\exists$ multiple feasible $u_s$
+$\rightarrow$
+compute
+$\min u_s^\top R_s u_s$
+(cheapest)
+
+$$
+	\min_U |z_N - Hx_s|_{P_z}^2
+	+ \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
+	+ | u_i - u_s |_{R}^2
+	%WARN: Constraints, do one general for entiry summary
+$$
+
+\subsection{Reference Tracking}
+
+\begin{align*}
+	\begin{aligned}
+		\Delta x & = x - x_s
+		\\
+		\Delta u & = u - u_s
+	\end{aligned}
+	\ \Rightarrow \
+	\begin{aligned}
+		\Delta x_{k+1}
+		 & = x_{k+1} -x_s                          \\
+		 & = A\Delta x_k + B u_k - (A x_s + B u_s) \\
+		 & = A\Delta x_k + B\Delta u_k             \\
+	\end{aligned}
+\end{align*}
+
+%HACK: Structure delta notation
+% + check with linearization for no doubling
+% + move to lecture
+
+
+\begin{align*}
+	\begin{aligned}
+		G_x  x & \leq h_x \\
+		G_u  u & \leq h_u
+	\end{aligned}
+	\ \Rightarrow \
+	\begin{aligned}
+		G_x \Delta x & \leq h_x - G_x x_s \\
+		G_u \Delta u & \leq h_u - G_u u_s
+	\end{aligned}
+\end{align*}
+
+%HACK: System formulation delta notation?
+
+% \begin{adjustbox}{rndcorners=0.5mm}
+\begin{lstlisting}[style=sst]
+def get_next_u(y: Measurement, r: Reference):
+    """
+    System handler for offset-free tracking
+    """
+    # approximate state, disturbance
+    x, d = estimator(y)
+    # find steady state und generate delta
+    x_s, u_s = target_selector(x, r, d)
+    x_delta = x - x_s
+    # call solver with new parameter
+    u_delta = mpc_regulator(x_delta, x_s, u_s)
+    u = u_delta + u_s
+
+    return u
+\end{lstlisting}
+% \end{adjustbox}
+\includegraphics[width=\columnwidth]{images/tracking-system-diagram.jpg}
+% %WARN: graphic target selector
+%
+% %WARN: MPC for Tracking: Convergence, L7.p20
+
+Assume target feasible with $x_s \in \mathcal{X}, u_s \in \mathcal{U}$,
+choose terminal weight $V_f(x)$ and constraint $\mathcal{X}_f$ as in regulation case satisfying
+\begin{itemize}[leftmargin=1em]
+	\item $\mathcal{X}_f \subseteq \mathcal{X}, K x \in \mathcal{U} \quad \forall x \in \mathcal{X}_f$
+	\item $V_f(x(k+1)) - V_f(x(k)) \leq -l (x(k), Kx(k)) \quad \forall x \in \mathcal{X}_f$
+\end{itemize}
+If in addition the target reference $x_s, u_s$ is such that
+\begin{itemize}[leftmargin=1em]
+	\item $x_s \oplus \mathcal{X}_f \subseteq \mathcal{X}, K\Delta x + u_s \in \mathcal{U}, \quad \forall \Delta x \in \mathcal{X}_f$
+\end{itemize}
+then CL system converges to target reference
+\begin{align*}
+	x(k) \to x_s, z(k) = Hx(k) \xrightarrow{k\to\infty}r
+\end{align*}
+
+\begin{proof}
+	%TODO: proof tracking
+
+	\begin{itemize}[leftmargin = 1em]
+		\item Invariance under local ctrol law inherited from regulation case
+		\item Constraint satisfaction provided by extra conditions
+		      \begin{itemize}
+			      \item $x_s \oplus \mathcal{X}_f \subseteq \mathcal{X} \to x\in \mathcal{X} \forall \Delta \in\mathcal{X_f}$
+			      \item $K\Delta x + u_s \in \mathcal{U} \forall \Delta x \in \mathcal{X}_f \to u\in\mathcal{U}$
+		      \end{itemize}
+		\item Fron asympt stability of the regulation problem: $\Delta x (k) \xrightarrow{k\to\infty}0$
+	\end{itemize}
+\end{proof}
+
+\textbf{Terminal set} use
+$\mathcal{X}_f^{\text{scaled}} = \alpha \mathcal{X}_f$
+(s.t. constraints satisfied)
+
+\subsection{Reference Tracking without Offset}
+
+\textbf{Approach}
+Model the disturbance,
+use the measurements and model
+to estimate the state and disturbance
+and find control inputs that use
+the disturbance estimate to remove offset.
+
+\textbf{Augmented Model}
+\begin{align*}
+	x_{k+1} & = Ax_k + Bu_k + B_d d_k \\
+	y_k     & = Cx_k + C_d d_k
+\end{align*}
+\textbf{Constant disturbance}
+$d_{k+1}  = d_k$
+
+Observable iff
+$\begin{bsmallmatrix}
+		A - \mathbb{I} & B_d \\ C & C_d
+		%FIXME: I eye 1, be carful with cost I(x,u) l(x,u)
+	\end{bsmallmatrix}$
+has full rank $(=n_x + n_d)$
+
+\textbf{Observer For Augmented Model}
+
+$
+	\begin{bmatrix}
+		\hat{x}_{k+1} \\
+		\hat{d}_{k+1}
+	\end{bmatrix}
+	\!=\!
+	\begin{bmatrix}
+		A & \hspace{-2mm} B_d       \\
+		0 & \hspace{-2mm}\mathbb{I}
+	\end{bmatrix}
+	\begin{bmatrix}
+		\hat{x}_{k} \\
+		\hat{d}_{k}
+	\end{bmatrix}
+	\!+\!
+	\begin{bmatrix}
+		B \\
+		0
+	\end{bmatrix}
+	\!u_{k}
+	+
+	\hspace{-.5mm}
+	\begin{bmatrix}
+		L_x \\
+		L_d
+	\end{bmatrix}
+	\hspace{-.5mm}
+	(C\hat{x}_{k} \!+\! C_d \hat{d}_{k}-y_{k})
+$
+
+\textbf{Error Dynamics} $\Rightarrow$
+choose $L$ s.t error dynamics converge to $0$
+\begin{align*}
+	\begin{bsmallmatrix}
+		x_{k+1} - \hat{x}_{k+1} \\
+		d_{k+1} - \hat{d}_{k+1}
+	\end{bsmallmatrix}
+	= \left(
+	\begin{bsmallmatrix}
+		A & B_d        \\
+		0 & \mathbb{I}
+	\end{bsmallmatrix}
+	+
+	\begin{bsmallmatrix}
+		L_x \\
+		L_d
+	\end{bsmallmatrix}
+	\begin{bsmallmatrix}
+		C & C_d
+	\end{bsmallmatrix}
+	\right)
+	\begin{bsmallmatrix}
+		x_{k} - \hat{x}_{k} \\
+		d_{k} - \hat{d}_{k}
+	\end{bsmallmatrix}
+\end{align*}
+%HACK: fix observer dynamics
+
+\begin{lemma}
+	Steady-state of an asym. stable
+	observer satisfies:
+	\begin{align*}
+		\begin{bmatrix}
+			A-\mathbb{I} & B \\
+			C            & 0
+		\end{bmatrix}
+		\begin{bmatrix}
+			\hat{x}_\infty \\
+			u_\infty
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			-B_d \hat{d}_\infty \\
+			y_\infty - C_d \hat{d}_\infty
+		\end{bmatrix}
+		\ (\text{for }n_y = n_d)
+	\end{align*}
+	$\Rightarrow$ Observer output $C\hat{x}_\infty + C_d \hat{d}_\infty$ tracks $y_\infty$ without offset
+\end{lemma}
+
+\subsection{Offset-free Tracking}
+
+\textbf{Goal}
+Track constant reference:
+$Hy(k) = z(k) \to r$, $k\to\infty$
+
+\begin{align*}
+	\begin{aligned}
+		%TODO: I-A or A-I (doesnt mater but should be same as steady-state)
+		x_s & = Ax_s + Bu_s +B_d\hat{d}_\infty  \\
+		z_s & = H(Cx_s + C_d\hat{d}_\infty) = r
+	\end{aligned}
+	% \ \Longleftrightarrow \
+	\begin{aligned}
+		\begin{bsmallmatrix}
+			A-I & B \\
+			HC  & 0
+		\end{bsmallmatrix}
+		\begin{bsmallmatrix}
+			x_s \\
+			u_s
+		\end{bsmallmatrix}
+		=
+		\begin{bsmallmatrix}
+			0 \\
+			r-HC_d\hat{d}
+		\end{bsmallmatrix}
+	\end{aligned}
+\end{align*}
+
+%WARN: Tracking, Concept!!!
+
+\begin{theorem}[Offset-free Tracking: Main Result]
+	Assuming
+	$n_d = n_y$,
+	RHC recursively feasible,
+	unconstrained for $k \geq j$,
+	control law  $\kappa(\cdot)= \kappa(\hat{x}(k),\hat{d}(k),r)$
+	and closed loop system
+	\begin{align*}
+		x(k+1)        = & Ax(k) + B\kappa(\cdot) + B_d d                                 \\
+		\hat{x}(k+1)  = & (A + L_x C)\hat{x}(k) + (B_d + L_x C_d)\hat{d}(k)              \\
+		                & + B\kappa(\cdot) - L_x y(k)                                    \\
+		\hat{d}(k+1)  = & L_d C \hat{x}(k) + (\mathbb{I} + L_d C_d)\hat{d}(k) - L_d y(k)
+	\end{align*}
+	converges, then $z(k) = Hy(k) \to r$
+	as $k\to\infty$
+\end{theorem}
+
+% \subsection{Enlarging the Feasible Set}
+
+%TODO: MPC without Terminal Set
+
+\subsection{Soft Constraints}
+
+Input constraints are dictated by physical constraints on
+the actuators and are usually hard
+
+- State/output constraints arise from practical restrictions
+on the allowed operating range and are \textbf{rarely hard}
+
+- Hard state/output constraints always lead to
+\textbf{complications in the controller implementation}
+%TODO: summarize soft constraints intro text
+
+\begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
+			Soft Constrained MPC Problem Setup
+		}
+		% small text
+	}
+
+	% \begin{adjustbox}{rndcorners=0.5mm}
+	% 	\begin{sstOnlyFrame}[ForestGreen]
+	% 		$
+	% 			\min\sum_{i=0}^{N-1}
+	% 			x_i^\top Q x_i + u_i^\top R u_i+
+	% 		$
+	% 		\textcolor{hltext}{\hl{$l_\epsilon(\epsilon_i)$}}
+	% 		% +l_\epsilon(\epsilon_i)
+	% 		$
+	% 			+x_N^\top P x_i+
+	% 		$
+	% 		% +l_\epsilon(\epsilon_N)
+	% 		% $
+	% 		\textcolor{hltext}{\hl{$l_\epsilon(\epsilon_N)$}}
+	% 	\end{sstOnlyFrame}
+	% \end{adjustbox}
+
+	\begin{adjustbox}{rndcorners=0.5mm}
+		\begin{sstOnlyFrame}[ForestGreen]
+			\[
+				\min_u\sum_{i=0}^{N-1}
+				x_i^\top Q x_i + u_i^\top R u_i
+				+\color{BrickRed}l_\epsilon(\epsilon_i)\color{black}
+				+x_N^\top P x_i
+				+\color{BrickRed}l_\epsilon(\epsilon_N)
+			\]
+		\end{sstOnlyFrame}
+	\end{adjustbox}
+	\[\begin{aligned}
+			\text{subj.\ to }\   x_{i+1}      & = Ax_i + Bu_i      \\
+			H_xx_i                            & \le k_x+\epsilon_i \\
+			H_uu_i                            & \le k_u            \\
+			\text{slack variable }	\epsilon_i & \ge0
+		\end{aligned}\]
+
+\end{sstTitleBox}
+
+\textbf{Quadratic penalty}
+$l_\epsilon(\epsilon_i) =
+	\epsilon_i^\top S \epsilon_i$ (e.g $S = Q$)
+
+\textbf{Linear Penalty}
+$v|\epsilon_i|_{1/\infty}$
+
+%TODO: mathematical formulation slack
+
+\textbf{Requirement on $l_\epsilon(\epsilon)$}
+If the original problem has a feasible solution $z^\star$,
+then the softened problem should have the same solution $z^\star$,
+and $\epsilon = 0$.
+
+\begin{theorem}[Exact Penalty Funtcion]
+	$l_\epsilon(\epsilon) = v \cdot \epsilon$ satisfies requirement for any $v > \lambda^\star \geq 0$,
+	where $\lambda^\star$ is optimal Lagrange multiplier for original problem
+\end{theorem}
+
+%HACK: Simplification: Separation of Objectives
+
+%NOTE: summary for lecture
