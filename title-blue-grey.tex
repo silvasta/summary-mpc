@@ -2,6 +2,7 @@
 %-----------------------------------------------------------------
 % two boxes centered with date below
 %-----------------------------------------------------------------
+
 \begin{tcolorbox}[
 		colback=RoyalBlue,
 		colframe=RoyalBlue,
@@ -21,7 +22,7 @@
 		colback=lightgray,
 		colframe=lightgray,
 		arc=0mm,
-		% boxrule=0mm,
+		% boxrule=.5mm,
 		left=0pt,
 		bottom=1mm,
 		right=0mm,
@@ -31,15 +32,17 @@
 	\center{\normalsize
 		\textbf{Silvan Stadelmann}
 		- \selectlanguage{german}{\today}
-		- v0.1.0
+		- v0.1.1
 	}\end{tcolorbox}
 
 \begin{center}
 	{\scriptsize\url{github.com/silvasta/summary-mpc}}
 \end{center}
 \vspace{1mm}
-\includegraphics[width=\columnwidth]{images/header-1.jpg}
 
+\begin{adjustbox}{rndcorners=0.5mm}
+	\includegraphics[width=\columnwidth]{images/header-1.jpg}
+\end{adjustbox}
 %-----------------------------------------------------------------
 % initial version - overfull hbox
 %-----------------------------------------------------------------

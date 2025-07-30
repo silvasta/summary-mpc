@@ -74,7 +74,7 @@ $x_{i+1} = Ax_i + Bu_i$
 	\end{bsmallmatrix}
 \]
 
-\textbf{Inequalities }
+\textbf{Inequalities}
 $G_{in}z \leq w_{in} + E_{in}x(k)$ from
 $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 	\mathcal{U}   = \{u \mid A_u u \leq b_u\},
@@ -103,22 +103,21 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 			\end{smallmatrix}
 			 &
 			\begin{smallmatrix}
-				0&&&\\
-				&\ddots&\\
-				&&0&\\
-				&&&0
+				0\ \ &&&\\
+				&\ \ddots\\
+				&&\ 0\ &\\
+				&&&\ \ 0
 			\end{smallmatrix}
 			\\ \hline
 			\begin{smallmatrix}
-				0&&&\\
-				&\ddots\\
-				&&0&\\
-				&&&0
+				0\ \ &&&\\
+				&\ \ddots\\
+				&&\ 0\ &\\
+				&&&\ \ 0
 			\end{smallmatrix}
 			 &
 			\begin{smallmatrix}
 				A_u&&\\
-				&A_u&\\
 				&\ddots&\\
 				&&A_u&\\
 				&&&A_u
@@ -141,7 +140,6 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 		\end{smallmatrix}
 		\\ \hline
 		\begin{smallmatrix}
-			b_u\\
 			b_u\\
 			\vdots\\
 			b_u\\
@@ -243,6 +241,7 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 	is the \textbf{pre-set} of $\mathcal{S}$
 	$\Rightarrow \pre(\mathcal{S}) := \{x\mid g(x)\in \mathcal{S}\}$
 \end{definition}
+
 \begin{theorem}[Geometric condition for invariance]
 	Set $\mathcal{O}$ is positively invariant set iff
 	$\mathcal{O}\subseteq\pre(\mathcal{O})
@@ -305,6 +304,38 @@ Computing Invariant Sets
 	\end{sstTitleBox}
 	%FIX: set proper Algorithm frame
 \end{minipage}
+
+\begin{sstTitleBox}[ForestGreen]{\center\textbf
+		Conceptual Algorithm}
+	\begin{sstOnlyFrame}[ForestGreen]
+		\begin{algorithmic}
+			\State first line
+			\State $\Omega_0 \leftarrow \mathcal{X}$
+			\Loop
+			\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+			\If{$\Omega_{i+1}=\Omega_i$}
+			\State\Return $\mathcal{O}_\infty = \Omega_i$
+			\EndIf
+			\EndLoop
+		\end{algorithmic}
+	\end{sstOnlyFrame}
+	(Same but much harder for control invariat sets)
+\end{sstTitleBox}
+
+\begin{sstTitleBox}[ForestGreen]{\center\textbf
+		Conceptual Algorithm}
+	\begin{adjustbox}{rndcorners=0.5mm}
+		\begin{lstlisting}[style=sst]
+@decorator()
+# Example Python code
+def hello_world():
+ # This is a comment
+    print("Hello, World!")
+\end{lstlisting}
+	\end{adjustbox}
+
+	(Same but much harder for control invariat sets)
+\end{sstTitleBox}
 
 \subsection{Control Invariance}
 
@@ -425,10 +456,11 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 
 \subsection{Feasibility and Stability}
 
-%TODO: move to proper place
-The first reason is that re-optimization provides robustness to any noise or modeling errors,
-while the second is that the solution at time k = 0 is sub-optimal because it is over a finite
-horizon. Re-optimizing can provide a control law with better performance.
+What can go wrong with “standard” MPC?
+
+- No feasibility guarantee, i.e., the MPC problem may not have a solution
+
+- No stability guarantee, i.e., trajectories may not converge to the origin
 
 \begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
 			MPC Mathematical Formulation
@@ -436,16 +468,39 @@ horizon. Re-optimizing can provide a control law with better performance.
 		% small text
 	}
 
+
+	V1
 	\begin{sstFrame}[ForestGreen]
 		\small
 		\color{white}
-		\vspace{-1mm}
 		\[
-			%HACK: Make u instead j
 			J^\star(x(k))= \min\sum_{i=0}^{N-1}
 			x_i^\top Q x_i + u_i^\top R u_i\]
-		\vspace{-2mm}
 	\end{sstFrame}
+
+	%HACK: MPC (any) Definition Make u instead j?
+
+	% V2 - not working
+	% \begin{sstFrame}[ForestGreen]
+	% 	\begin{adjustbox}{rndcorners=0.5mm}
+	% 		\small
+	% 		\color{white}
+	% 		\[
+	% 			J^\star(x(k))= \min\sum_{i=0}^{N-1}
+	% 			x_i^\top Q x_i + u_i^\top R u_i\]
+	% 	\end{adjustbox}
+	% \end{sstFrame}
+
+	V3
+	\begin{adjustbox}{rndcorners=0.5mm}
+		\begin{sstFrame}[ForestGreen]
+			\small
+			\color{white}
+			\[
+				J^\star(x(k))= \min\sum_{i=0}^{N-1}
+				x_i^\top Q x_i + u_i^\top R u_i\]
+		\end{sstFrame}
+	\end{adjustbox}
 
 	\[\begin{aligned}
 			\mathrm{subj.\ to }\   x_{i+1} & = Ax_i + Bu_i \\
@@ -454,17 +509,18 @@ horizon. Re-optimizing can provide a control law with better performance.
 			\quad u_i \in \mathcal{U}
 		\end{aligned}\]
 
+	%WARN: Solution MPC Terminal Cost L6.p27
 
 \end{sstTitleBox}
 
 
-%TODO: Lyapunov Stability Theorem
+%WARN: Lyapunov Stability extend with L6.p29 invariant set and L.6.30 Theorem
 %
 %HACK: MPC Proof 1,2
 
 
 \begin{sstTitleBox}
-	{	\subsubsection{Stability of MPC - Main Result}}
+	{	Stability of MPC - Main Result}
 	\begin{theorem}
 		The closed-loop system under the MPC control law $u_0^\star(x)$
 		is asymptotically stable and the set $\mathcal{X}_f$
@@ -497,12 +553,13 @@ horizon. Re-optimizing can provide a control law with better performance.
 			- I(x_i, \kappa_f(x_i)) \quad
 			\forall x_i \in \mathcal{X}_f
 		\]
+		%HACK: Proof MPC Main Result?
 	\end{theorem}
 \end{sstTitleBox}
 
-%TODO: choice of terminal set
+%WARN: choice of terminal set (compare with cftoc)
 
-%TODO: Extension to nonlinear MPC
+%WARN: Conclusion text, extension to nonlinear MPC (easy)
 
 \begin{sstFrame}[ForestGreen!20]
 	% \center

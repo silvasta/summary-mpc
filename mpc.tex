@@ -24,9 +24,9 @@
 %-----------------------------------------------------------------
 % \documentclass{sst-custom}
 % \documentclass[layout=regular, columns=2]{sst-custom}
-% \documentclass[layout=summary, columns=4,secnumdepth=4,tight]{sst-custom}
+\documentclass[layout=summary, columns=4,secnumdepth=4,tight]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=4]{sst-custom}
-\documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
+% \documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
 %-----------------------------------------------------------------
 
 %-----------------------------------------------------------------
@@ -43,7 +43,7 @@
 \toggletrue{showSummary}
 % \togglefalse{showSummary}
 %-----------------------------------------------------------------
-
+% experimental
 \usepackage{algpseudocode} % pseudocode
 %--------------\--------------------------------------------------
 \begin{document}
@@ -58,8 +58,8 @@
 		\tableofcontents
 		%-----------------------------------------------------------------
 		% %%% Debug
-		Column width is: \the\columnwidth\\
-		Preview width is: \the\previewwidth
+		% Column width is: \the\columnwidth\\
+		% Preview width is: \the\previewwidth
 		%-----------------------------------------------------------------
 		\foreach \lecture / \summary in {
 		{lecture/Introduction.tex}/

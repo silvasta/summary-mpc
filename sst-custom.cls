@@ -11,6 +11,7 @@
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage[shortlabels]{enumitem}
 \RequirePackage{amsmath}
+\RequirePackage{adjustbox}
 \RequirePackage{amssymb}
 \RequirePackage{atbegshi}
 \RequirePackage{booktabs}
@@ -175,7 +176,26 @@
 		{\normalfont\footnotesize\bfseries}}
 }{}
 %-----------------------------------------------------------------
-% FONT
+% Chapter
+%-----------------------------------------------------------------
+% Add chapter functionality in article class
+\newcounter{Chapcounter}
+\newcommand\showmycounter{\addtocounter{Chapcounter}{1}\themycounter}
+%%% style ideas
+% \addtocounter{Chapcounter}{1}\Large{\textbf{\color{RoyalBlue}#1}}
+% \addcontentsline{toc}{section}{ \color{blue} Chapter:~\theChapcounter~~ #1}    
+\iftoggle{use-tight}{
+	\newcommand{\chapter}[1] {
+		\addtocounter{Chapcounter}{1}{\large\textbf{~#1}}
+		\addcontentsline{toc}{section}{#1}
+	}}{
+	% for non-tight chaptes
+	\newcommand{\chapter}[1] {
+		\addtocounter{Chapcounter}{1}{\Large\textbf{~#1}}
+		\addcontentsline{toc}{section}{#1}
+	}}
+%-----------------------------------------------------------------
+% LANGUAGE, FONT AND TIME
 %-----------------------------------------------------------------
 % \RequirePackage{fontspec}
 % \RequirePackage[ngerman]{babel}
@@ -186,20 +206,79 @@
 \babelprovide{ngerman}
 %-----------------------------------------------------------------
 % Date
-%-----------------------------------------------------------------
 \RequirePackage[ddmmyyyy]{datetime}
 \renewcommand{\dateseparator}{.} % has to be after language
-%-----------------------------------------------------------------
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 % COLOR
-%-----------------------------------------------------------------
-\RequirePackage{soul}
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+\RequirePackage{soul} %FIX: needed?
 \sethlcolor{BrickRed}%!90}
 % \sethlcolor{RoyalBlue}%!90}
 \definecolor{hltext}{rgb}{256,256,256}
 \colorlet{default-box-color}{RoyalBlue}
-%-----------------------------------------------------------------
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+% Coding Boxes
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+\RequirePackage{listings}
+\RequirePackage{roboto-mono}
+
+\definecolor{backgroundcolor}{HTML}{222222}
+\definecolor{keywordcolor}{HTML}{ca4780}
+\definecolor{stringcolor}{HTML}{1fa25a}
+\definecolor{textcolor}{HTML}{6690d9}
+\definecolor{defcolor}{HTML}{a27fd9}
+\definecolor{commentcolor}{HTML}{b6b8bb}
+\definecolor{symbols}{HTML}{f2f4f8}
+\definecolor{deco}{HTML}{3ddbd9}
+
+\lstdefinestyle{sst}
+{
+	language=Python,
+	basicstyle=\footnotesize\robotomono\color{textcolor},
+	stringstyle=\color{stringcolor},
+	commentstyle=\color{commentcolor},
+	backgroundcolor=\color{backgroundcolor},
+	keywordstyle=\color{keywordcolor},
+	keywordstyle=[2]\color{defcolor},
+	keywordstyle=[3]\color{symbols},
+	keywordstyle=[4]\color{deco},
+	deletekeywords={def},
+	otherkeywords={def,:,(,),@},
+	morekeywords=[2]{def},
+	morekeywords=[3]{:,(,)},
+	morekeywords=[4]{@decorator},
+	showspaces=false,
+	showstringspaces=false,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4,
+}
+% \lstdefinestyle{sst}
+% {
+% 	language=Python,
+% 	basicstyle=\footnotesize\robotomono\color{textcolor},
+% 	% basicstyle=\footnotesize\color{textcolor},%\robotomono,
+% 	stringstyle=\color{stringcolor},
+% 	commentstyle=\color{commentcolor},
+% 	backgroundcolor=\color{backgroundcolor},
+% 	keywordstyle=\color{keywordcolor},
+% 	keywordstyle = [2]\color{defcolor},
+% 	keywordstyle = [3]\color{symbols},
+% 	deletekeywords={def,)},
+% 	% deletechars={)}
+% 	otherkeywords = {def,:,(,),@},
+% 	morekeywords = [2]{def},
+% 	morekeywords = [3]{:,(,),@},
+% 	showspaces=false,
+% 	showstringspaces=false,
+% 	% frame=single,
+% 	breaklines=true,
+% 	breakatwhitespace=true,
+% 	tabsize=4
+% }
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 % Color frames
-%-----------------------------------------------------------------
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 \newtcolorbox{sstFrame}[1][default-box-color]{
 	colframe=#1,
 	colback=#1,
@@ -245,11 +324,11 @@
 	arc=0mm,%FIX: arc
 	% boxrule=0.2mm,
 }
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 % CUSTOM COMMANDS
-%-----------------------------------------------------------------
+% -----------------------------------------------------------------
 % Theorem styles
-%-----------------------------------------------------------------
+% -----------------------------------------------------------------
 \RequirePackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
@@ -262,23 +341,4 @@
 \newcommand{\T}{^\textnormal{\scriptsize T}}%TODO: remove
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\dom}{dom}
-\DeclareMathOperator{\dom}{dom}
-%-----------------------------------------------------------------
-% Chapter
-%-----------------------------------------------------------------
-% Add chapter functionality in article class
-\newcounter{Chapcounter}
-\newcommand\showmycounter{\addtocounter{Chapcounter}{1}\themycounter}
-%%% style ideas
-% \addtocounter{Chapcounter}{1}\Large{\textbf{\color{RoyalBlue}#1}}
-% \addcontentsline{toc}{section}{ \color{blue} Chapter:~\theChapcounter~~ #1}    
-\iftoggle{use-tight}{
-	\newcommand{\chapter}[1] {
-		\addtocounter{Chapcounter}{1}{\large\textbf{~#1}}
-		\addcontentsline{toc}{section}{#1}
-	}}{
-	% for non-tight chaptes
-	\newcommand{\chapter}[1] {
-		\addtocounter{Chapcounter}{1}{\Large\textbf{~#1}}
-		\addcontentsline{toc}{section}{#1}
-	}}
+\DeclareMathOperator{\pre}{pre}
