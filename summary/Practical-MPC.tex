@@ -106,10 +106,9 @@ def get_next_u(y: Measurement, r: Reference):
     return u
 \end{lstlisting}
 % \end{adjustbox}
-\includegraphics[width=\columnwidth]{images/tracking-system-diagram.jpg}
-% %WARN: graphic target selector
-%
-% %WARN: MPC for Tracking: Convergence, L7.p20
+\input{tracking-diagram.tex}
+
+%WARN: MPC for Tracking: Convergence, L7.p20
 
 Assume target feasible with $x_s \in \mathcal{X}, u_s \in \mathcal{U}$,
 choose terminal weight $V_f(x)$ and constraint $\mathcal{X}_f$ as in regulation case satisfying
