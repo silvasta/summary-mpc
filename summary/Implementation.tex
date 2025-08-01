@@ -1,2 +1,55 @@
 \section{Implementation}
-\lipsum
+
+Two options:
+
+- Iterative optimization methods
+
+- Explicit solution
+
+EXPLICIT:
+
+The CFTOC problem is a
+\textbf{multiparametric quadratic program (mp-QP)}
+%TODO: explain mp-QP
+
+
+Let $I := {1, . . . , m}$ be the set of constraint indices.
+\begin{definition}
+	[Active Set]
+	$A(x)$ and it's complement $NA(x)$
+	\begin{align*}
+		A(x) :=  & \{j\in I: G_jz^\star(x) - S_jx = w_j \} \\
+		NA(x) := & \{j\in I: G_jz^\star(x) - S_jx < w_j \}
+	\end{align*}
+\end{definition}
+
+\begin{definition}[Critical Region]
+	$CR_A$ is set of parameters $x$ for which set $A\subseteq I$ of constraints $i$ active at the optimum.
+	For given $\bar{x} \in \mathcal{K}^\star$ let $(A,NA) := (A(\bar{x}), NA(\bar{X}))$. Then
+	\begin{align*}
+		CR_A := \{x\in\mathcal{K}^\star : A(x) = A\} \quad \text{(states share active set)}
+	\end{align*}
+\end{definition}
+
+\textbf{Online evaluation: Point location}
+
+Sequential search
+
+Logarithmic search
+
+OPTIMIZATION
+
+%WARN: LP QP example L10.p22
+
+%WARN: Descent  Methods L10
+
+L-Smooth
+
+(UN-)CONSTRAINED OPTIMIZATION
+
+Projected Gradient Method %HACK: projected gradient
+
+
+
+
+

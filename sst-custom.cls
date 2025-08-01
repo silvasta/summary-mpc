@@ -223,6 +223,7 @@
 \RequirePackage{roboto-mono}
 
 \definecolor{text}{HTML}{f2f4f8}
+% \definecolor{background}{HTML}{2e3440}
 \definecolor{background}{HTML}{222222}
 \definecolor{string}{HTML}{1fa25a}
 \definecolor{comment}{HTML}{b6b8bb}%!20
@@ -241,7 +242,7 @@
 {
 	language=Python,
 	basicstyle=\robotomono\scriptsize\color{text},
-	backgroundcolor=\color{background},
+	backgroundcolor=\color{background!90},
 	stringstyle=\color{string},
 	commentstyle=\color{comment},
 	keywordstyle=\color{keyword},
