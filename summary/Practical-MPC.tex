@@ -88,25 +88,6 @@ $$
 
 %HACK: System formulation delta notation?
 
-% \begin{adjustbox}{rndcorners=0.5mm}
-\begin{lstlisting}[style=sst]
-def get_next_u(y: Measurement, r: Reference):
-    """
-    System handler for offset-free tracking
-    """
-    # approximate state, disturbance
-    x, d = estimator(y)
-    # find steady state und generate delta
-    x_s, u_s = target_selector(x, r, d)
-    x_delta = x - x_s
-    # call solver with new parameter
-    u_delta = mpc_regulator(x_delta, x_s, u_s)
-    u = u_delta + u_s
-
-    return u
-\end{lstlisting}
-% \end{adjustbox}
-\input{tracking-diagram.tex}
 
 %WARN: MPC for Tracking: Convergence, L7.p20
 
@@ -199,6 +180,7 @@ $
 	(C\hat{x}_{k} \!+\! C_d \hat{d}_{k}-y_{k})
 $
 
+
 \textbf{Error Dynamics} $\Rightarrow$
 choose $L$ s.t error dynamics converge to $0$
 \begin{align*}
@@ -249,6 +231,25 @@ choose $L$ s.t error dynamics converge to $0$
 	$\Rightarrow$ Observer output $C\hat{x}_\infty + C_d \hat{d}_\infty$ tracks $y_\infty$ without offset
 \end{lemma}
 
+\begin{adjustbox}{rndcorners=0.5mm}
+	\begin{lstlisting}[style=sst]
+def get_next_u(y: Measurement, r: Reference):
+    """
+    System handler for offset-free tracking
+    """
+    # approximate state, disturbance
+    x, d = estimator(y)
+    # find steady state und generate delta
+    x_s, u_s = target_selector(x, r, d)
+    x_delta = x - x_s
+    # call solver with new parameter
+    u_delta = mpc_regulator(x_delta, x_s, u_s)
+    u = u_delta + u_s
+
+    return u
+\end{lstlisting}
+\end{adjustbox}
+
 \subsection{Offset-free Tracking}
 
 \textbf{Goal}
@@ -281,6 +282,8 @@ $Hy(k) = z(k) \to r$, $k\to\infty$
 
 %WARN: Tracking, Concept!!!
 
+
+
 \begin{theorem}[Offset-free Tracking: Main Result]
 	Assuming
 	$n_d = n_y$,
@@ -302,6 +305,7 @@ $Hy(k) = z(k) \to r$, $k\to\infty$
 
 %TODO: MPC without Terminal Set
 
+\input{tracking-diagram.tex}
 \subsection{Soft Constraints}
 
 Input constraints are dictated by physical constraints on
