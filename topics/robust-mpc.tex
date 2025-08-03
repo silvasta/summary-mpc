@@ -73,14 +73,14 @@ where $h_{\mathcal{W}^i}(F)$ is the support function
 	$A \ominus B := \{x | x+e \in A, \forall e \in B\}$
 \end{definition}
 
-\subsection{Impact of Bounded Additive Noise}
+\subsubsection{Impact of Bounded Additive Noise}
 
 \textbf{Defining a Cost to Minimize}
 Expected value,
 worst case, max W
 nominal case w=0
 
-\subsection{Robust Constraint Satisfaction}
+\subsubsection{Robust Constraint Satisfaction}
 %WARN: 4 steps, do once for all occurances
 
 The idea: Compute a set of tighter constraints such that if the nominal
@@ -94,7 +94,7 @@ Terminal State Constraint
 ...is called disturbance reachable set,
 %TODO: F i = bigplus, formula and notation
 
-\subsection{Robust open loop MPC}
+\subsection{Open Loop Robust MPC}
 \begin{align*}
 	\min_U                & \left[ l_f(x_N) + \textstyle\sum_{i=0}^{N-1} l(x_i, u_i) \right]                                    \\
 	\mathrm{subj.\ to }\  & x_{i+1} = A x_i + B u_i                                                                             \\
@@ -103,7 +103,7 @@ Terminal State Constraint
 	                      & x_0 = x(k), \quad x_N \in \mathcal{X}_f \ominus ( \textstyle\bigoplus_{j=0}^{N-1} A^j \mathcal{W} )
 \end{align*}
 
-\subsection{Robust closed loop MPC}
+\subsection{Closed Loop Robust MPC}
 
 %WARN: again uncertain constrained Linear system
 % closed loop predictions, AND mpc L9.p10

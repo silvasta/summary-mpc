@@ -124,6 +124,7 @@
 %-----------------------------------------------------------------
 \RequirePackage{sectsty}
 \setcounter{secnumdepth}{\myclass@secnumdepth}
+\setcounter{tocdepth}{\myclass@secnumdepth}
 %-----------------------------------------------------------------
 % TIGHT
 %-----------------------------------------------------------------

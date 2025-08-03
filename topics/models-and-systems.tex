@@ -1,6 +1,6 @@
 
 
-\subsection{Exact ODE Solution of a Linear System}
+% \subsection{Exact ODE Solution of a Linear System}
 
 \textbf{Idea}
 Create a model by solving the systems physical equations
@@ -9,6 +9,8 @@ Create a model by solving the systems physical equations
 	x(t) = e^{A^c(t-t_0)}x_0 +
 	\textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau
 \]
+\centerline{\scriptsize
+	(Exact Solution to ODE of a Linear System)}
 
 \textbf{Problem}
 Most physical systems are nonlinear
@@ -22,30 +24,27 @@ $f(\bar{x}) + \left. \frac{\partial f}{\partial x^\top} \right
 \textbf{Idea}
 Nonlinear system  stable enough around an equilibrium
 
-\begin{minipage}[t]{0.5\linewidth}
-	\vspace{1mm}
-	\begin{align*}
-		\dot{x_s}      & =g(x_s,u_s) = 0             \\ \\
-		y_s            & = h(x_s,u_s)                \\
-		\\
+System equations
+$\dot{x_s} = g(x_s,u_s)=0$, $y_s = h(x_s,u_s)$
+
+Find stationary operating point $x_s,u_s$ and plug in derivative:
+
+\begin{align*}
+	\begin{aligned}
 		\Delta \dot{x} & =\dot{x} -\dot{x_s}         \\
-		               & = A^c\Delta x + B^c\Delta u \\ \\
+		               & = A^c\Delta x + B^c\Delta u \\
 		\Delta y       & = y - y_s                   \\
 		               & = C\Delta x + D\Delta u
-	\end{align*}
-\end{minipage}
-\begin{minipage}[t]{0.4\linewidth}
-	\begin{align*}
-		A^c  = \left.\frac{\partial g}{\partial x^T}\right|
-		_{\substack{x_s \\u_s}}\\
-		B^c  = \left.\frac{\partial g}{\partial u^T}\right|
-		_{\substack{x_s \\u_s}}\\
-		C    = \left.\frac{\partial h}{\partial x^T}\right|
-		_{\substack{x_s \\u_s}}\\
-		D    = \left.\frac{\partial h}{\partial u^T}\right|
-		_{\substack{x_s \\u_s}}\\
-	\end{align*}
-\end{minipage}
+	\end{aligned}
+	\hspace{1mm}
+	\begin{aligned}
+		A^c             & =  \left.\frac{\partial g}{\partial x^T}\right| _{\substack{x_s                                                                    \\u_s}}
+		\hspace{-1.4mm} & \hspace{-1.4mm}B^c                                              & =   \left.\frac{\partial g}{\partial u^T}\right| _{\substack{x_s \\u_s}}
+		\\
+		C               & =  \left.\frac{\partial h}{\partial x^T}\right| _{\substack{x_s                                                                    \\u_s}}
+		\hspace{-1.4mm} & \hspace{-1.4mm}D                                                & =   \left.\frac{\partial h}{\partial u^T}\right| _{\substack{x_s \\u_s}}
+	\end{aligned}
+\end{align*}
 
 \subsection{Discretization}
 
@@ -79,7 +78,7 @@ exist, such as Euler, quality depends on sampling time
 	A^i B u(k+N-1-i)
 \end{align*}
 
-\subsection{Analysis of LTI Discrete-Time Systems}
+\subsection{Analysis of Discrete-Time LTI Systems}
 
 \textbf{Controllabe}
 $
@@ -104,6 +103,7 @@ $
 		C^\top & \cdots & (CA^{n-1})^\top
 	\end{bmatrix}^\top
 $
+%TODO: controllability, stability, ... improve
 
 $\forall x(0)\exists$ finite time $N$, s.t. the measurements
 

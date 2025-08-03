@@ -5,7 +5,7 @@
 %-----------------------------------------------------------------
 % Document Type
 %-----------------------------------------------------------------
-\documentclass[layout=summary, columns=4,secnumdepth=4,tight]{sst-custom}
+\documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
 %-----------------------------------------------------------------
 
@@ -15,6 +15,7 @@
 \usepackage{algpseudocode} % pseudocode
 % \usepackage[nodisplayskipstretch]{setspace}
 % \setstretch{.7}
+\usetikzlibrary{ shapes.geometric, arrows, backgrounds, positioning, arrows.meta }
 %--------------\--------------------------------------------------
 
 \begin{document}
@@ -26,22 +27,25 @@
 		\iftoggle{use-small-font}{\footnotesize}{}
 		%-----------------------------------------------------------------
 		\renewcommand{\contentsname}{}
-		\vspace{-10mm}
+		\vspace{-8mm}
 		\tableofcontents
-		\vfill\null
-		\columnbreak
+		% \vfill\null
+		% \columnbreak
 		%-----------------------------------------------------------------
 		% %%% Debug
 		% Column width is: \the\columnwidth\\
 		% Preview width is: \the\previewwidth
 		%-----------------------------------------------------------------
-		\section{Introduction to Systems and Controls}
 		\input{topics/requirements-mpc.tex}
+		\section{Introduction to Systems and Controls}
 		\input{topics/models-and-systems.tex}
 		\input{topics/lyapunov.tex}
+		\section{Optimization}
 		\input{topics/optimization.tex}
 		\input{topics/lagrange-dual.tex}
+		\section{Invariance}
 		\input{topics/invariance.tex}
+		\section{Optimal Control}
 		\input{topics/riccatti.tex}
 		\input{topics/optimal-control.tex}
 		%-----------------------------------------------------------------

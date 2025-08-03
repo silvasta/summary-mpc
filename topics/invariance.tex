@@ -1,5 +1,4 @@
 
-\subsection{Invariance}
 
 \begin{definition}[Positively Invariant Set $\mathcal{O}$]
 	For an autonomous or closed-loop system,
@@ -49,51 +48,44 @@
 	thus $\mathcal{O}\notin \mathrm{pre}(\mathcal{O})$
 \end{proof}
 
+\begin{lemma}{Invariant Sets from Lyapunov Functions}
 
-\subsection{Computing Invariant Sets}
+	If $V:\mathbb{R}^n \to \mathbb{R}$ is a Lyapunov function
+	for $x(k+1) = g(x(k))$, then
+	$Y := \{x \mid V(x) \leq \alpha\}$
+	is an invariant set for all $\alpha \geq 0$
+\end{lemma}
+%WARN: Lyapunov invarian Lemma
+\begin{proof}
+	Lyapunov property $V(g(x)) - V(x) < 0$
+	implies that once $V(x(k))\leq \alpha$,
+	$V(x(j))<\alpha$,
+	$\forall\ j\ge k \rightarrow$ Invariance
+\end{proof}
 
+\textbf{Example System}
+$x(k+1) = Ax(k)$, $A^\top P A - P \prec 0 \prec P$
+and resulting  Lyapunov function
+$V(x(k)) = x(k)^\top P x(k)$
+% \textbf{Example System}
+% $V(x(k)) = x(k)^\top P x(k)$
+% Lyapunov function
+% for $x(k+1) = Ax(k)$
+% with
+% $A^\top P A - P \prec 0 \prec P$
 
-\begin{minipage}{0.53\linewidth}
-	\begin{sstFullFrame}[ForestGreen]
-		\color{white}
-		\begin{algorithmic}
-			\State $\Omega_0 \leftarrow \mathcal{X}$
-			\Loop
-			\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
-			\If{$\Omega_{i+1}=\Omega_i$}
-			\State\Return $\mathcal{O}_\infty = \Omega_i$
-			\EndIf
-			\EndLoop
-		\end{algorithmic}
-	\end{sstFullFrame}
-\end{minipage}
+\textbf{Goal} Find the largest $\alpha$ s.t the
+invarinat set $Y_\alpha \in \mathcal{X}$
 
-(Same but much harder for control invariat sets)
+$\qquad Y_\alpha := \{x \mid x^\top P x \leq \alpha\}\subset \mathcal{X} := \{x \mid Fx\leq f\}$
 
+Equivalent to $\max_\alpha \alpha \quad \text{s.t. }\
+	h_{Y_\alpha}(F_i) \leq f_i \ \forall i \in \{1\dots n\}$
 
-\begin{align*}
-	\intertext{\textbf{System for Pre-Set Computation}}
-	x(k+1)                & = Ax(k) +Bu(k)
-	% & \text{dynamics}
-	\\
-	u(k)\in\mathcal{U}  : & =\{u|Gu\le g\}
-	% & \text{constraints}
-	\\
-	\mathcal{S}:          & = \{x|Fx\leq f\}
-	% & \text{set to check}
-	\intertext{\textbf{Invariant Pre-Set}}
-	\pre(S):              & =  \{x \mid Ax \in S\}                               \\
-	                      & =  \{ x \mid FAx \leq f\}                            \\
-	\intertext{\textbf{Control Invariant Pre-Set}}
-	\pre(S):              & =  \{x \mid\exists u\in\mathcal{U}, Ax+Bu \in S\}    \\
-	                      & =  \{x \mid\exists u\in\mathcal{U}, FAx+FBu \leq f\} \\
-	                      & =  \left\{x \mid\exists u\in\mathcal{U},
-	\begin{bmatrix} FA & FB \\0&G \end{bmatrix}
-	\begin{bmatrix} x \\u \end{bmatrix}
-	\leq \begin{bmatrix} f \\g \end{bmatrix} \right\}
-	\intertext{This is a \textbf{projection} operation}
-\end{align*}
+...
 
+USE ELIPSOID
+%TODO: Maximum Elipsoid set
 \subsection{Control Invariance}
 
 
@@ -160,75 +152,48 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 	\end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\begin{theorem}{Minkowski-Weyl}
 
-	The following statements are equivalent
-	for $\mathcal{P}\subseteq \mathbb{R}^d$
-	% \begin{itemize}[leftmargin=.5mm]
-	% \item
-
-	$\mathcal{P}$ is a polytope and there exists
-	$A, b$ s.t $\mathcal{P} = \{x \mid Ax \leq b\}$
-	% \item
-
-	$\mathcal{P}$ finitely generated,
-	$\exists$ finite set $\{v_i\}$ s.t
-	$\mathcal{P}=\text{co}(\{v_1,...,v_s\})$
-	% \end{itemize}
-\end{theorem}
+\subsection{Computing Invariant Sets and Pre-sets}
 
 
-\begin{sstTitleBox}[ForestGreen]{\textbf{\large
-			MOST COMMON Polytopic
-		}
-		% small text
-	}
+\begin{minipage}{0.53\linewidth}
+	\begin{sstFullFrame}[ForestGreen]
+		\color{white}
+		\begin{algorithmic}
+			\State $\Omega_0 \leftarrow \mathcal{X}$
+			\Loop
+			\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+			\If{$\Omega_{i+1}=\Omega_i$}
+			\State\Return $\mathcal{O}_\infty = \Omega_i$
+			\EndIf
+			\EndLoop
+		\end{algorithmic}
+	\end{sstFullFrame}
+\end{minipage}
 
-	%HACK: Polytopic Invariant Set, example e5 Subset test
-	%Intersection of Polytopes Compute
-	%Most Common Polytopic constraints? L5.p61
+(Same but much harder for control invariat sets)
 
-	\[\begin{aligned}
-			1
-		\end{aligned}\]
 
-\end{sstTitleBox}
+\begin{align*}
+	\intertext{\textbf{System for Pre-Set Computation}}
+	x(k+1)                & = Ax(k) +Bu(k)
+	% & \text{dynamics}
+	\\
+	u(k)\in\mathcal{U}  : & =\{u|Gu\le g\}
+	% & \text{constraints}
+	\\
+	\mathcal{S}:          & = \{x|Fx\leq f\}
+	% & \text{set to check}
+	\intertext{\textbf{Invariant Pre-Set}}
+	\pre(S):              & =  \{x \mid Ax \in S\}                               \\
+	                      & =  \{ x \mid FAx \leq f\}                            \\
+	\intertext{\textbf{Control Invariant Pre-Set}}
+	\pre(S):              & =  \{x \mid\exists u\in\mathcal{U}, Ax+Bu \in S\}    \\
+	                      & =  \{x \mid\exists u\in\mathcal{U}, FAx+FBu \leq f\} \\
+	                      & =  \left\{x \mid\exists u\in\mathcal{U},
+	\begin{bmatrix} FA & FB \\0&G \end{bmatrix}
+	\begin{bmatrix} x \\u \end{bmatrix}
+	\leq \begin{bmatrix} f \\g \end{bmatrix} \right\}
+	\intertext{This is a \textbf{projection} operation}
+\end{align*}
 
-\begin{lemma}{Invariant Sets from Lyapunov Functions}
-
-	If $V:\mathbb{R}^n \to \mathbb{R}$ is a Lyapunov function
-	for $x(k+1) = g(x(k))$, then
-	$Y := \{x \mid V(x) \leq \alpha\}$
-	is an invariant set for all $\alpha \geq 0$
-\end{lemma}
-
-\begin{proof}
-	Lyapunov property $V(g(x)) - V(x) < 0$
-	implies that once $V(x(k))\leq \alpha$,
-	$V(x(j))<\alpha$,
-	$\forall\ j\ge k \rightarrow$ Invariance
-\end{proof}
-
-\textbf{Example System}
-$x(k+1) = Ax(k)$, $A^\top P A - P \prec 0 \prec P$
-and resulting  Lyapunov function
-$V(x(k)) = x(k)^\top P x(k)$
-% \textbf{Example System}
-% $V(x(k)) = x(k)^\top P x(k)$
-% Lyapunov function
-% for $x(k+1) = Ax(k)$
-% with
-% $A^\top P A - P \prec 0 \prec P$
-
-\textbf{Goal} Find the largest $\alpha$ s.t the
-invarinat set $Y_\alpha \in \mathcal{X}$
-
-$\qquad Y_\alpha := \{x \mid x^\top P x \leq \alpha\}\subset \mathcal{X} := \{x \mid Fx\leq f\}$
-
-Equivalent to $\max_\alpha \alpha \quad \text{s.t. }\
-	h_{Y_\alpha}(F_i) \leq f_i \ \forall i \in \{1\dots n\}$
-
-...
-
-USE ELIPSOID
-%TODO: Maximum Elipsoid set

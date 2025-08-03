@@ -1,9 +1,11 @@
 
-\subsection{Optimal Control}
 
 %TODO: box for: Unconstrained Finite Horizon Control Problem
 
-Unconstrained Finite Horizon Control Problem
+
+
+\subsection{Unconstrained Finite Horizon Control}
+
 
 $$\begin{aligned}
 		J^\star(x(0)) :=
@@ -26,7 +28,8 @@ state weight
 $R\succ0$, with $R = R^T$
 input weight
 
-\subsection{Batch Approach}
+
+\subsubsection{Batch Approach}
 
 expresses cost function in terms of $x(0)$ and input sequence $U$
 
@@ -93,7 +96,7 @@ $\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
 		)x(0)$}
 
 
-\subsection{Recursive Approach}
+\subsubsection{Recursive Approach}
 
 uses dynamic programming to solve problem backwards from $N$
 
@@ -125,7 +128,7 @@ uses dynamic programming to solve problem backwards from $N$
 	B^\top P_{i+1} A \cdot x(i)
 \]
 
-\subsection{Comparison of Batch and Recursive Approaches}
+\subsubsection{Comparison of Batch and Recursive Approaches}
 
 Batch optimization returns sequence $U^\star(x(0))$
 of \textbf{numeric values} depending only on x(0),
@@ -163,12 +166,12 @@ $u_i^\star = F_i x_i$ depending on each $x_i$.
 
 3. set constraint $x_{i+N}=0$
 
-\subsection{CFTOC}
+\subsection{Constrained Finite Time Optimal Control
+}
 
 \begin{sstTitleBox}[ForestGreen]{\textbf{\large
-			CFTOC
+			CFTOC Problem
 		}
-		Constrained Finite Time Optimal Control problem
 	}
 	\[
 		J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
@@ -192,7 +195,7 @@ $u_i^\star = F_i x_i$ depending on each $x_i$.
 	%HACK: L4.p9 combine with UCFTOC
 \end{sstTitleBox}
 
-\subsection{Transform Quadratic Cost CFTOC into QP}
+\subsubsection{Transform Quadratic Cost CFTOC into QP}
 
 \textbf{Goal}
 $\min_{z\in\mathbb{R}^n}

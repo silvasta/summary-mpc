@@ -1,5 +1,4 @@
 
-\subsection{Optimization}
 
 % A mathematical optimization problem is generally formulated as:
 
@@ -136,6 +135,40 @@ $\Rightarrow \{Ax+b \mid x \in \mathcal{C} \}$ cv
 $\mathcal{C} \subseteq  \mathbb{R}^{m}$ cv
 $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 
+\begin{theorem}{Minkowski-Weyl}
+
+	The following statements are equivalent
+	for $\mathcal{P}\subseteq \mathbb{R}^d$
+	% \begin{itemize}[leftmargin=.5mm]
+	% \item
+
+	$\mathcal{P}$ is a polytope and there exists
+	$A, b$ s.t $\mathcal{P} = \{x \mid Ax \leq b\}$
+	% \item
+
+	$\mathcal{P}$ finitely generated,
+	$\exists$ finite set $\{v_i\}$ s.t
+	$\mathcal{P}=\text{co}(\{v_1,...,v_s\})$
+	% \end{itemize}
+\end{theorem}
+
+
+\begin{sstTitleBox}[Apricot]{\textbf{\large
+			MOST COMMON Polytopic Constraints
+		}
+		% small text
+	}
+
+	%HACK: Polytopic Invariant Set, example e5 Subset test
+	%Intersection of Polytopes Compute
+	%Most Common Polytopic constraints? L5.p61
+
+	\[\begin{aligned}
+			1
+		\end{aligned}\]
+
+\end{sstTitleBox}
+
 \subsection{Convex Functions}
 
 \begin{definition}[Convex Function]
@@ -179,7 +212,9 @@ $\rightarrow f$ convex (restriction to a line)
 %TODO: Level set sublevel set
 
 %NOTE: Example convex funcions
+
 \subsection{Convex Optimization}
+
 %NOTE:Definition cvOP
 
 \begin{theorem}

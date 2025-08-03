@@ -45,3 +45,23 @@ L-Smooth
 (UN-)CONSTRAINED OPTIMIZATION
 
 Projected Gradient Method %TODO: projected gradient
+
+\begin{adjustbox}{rndcorners=0.5mm}
+	\begin{lstlisting}[style=sst]
+def get_next_u(y: Measurement, r: Reference):
+    """
+    System handler for offset-free tracking
+    """
+    # approximate state, disturbance
+    x, d = estimator(y)
+    # find steady state und generate delta
+    x_s, u_s = target_selector(x, r, d)
+    x_delta = x - x_s
+    # call solver with new parameter
+    u_delta = mpc_regulator(x_delta, x_s, u_s)
+    u = u_delta + u_s
+
+    return u
+\end{lstlisting}
+
+\end{adjustbox}
