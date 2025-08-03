@@ -32,15 +32,26 @@
 	\center{\normalsize
 		\textbf{Silvan Stadelmann}
 		- \selectlanguage{german}{\today}
-		- v0.2.1
+		- v0.3.0
 	}\end{tcolorbox}
+
 
 \begin{center}
 	{\scriptsize\url{github.com/silvasta/summary-mpc}}
 \end{center}
 
-
+% \begin{adjustbox}{rndcorners=0.5mm,width=71.5mm,height=43.5mm}
+% 	\includegraphics[width=\columnwidth]{images/header-from-grok.jpg}
+% \end{adjustbox}
 
 \begin{adjustbox}{rndcorners=0.5mm,width=71.5mm,height=43.5mm}
-	\includegraphics[width=\columnwidth]{images/header-1.jpg}
+	\begin{tikzpicture}
+		\node[anchor=south west, inner sep=0]
+		(image) at (0,0) {\includegraphics[width=\columnwidth]{images/header-from-grok.jpg}};
+		\begin{scope}[x={(image.south east)},y={(image.north west)}]
+			% \node[anchor = south east, white, font=\scriptsize\robotomono]
+			\node[anchor = south east, white, font=\tiny\robotomono]
+			at (71.5mm,0mm) {created with grok}; % Adjust position and style of the text here
+		\end{scope}
+	\end{tikzpicture}
 \end{adjustbox}

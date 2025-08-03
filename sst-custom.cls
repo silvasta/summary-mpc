@@ -150,15 +150,7 @@
 	\setlist[itemize]{itemsep=0pt, leftmargin=3mm}
 	\setlist[enumerate]{itemsep=0pt, leftmargin=4mm}
 	%----------------------------------------------------------------
-	% % spacing around eqns --nothing changed
-	% \setlength{\abovedisplayskip}{0pt}
-	% \setlength{\belowdisplayskip}{0pt}
-	% \setlength{\abovedisplayshortskip}{0pt}
-	% \setlength{\belowdisplayshortskip}{0pt}
-	%----------------------------------------------------------------
-	% 1. changed less, maybe the 2. useful
-	% \setlength{\mathsurround}{0pt}
-	\setlength{\jot}{0mm}
+	\setlength{\jot}{.2mm}
 	% -----------------------------------------------------------------
 	% space around title and fontsize
 	% -----------------------------------------------------------------
@@ -197,13 +189,12 @@
 %-----------------------------------------------------------------
 % LANGUAGE, FONT AND TIME
 %-----------------------------------------------------------------
-% \RequirePackage{fontspec}
 % \RequirePackage[ngerman]{babel}
 \RequirePackage[english]{babel}
-% \babelfont{rm}{Lato}
-% \babelfont{rm}{Roboto}
 \babelfont{rm}{Roboto Condensed}
 \babelprovide{ngerman}
+%-----------------------------------------------------------------
+\RequirePackage{roboto-mono}
 %-----------------------------------------------------------------
 % Date
 \RequirePackage[ddmmyyyy]{datetime}
@@ -211,7 +202,7 @@
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 % COLOR
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-\RequirePackage{soul} %FIX: needed?
+\RequirePackage{soul} % for highlighting
 \sethlcolor{BrickRed}%!90}
 % \sethlcolor{RoyalBlue}%!90}
 \definecolor{hltext}{rgb}{256,256,256}
@@ -220,11 +211,10 @@
 % Coding Boxes
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 \RequirePackage{listings}
-\RequirePackage{roboto-mono}
-
 \definecolor{text}{HTML}{f2f4f8}
 % \definecolor{background}{HTML}{2e3440}
-\definecolor{background}{HTML}{222222}
+% \definecolor{background}{HTML}{222222}
+\definecolor{background}{HTML}{484848}
 \definecolor{string}{HTML}{1fa25a}
 \definecolor{comment}{HTML}{b6b8bb}%!20
 \definecolor{keyword}{HTML}{ca4780}
@@ -232,17 +222,11 @@
 \definecolor{builtin}{HTML}{a27fd9}
 \definecolor{instantiate}{HTML}{3ddbd9}
 
-% %%% try to make it smaller
-% \newsavebox{\mybox}
-% \begin{lrbox}{\mybox}
-% \end{lrbox}
-% \scalebox{0.9}{\usebox{\mybox}}
-
 \lstdefinestyle{sst}
 {
 	language=Python,
 	basicstyle=\robotomono\scriptsize\color{text},
-	backgroundcolor=\color{background!90},
+	backgroundcolor=\color{background},
 	stringstyle=\color{string},
 	commentstyle=\color{comment},
 	keywordstyle=\color{keyword},

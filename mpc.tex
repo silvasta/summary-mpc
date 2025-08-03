@@ -1,91 +1,61 @@
 % Needed  for babelfont
 %! TeX program = lualatex
 %-----------------------------------------------------------------
-% README
-%-----------------------------------------------------------------
-% There are 3 types of layout [default=regular]
-%-----------------------------------------------------------------
-% + regular - a4 paper with regular paddings
-% + summary - a4 landscape with minimal padding
-% + preview - long format for 1col display view
-%-----------------------------------------------------------------
-% Further options
-% + columns - [default=1] number of columns for multicol
-% + secnumdepth - [default=2] depth of section numbering in document and toc
-%-----------------------------------------------------------------
-% Further arguments
-% + tight - if used, spacing is minimized
-%-----------------------------------------------------------------
 
 %-----------------------------------------------------------------
 % Document Type
 %-----------------------------------------------------------------
-% choose one of the examples or create new one
-%-----------------------------------------------------------------
-% \documentclass{sst-custom}
-% \documentclass[layout=regular, columns=2]{sst-custom}
 \documentclass[layout=summary, columns=4,secnumdepth=4,tight]{sst-custom}
-% \documentclass[layout=preview,secnumdepth=4]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
 %-----------------------------------------------------------------
 
 %-----------------------------------------------------------------
-% Toggles
-%-----------------------------------------------------------------
-% choose which content should be displayed
-% (in alterning order)
-%-----------------------------------------------------------------
-\newtoggle{showLecture}
-% \toggletrue{showLecture}
-% \togglefalse{showLecture}
-%-----------------------------------------------------------------
-\newtoggle{showSummary}
-\toggletrue{showSummary}
-% \togglefalse{showSummary}
-%-----------------------------------------------------------------
 % experimental
+	%----------------------------------------------------------------
 \usepackage{algpseudocode} % pseudocode
+% \usepackage[nodisplayskipstretch]{setspace}
+% \setstretch{.7}
 %--------------\--------------------------------------------------
+
 \begin{document}
 
 \iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
 		%-----------------------------------------------------------------
 		\input{title-blue-grey.tex}
 		%-----------------------------------------------------------------
-		% defined with [tight] argument
 		\iftoggle{use-small-font}{\footnotesize}{}
 		%-----------------------------------------------------------------
 		\renewcommand{\contentsname}{}
 		\vspace{-10mm}
 		\tableofcontents
+		\vfill\null
+		\columnbreak
 		%-----------------------------------------------------------------
 		% %%% Debug
 		% Column width is: \the\columnwidth\\
 		% Preview width is: \the\previewwidth
 		%-----------------------------------------------------------------
-		\foreach \lecture / \summary in {
-		{lecture/Introduction.tex}/
-		{summary/Introduction.tex},
-		{lecture/Nominal-MPC.tex}/
-		{summary/Nominal-MPC.tex},
-		{lecture/Practical-MPC.tex}/
-		{summary/Practical-MPC.tex},
-		{lecture/Robust-MPC.tex}/
-		{summary/Robust-MPC.tex},
-		{lecture/Implementation.tex}/
-		{summary/Implementation.tex},
-		}{
-		\iftoggle{showLecture}{
-			% \color{gray} % temp, distinguish between lecture and summary
-			\typeout{Including lecture: \lecture}
-			\input\lecture
-			\color{black}
-		}{}
-		\iftoggle{showSummary}{
-			\typeout{Including summary: \summary}
-			\input\summary
-		}{}
-		}
+		\section{Introduction to Systems and Controls}
+		\input{topics/requirements-mpc.tex}
+		\input{topics/models-and-systems.tex}
+		\input{topics/lyapunov.tex}
+		\input{topics/optimization.tex}
+		\input{topics/lagrange-dual.tex}
+		\input{topics/invariance.tex}
+		\input{topics/riccatti.tex}
+		\input{topics/optimal-control.tex}
+		%-----------------------------------------------------------------
+		\section{Nominal MPC}
+		\input{topics/nominal-mpc.tex}
+		%-----------------------------------------------------------------
+		\section{Practical MPC}
+		\input{topics/practical-mpc.tex}
+		%-----------------------------------------------------------------
+		\section{Robust MPC}
+		\input{topics/robust-mpc.tex}
+		%-----------------------------------------------------------------
+		\section{Implementation}
+		\input{topics/implementation.tex}
 		%-----------------------------------------------------------------
 		\iftoggle{do-multicol}{\end{multicols*}}{}
 

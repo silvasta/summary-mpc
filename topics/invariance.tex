@@ -1,0 +1,234 @@
+
+\subsection{Invariance}
+
+\begin{definition}[Positively Invariant Set $\mathcal{O}$]
+	For an autonomous or closed-loop system,
+	the set $\mathcal{O}$ is positively invariant if:
+	\[
+		x(k)\in\mathcal{O}\Rightarrow
+		x(k+1) \in \mathcal{O},
+		\quad \forall k \in \{0,1,\dots\}
+	\]
+\end{definition}
+
+\begin{definition}[Maximal Positively Invariant Set $\mathcal{O}_\infty$]
+	A set that contains all $\mathcal{O}$
+	is the maximal positively invariant set
+	$\mathcal{O}_\infty \subset \mathcal{X}$
+\end{definition}
+
+\begin{definition}[Pre-Sets]
+	The set of states that
+	in the dynamic system $x(k+1) = g(x(k))$
+	in one time step evolves into the target set $\mathcal{S}$
+	is the \textbf{pre-set} of $\mathcal{S}$
+	$\Rightarrow \pre(\mathcal{S}) := \{x\mid g(x)\in \mathcal{S}\}$
+\end{definition}
+
+\begin{theorem}[Geometric condition for invariance]
+	Set $\mathcal{O}$ is positively invariant set iff
+	$\mathcal{O}\subseteq\pre(\mathcal{O})
+		\Leftrightarrow
+		\pre(\mathcal{O})\cap\mathcal{O} = \mathcal{O}$
+\end{theorem}
+\begin{proof}
+	\textbf{Necessary} if
+	$\mathcal{O} \nsubseteq  \mathrm{pre}(\mathcal{O})$,
+	then $\exists\bar{x} \in \mathcal{O}$
+	s.t $\bar{x} \notin \mathrm{pre}(\mathcal{O})$
+	$\leadsto \bar{x}\in\mathcal{O},
+		\bar{x}\notin\mathrm{pre}(\mathcal{O})$,
+	thus $\mathcal{O}$ not positively invariant
+
+	\textbf{Sufficient} if
+	$\mathcal{O}$ not pos invar set,
+	then $\exists \bar{x}\in\mathcal{O}$
+	s.t $g(\bar{x}) \notin\mathcal{O}$
+	$\leadsto \bar{x}\in\mathcal{O},
+		\bar{x}\notin\mathrm{pre}(\mathcal{O})$
+	thus $\mathcal{O}\notin \mathrm{pre}(\mathcal{O})$
+\end{proof}
+
+
+\subsection{Computing Invariant Sets}
+
+
+\begin{minipage}{0.53\linewidth}
+	\begin{sstFullFrame}[ForestGreen]
+		\color{white}
+		\begin{algorithmic}
+			\State $\Omega_0 \leftarrow \mathcal{X}$
+			\Loop
+			\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+			\If{$\Omega_{i+1}=\Omega_i$}
+			\State\Return $\mathcal{O}_\infty = \Omega_i$
+			\EndIf
+			\EndLoop
+		\end{algorithmic}
+	\end{sstFullFrame}
+\end{minipage}
+
+(Same but much harder for control invariat sets)
+
+
+\begin{align*}
+	\intertext{\textbf{System for Pre-Set Computation}}
+	x(k+1)                & = Ax(k) +Bu(k)
+	% & \text{dynamics}
+	\\
+	u(k)\in\mathcal{U}  : & =\{u|Gu\le g\}
+	% & \text{constraints}
+	\\
+	\mathcal{S}:          & = \{x|Fx\leq f\}
+	% & \text{set to check}
+	\intertext{\textbf{Invariant Pre-Set}}
+	\pre(S):              & =  \{x \mid Ax \in S\}                               \\
+	                      & =  \{ x \mid FAx \leq f\}                            \\
+	\intertext{\textbf{Control Invariant Pre-Set}}
+	\pre(S):              & =  \{x \mid\exists u\in\mathcal{U}, Ax+Bu \in S\}    \\
+	                      & =  \{x \mid\exists u\in\mathcal{U}, FAx+FBu \leq f\} \\
+	                      & =  \left\{x \mid\exists u\in\mathcal{U},
+	\begin{bmatrix} FA & FB \\0&G \end{bmatrix}
+	\begin{bmatrix} x \\u \end{bmatrix}
+	\leq \begin{bmatrix} f \\g \end{bmatrix} \right\}
+	\intertext{This is a \textbf{projection} operation}
+\end{align*}
+
+\subsection{Control Invariance}
+
+
+\begin{definition}[Control Invariant Set]
+	$\mathcal{C} \subseteq \mathcal{X}$ control invariant if
+	$$x(k) \in \mathcal{C} \Rightarrow
+		\ \exists u(k) \in \mathcal{U} \text{ s.t }
+		g(x(k),u(k))\in\mathcal{C} \ \forall k$$
+\end{definition}
+
+\begin{definition}[Maximal Control Invariant Set $\mathcal{C}_\infty$]
+	A set that contains all $\mathcal{C}$
+	is the maximal positively invariant set
+	$\mathcal{C}_\infty \subset \mathcal{X}$
+
+	\textbf{Intuition} For all states in $\mathcal{C}_\infty$
+	exists control law s.t constraints are never violated
+	$\leadsto$ \textbf{The best any controller could ever do}
+\end{definition}
+
+\textbf{Pre-set}
+$\pre(\mathcal{S}):=\{x \mid \exists u\in\mathcal{U}
+	\text{ s.t } g(x,u) \in \mathcal{S}\}$
+
+Set $\mathcal{C}$ is control invariant iff:
+$\mathcal{C}\subseteq\pre(\mathcal{C})
+	\Leftrightarrow
+	\pre(\mathcal{C})\cap\mathcal{C} = \mathcal{C}$
+
+\begin{sstTitleBox}[BrickRed]{\center\textbf{\large
+			Control Law from Control Invariant Set
+		}}
+
+	\begin{sstOnlyFrame}[BrickRed]
+
+		\begin{centering}
+			Control law $\kappa(x(k))$ will \textbf{guarantee}
+			that the system
+			with control invariant set $\mathcal{C}$
+			satisfies constraints \textbf{for all time} if
+			$$x(k+1)=g(x(k),u(k))\to
+				g(x,\kappa(x)) \in \mathcal{C} \ \forall x \in \mathcal{C}$$
+
+			We can use this fact to \textbf{synthesize}
+			control law $\kappa$
+
+		\end{centering}
+		\begin{sstFullFrame}[BrickRed]\color{white}
+			\[
+				\kappa(x):=\argmin\{f(x,u) \mid g(x,u)\in\mathcal{C}\}
+			\]
+		\end{sstFullFrame}
+
+		with $f$ as any function (including $f(x,u)=0)$
+	\end{sstOnlyFrame}
+
+	\begin{sstOnlyFrame}[BrickRed]
+		Does not ensure that system will converge
+
+		Difficult because calculating control invariant sets is hard
+
+		\textbf{MPC} implicitly describes $\mathcal{C}$
+		s.t easy to represent/compute
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
+
+\begin{theorem}{Minkowski-Weyl}
+
+	The following statements are equivalent
+	for $\mathcal{P}\subseteq \mathbb{R}^d$
+	% \begin{itemize}[leftmargin=.5mm]
+	% \item
+
+	$\mathcal{P}$ is a polytope and there exists
+	$A, b$ s.t $\mathcal{P} = \{x \mid Ax \leq b\}$
+	% \item
+
+	$\mathcal{P}$ finitely generated,
+	$\exists$ finite set $\{v_i\}$ s.t
+	$\mathcal{P}=\text{co}(\{v_1,...,v_s\})$
+	% \end{itemize}
+\end{theorem}
+
+
+\begin{sstTitleBox}[ForestGreen]{\textbf{\large
+			MOST COMMON Polytopic
+		}
+		% small text
+	}
+
+	%HACK: Polytopic Invariant Set, example e5 Subset test
+	%Intersection of Polytopes Compute
+	%Most Common Polytopic constraints? L5.p61
+
+	\[\begin{aligned}
+			1
+		\end{aligned}\]
+
+\end{sstTitleBox}
+
+\begin{lemma}{Invariant Sets from Lyapunov Functions}
+
+	If $V:\mathbb{R}^n \to \mathbb{R}$ is a Lyapunov function
+	for $x(k+1) = g(x(k))$, then
+	$Y := \{x \mid V(x) \leq \alpha\}$
+	is an invariant set for all $\alpha \geq 0$
+\end{lemma}
+
+\begin{proof}
+	Lyapunov property $V(g(x)) - V(x) < 0$
+	implies that once $V(x(k))\leq \alpha$,
+	$V(x(j))<\alpha$,
+	$\forall\ j\ge k \rightarrow$ Invariance
+\end{proof}
+
+\textbf{Example System}
+$x(k+1) = Ax(k)$, $A^\top P A - P \prec 0 \prec P$
+and resulting  Lyapunov function
+$V(x(k)) = x(k)^\top P x(k)$
+% \textbf{Example System}
+% $V(x(k)) = x(k)^\top P x(k)$
+% Lyapunov function
+% for $x(k+1) = Ax(k)$
+% with
+% $A^\top P A - P \prec 0 \prec P$
+
+\textbf{Goal} Find the largest $\alpha$ s.t the
+invarinat set $Y_\alpha \in \mathcal{X}$
+
+$\qquad Y_\alpha := \{x \mid x^\top P x \leq \alpha\}\subset \mathcal{X} := \{x \mid Fx\leq f\}$
+
+Equivalent to $\max_\alpha \alpha \quad \text{s.t. }\
+	h_{Y_\alpha}(F_i) \leq f_i \ \forall i \in \{1\dots n\}$
+
+...
+
+USE ELIPSOID
+%TODO: Maximum Elipsoid set

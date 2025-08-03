@@ -1,0 +1,215 @@
+
+\subsection{Optimization}
+
+% A mathematical optimization problem is generally formulated as:
+
+\begin{sstTitleBox}[Plum]{\textbf{\large
+			Mathematical Optimization Problem
+		}}
+	\begin{minipage}{0.70\linewidth}
+		\begin{sstOnlyFrame}[Plum]
+			\textbf{Decision variable} $x  \in \mathbb{R}^{n}$
+
+			\textbf{Objectivce function} $f: \dom(f)\to\mathbb{R}$
+
+			\textbf{Inequality constraints} $g_i$
+			$\scriptstyle(i \in \#\text{constraints})$
+
+			\textbf{Equality constraints} $h_i$
+			$\scriptstyle(i \in \#\text{constraints})$
+
+			\textbf{Fesabile set}
+			$\mathcal{X}\!\!:=\!\!\{x|g(x)\!\!\le\!\!0,\!h(x)\!=\!0\}$
+		\end{sstOnlyFrame}
+	\end{minipage}
+	\begin{minipage}{0.28\linewidth}
+		\begin{sstFullFrame}[Plum]
+			{\color{white}
+				\vspace{-1mm}
+				\[ \begin{aligned}
+						 & \textbf{minimize }f(x)   \\
+						 & \ \ \ \text{subject to:} \\
+						 & \ \ \ g_i(x)  \le 0      \\
+						 & \ \ \ h_i(x)  = 0
+					\end{aligned} \]
+				\vspace{-1mm}
+			}
+		\end{sstFullFrame}
+	\end{minipage}
+
+	\begin{sstOnlyFrame}[Plum]
+		\textbf{Feasible point}
+		$x\in\dom(f)$ with
+		$g_i(x)\le 0,\ h_i(x)=0$
+
+		\textbf{Strictly feasible point}
+		$x$ with strict inequality
+		$g_i(x)<0$
+
+		\textbf{Optimal value}
+		$f^\star (\text{or } p^\star)=
+			\inf\{f(x)|
+			g_i(x)\le0,h_j=0 \}$
+		$f^\star=+\infty$: OP infeasible,
+		$f^\star=-\infty$: OP unbound below
+
+		\textbf{Optimizer}
+		% (is set)
+		set:
+		$\argmin_{x \in \mathcal{X}} f(x):=
+			\{ x\in\mathcal{X}|f(x)=f^\star\}$
+	\end{sstOnlyFrame}
+
+	\begin{sstOnlyFrame}[Plum]
+		$x^\star$ is a \textbf{Global Minimum} if $f(x^\star)\leq f(x)$
+
+		$x^\star$ is a \textbf{Local Minimum} if
+		$\exists\ \epsilon > 0$ s.t.
+		$f(x^\star)\leq f(x)$
+		$\forall x \in \mathcal{X} \cap B_\epsilon(x^\star)$,
+		open ball with center $x^\star$ and radius $\epsilon$
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
+\subsection{Convex Sets}
+
+\begin{definition}[Convex Set]
+	Set $\mathcal{C}$ is convex if and only if
+	\[\theta x + (1-\theta)y \in \mathcal{C},
+		\ \forall\ x,y \in \mathcal{C},
+		\ \forall\ \theta \in [0,1]\]
+\end{definition}
+
+\begin{definition}[Hyperplanes]
+	$\{x \in \mathbb{R}^n \mid a\T x=b\}$
+\end{definition}
+\begin{definition}[Halfspaces]
+	$\{x \in \mathbb{R}^n \mid a\T x\le b\}$
+
+	can be \textbf{open} (strict inequality)
+	or \textbf{closed} (non-strict inequality)
+\end{definition}
+
+\begin{definition}[Polyhedra] intersection of
+	\textbf{finite} number of closed halfspaces:
+	polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},
+		% C^{r\times n}x=d^{r\times1}
+		\}$
+\end{definition}
+
+\begin{definition}[Polytope]
+	is a \textbf{bounded} polyhedron.
+\end{definition}
+
+\begin{definition}[Convex hull]
+	for  $\{v_1,...,v_k\}\in \mathbb{R}^{d}$ is:
+
+	co$(\{v_1,...,v_k\}):=
+		\{ x|x=\sum_{i}\lambda_iv_i,
+		\lambda\ge0, \sum_{i}\lambda_i=1 \}$
+\end{definition}
+
+\begin{definition}[Ellipsoid]
+	set:
+	$\{ x | (x\!-\!x_c)^\top A^{-1}(x\!-\!x_c) \leq 1 \}$
+	where $x_c$ is center of ellipsoid,
+	$A \succ 0$ (i.e. positive definite)
+	(Semi-axis lengths are square roots of eigenvalues of $A$)
+\end{definition}
+
+\begin{definition}[Norm Ball]
+	$B_r(x):=
+		\{\xi\in\mathbb{R}^{n}:|\xi-x|_p<r\}$
+	where $p$ defines the $l_p$ norm, $p=\{1|2|..|\infty\}$
+\end{definition}
+
+%TODO: norm p1,2,...
+
+\textbf{Intersection}
+$\mathcal{C}_1, \mathcal{C}_2$ cv
+$\Rightarrow \mathcal{C}_1 \cap \mathcal{C}_2$ convex \textbf{(cv)}
+
+\textbf{Image under affine map}
+$\mathcal{C} \subseteq  \mathbb{R}^{n}$ cv
+$\Rightarrow \{Ax+b \mid x \in \mathcal{C} \}$ cv
+
+\textbf{Inverse IoaM}
+$\mathcal{C} \subseteq  \mathbb{R}^{m}$ cv
+$\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
+
+\subsection{Convex Functions}
+
+\begin{definition}[Convex Function]
+	$f: \mathcal{C}_\text{convex} \to\mathbb{R}$ is convex iff
+	\[
+		f(\theta x + (1-\theta)y)\le \theta f(x)+ (1-\theta)f(y),
+		\ \forall\ x,y \in \mathcal{C},
+		\ \forall\ \theta \in [0,1]\]
+	$f$ is strictly convex if this inequality is strict.
+\end{definition}
+
+
+\begin{definition}[Epigraph]
+	$f:\mathbb{R}^n \rightarrow \mathbb{R}$ cv
+	$\Leftrightarrow$
+	epi$(f)$ is cv set
+	$$\operatorname{epi}(f):=\{(x,t)\in \mathbb{R}^{n+1} | f(x)\le t\}$$
+\end{definition}
+
+\textbf{Check Convexity} $f$ is convex if it is
+composition of simple convex function
+with convexity preserving operations
+or if
+
+
+$f: \mathbb{R}^n \rightarrow \mathbb{R}$ twice differentiable,
+$\partial^2f/\partial x^2 \succeq 0\ \forall\ x \in \mathbb{R}^{n}$
+
+$g: \mathbb{R} \rightarrow \mathbb{R}$ with $g(t)=f(x+tv)$
+convex in $t\ \forall\ x,v \in \mathbb{R}^{n}$
+$\rightarrow f$ convex (restriction to a line)
+
+%NOTE: first, second order convexity
+
+- the point wise maximum of convex functions is convex
+
+- the sum of convex functions is convex
+
+- $f(Ax+b)$ is convex if $f$ is convex
+
+%TODO: Level set sublevel set
+
+%NOTE: Example convex funcions
+\subsection{Convex Optimization}
+%NOTE:Definition cvOP
+
+\begin{theorem}
+	For a convex optimization problem,
+	\textbf{any} locally optimal solution is globally
+	optimal (local optima are global optima).
+\end{theorem}
+
+
+%TODO: Equivalent OP, Slack
+
+\textbf{Linear Programming}
+$ \operatorname{minimize} c\T x
+	\text{ s.t. } Ax-b \ge 0,\ x\ge0$
+
+Step 1:
+$\mathcal{L}(x,\lambda_1,\lambda_2) =
+	c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
+%TODO: LP L3.p40
+Step 2:
+$\underset{x \in \mathcal{\mathbb{R}}^n}{\operatorname{inf}}
+	\mathcal{L}=\lambda_1\T b$
+, if $c-A\T\lambda_1-\lambda_2=0$, else $-\infty$
+
+Step 3: Dual,
+maximize $b\T\lambda$
+s.t.
+$c-A\T\lambda\ge0,\lambda\ge0$
+(again LP)
+
+\textbf{Quadratic Programming}
+min ...
+%TODO: QP

@@ -1,4 +1,3 @@
-\section{Robust-MPC}
 
 \textbf{Uncertain System}
 $x(k+1) = g(x(k), u(k), w(k); \theta)$
@@ -24,6 +23,8 @@ Given set $\Omega$ and dynamic system $x(k+1) = g(x(k), w(k))$,
 \begin{align*}
 	\mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid g(x,w)\} \in \Omega \ \forall w \in \mathcal{W}
 \end{align*}
+
+%WARN: Robust  pre set  to pre set 
 
 \begin{definition}[Robust Pre-Sets]
 	The set of states that
@@ -57,14 +58,14 @@ where $h_{\mathcal{W}^i}(F)$ is the support function
 		\pre^\mathcal{W}(\mathcal{O}^\mathcal{W})$
 \end{theorem}
 
-%HACK: Conceptual Algorithm Invariance
+%HACK: Conceptual Algorithm Robust Invariance
 
 \begin{definition}[Minkowski Sum]
 	For $A, B \subset \mathbb{R}^{n}$,
 	the Minkowski Sum is
 	$A \oplus B := \{x + y | x \in A, y \in B\}$
 \end{definition}
-%WARN: Minkowski, Pontryagin move to math, maybe box
+%TODO: Minkowski, Pontryagin move to math, maybe box
 
 \begin{definition}[Pontryagin Difference]
 	For $A, B \subset \mathbb{R}^{n}$,
@@ -91,7 +92,7 @@ Goal: Ensure that constraints are satisfied for the MPC sequence.
 Terminal State Constraint
 
 ...is called disturbance reachable set,
-%HACK: F i = bigplus, formula and notation
+%TODO: F i = bigplus, formula and notation
 
 \subsection{Robust open loop MPC}
 \begin{align*}
@@ -105,8 +106,7 @@ Terminal State Constraint
 \subsection{Robust closed loop MPC}
 
 %WARN: again uncertain constrained Linear system
-
-%HACK: closed loop predictions, AND mpc L9.p10
+% closed loop predictions, AND mpc L9.p10
 
 \textbf{Idea}
 Separate the available control authority into two parts:
@@ -327,6 +327,4 @@ $u	=	K(x-z_0^\star(x))+v_0^\star(x)$
 
 %NOTE: example tube, offline design
 
-%TODO summary tube
-
-%TODO summary robust
+%TODO summary tube TODO summary robust

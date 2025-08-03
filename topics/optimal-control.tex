@@ -1,0 +1,379 @@
+
+\subsection{Optimal Control}
+
+%TODO: box for: Unconstrained Finite Horizon Control Problem
+
+Unconstrained Finite Horizon Control Problem
+
+$$\begin{aligned}
+		J^\star(x(0)) :=
+		\min_U & x_N^\top P x_N +
+		\textstyle\sum_{i=0}^{N-1}
+		x_i^\top Q x_i + u_i^\top R u_i
+		\\
+		\text{subject to  }
+		       & x_{i+1}                = Ax_i+Bu_i
+		\quad i  = 0,\dots,N-1                      \\
+		       & x_0                    = x(0)
+	\end{aligned}$$
+
+$P\succeq0$, with $P=P^T$
+terminal weight
+
+$Q\succeq0$, with $Q = Q^T$
+state weight
+
+$R\succ0$, with $R = R^T$
+input weight
+
+\subsection{Batch Approach}
+
+expresses cost function in terms of $x(0)$ and input sequence $U$
+
+\[ \begin{bmatrix}
+		x_0    \\
+		x_1    \\
+		\vdots \\
+		x_N
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\mathbb{I} \\
+		A          \\
+		\vdots     \\
+		A^N
+	\end{bmatrix}
+	x(0) +
+	\begin{bmatrix}
+		0        & \cdots & 0 \\
+		B        & 0      & 0 \\
+		AB       & B      & 0 \\
+		\vdots   & \ddots & 0 \\
+		A^{N-1}B & \cdots & B
+	\end{bmatrix}
+	\begin{bmatrix}
+		u_0    \\
+		u_1    \\
+		\vdots \\
+		u_{N-1}
+	\end{bmatrix} \]
+
+
+$\overline{Q} := \mathop{\mathrm{blockdiag}}(Q,\dots, Q,P)$
+\quad
+$\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
+
+\textbf{Optimal Input}
+(from $\nabla_UJ(x(0),U)=2HU+2F^\top x(0)=0$)
+%TODO: maybe derivation?
+%WARN: definition S, F unclear
+\[ U^\star(x(0)) =
+	- \bigl(
+	\underbrace{
+			(\mathcal{S}^u)^\top \overline{Q} \mathcal{S}^u + \overline{R}
+		}_{H\text{(Hessian)}^{-1}}
+	\bigr)
+	\underbrace{
+		(\mathcal{S}^u)^\top \overline{Q}\mathcal{S}^x
+	}_ {F^\top}
+	x(0)
+\]
+
+
+\textbf{Optimal Cost}
+
+\scalebox{0.97}[1]{$
+		\scriptstyle
+		J^\star(x(0)) = x(0)^\top (
+		\mathcal{S}_x^\top \overline{Q} \mathcal{S}_x
+		- \mathcal{S}_x^\top \overline{Q} \mathcal{S}_u
+		(\mathcal{S}_u^\top \overline{Q} \mathcal{S}_u
+		+ \overline{R})^{-1}
+		\mathcal{S}_u^\top \overline{Q} \mathcal{S}_x
+		)x(0)$}
+
+
+\subsection{Recursive Approach}
+
+uses dynamic programming to solve problem backwards from $N$
+
+\[\begin{aligned}
+		J_j^\star(x(j)) :=
+		\min_{U_{j\to N}} & x_N^\top P x_N \!+
+		\sum_{i=j}^{N-1}x_i^\top Q x_i + u_i^\top R u_i
+	\end{aligned}\]
+
+
+\begin{minipage}[t]{0.64\linewidth}
+	\textbf{From Principle Of Optimality}
+	\[
+		J_j^\star(x_j) =
+		\min_{u_j} I(x_i,u_i) + J_{j+1}^\star(x_{j+1})
+	\]
+\end{minipage}
+\begin{minipage}[t]{0.32\linewidth}
+	\textbf{Optimal Cost-To-Go}
+	\[
+		J_i^\star(x_i) = x_i^\top P_i x_i
+	\]
+\end{minipage}
+
+\textbf{Optimal Control Policy}
+\[
+	u_i^\star = F_i x_i =
+	-(B^\top P_{i+1}B + R)^{-1}
+	B^\top P_{i+1} A \cdot x(i)
+\]
+
+\subsection{Comparison of Batch and Recursive Approaches}
+
+Batch optimization returns sequence $U^\star(x(0))$
+of \textbf{numeric values} depending only on x(0),
+dynamic programming yields \textbf{feedback policies}
+$u_i^\star = F_i x_i$ depending on each $x_i$.
+
+\subsection{Infinite Horizon LQR}
+\begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
+			LQR
+		}
+		% small text
+	}
+
+	\[ \begin{aligned}
+			J_\infty^\star(x(k))  & = \min \sum_{i=0}^\infty
+			x_i^\top Q x_i + u_i^\top R u_i                                   \\
+			\mathrm{subj.\ to }\  & x_{i+1} = Ax_i + Bu_i,\quad    x_0 = x(k)
+		\end{aligned} \]
+
+	Same u as for finite problem but with ARE
+	Constant  Feedback Matrix $F\infty$
+	asymptotically stable for.. Q,R,stabi,detect
+	%TODO: details  LQR
+
+	%WARN: Lemma  Lyapunov (look at proof)
+
+\end{sstTitleBox}
+
+\textbf{Choice of P}
+
+1. Match infinite solution, use ARE
+
+2. Assume no control needed after N, use Lyapunov Equation %TODO: Lyapunov link
+(makes only sense when asymptotically stable, otherwise P not positive definite)
+
+3. set constraint $x_{i+N}=0$
+
+\subsection{CFTOC}
+
+\begin{sstTitleBox}[ForestGreen]{\textbf{\large
+			CFTOC
+		}
+		Constrained Finite Time Optimal Control problem
+	}
+	\[
+		J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
+	\]
+	\begin{centering}
+		\begin{sstFrame}[ForestGreen]
+			\vspace{-1.5mm}
+			\color{white}
+			\[ \begin{aligned}
+					J^\star (x(k)) = & \min_{U}  I_f(x_N) + \sum_{i=0}^{N-1} I(x_{i}, u_{i}) \\
+				\end{aligned} \]
+			\vspace{-2.5mm}
+		\end{sstFrame}
+		\[ \begin{aligned}
+				\text{s.t} \quad & x_{i+1} = A x_{i} + Bu_{i},\ i = 0,\dots,N-1                                                  \\
+				                 & x_{i} \in \mathcal{X},\ u_{i} \in \mathcal{U},\ \mathcal{X}_N \in \mathcal{X}_f, \ x_0 = x(k)
+			\end{aligned} \]
+		N is the time horizon and X , U, Xf are polyhedral regions
+		%TODO: feasible set
+	\end{centering}
+	%HACK: L4.p9 combine with UCFTOC
+\end{sstTitleBox}
+
+\subsection{Transform Quadratic Cost CFTOC into QP}
+
+\textbf{Goal}
+$\min_{z\in\mathbb{R}^n}
+	\textstyle\frac{1}{2}z^\top H z + q^\top z + r
+	\quad\text{s.t. }Gz\leq h,\ Az = b$
+
+
+\subsubsection{Construction of QP without substitution}
+
+\textbf{Idea} Keep state equations as equality constraints
+
+\textbf{Define variable} $z =
+	\begin{bmatrix}
+		x_1^\top & \dots x_N^\top & u_0^\top & \dots u_{N-1}^\top
+	\end{bmatrix}^\top$
+
+\textbf{Equalities} from system dynamics
+$x_{i+1} = Ax_i + Bu_i$
+
+\[
+	G_{eq} =
+	\begin{bmatrix}
+		\begin{smallmatrix}
+			\mathbb{I}& & & \\
+			-A & \mathbb{I} && \\
+			&  \ddots & \ddots \\
+			&&-A & \mathbb{I}
+		\end{smallmatrix}
+		 & \vline
+		\begin{smallmatrix}
+			-B \\
+			& \ddots \\
+			& &-B
+		\end{smallmatrix}
+	\end{bmatrix}
+	E_{eq} =
+	\begin{bsmallmatrix}
+		A      \\
+		0      \\
+		\vdots \\
+		0
+	\end{bsmallmatrix}
+\]
+
+\textbf{Inequalities}
+$G_{in}z \leq w_{in} + E_{in}x(k)$ from
+$\mathcal{X}   = \{x \mid A_x x \leq b_x\},
+	\mathcal{U}   = \{u \mid A_u u \leq b_u\},
+	\mathcal{X}_f = \{x \mid A_f x \leq b_f\}$
+%TODO: inequality constraint order
+
+\[
+	G_{in} =
+	\left[
+		\begin{array}{l!{\color{RoyalBlue!50}\vrule}l}
+			\noalign{\arrayrulewidth=0.1mm}\arrayrulecolor{RoyalBlue!50}
+			%
+			\begin{smallmatrix}
+				0&&&
+			\end{smallmatrix}
+			 &
+			\begin{smallmatrix}
+				0&&&
+			\end{smallmatrix}
+			\\ \hline
+			\begin{smallmatrix}
+				A_x&&&\\
+				&\ddots&\\
+				&&		A_x&\\
+				&&&		A_f
+			\end{smallmatrix}
+			 &
+			\begin{smallmatrix}
+				0\ \ &&&\\
+				&\ \ddots\\
+				&&\ 0\ &\\
+				&&&\ \ 0
+			\end{smallmatrix}
+			\\ \hline
+			\begin{smallmatrix}
+				0\ \ &&&\\
+				&\ \ddots\\
+				&&\ 0\ &\\
+				&&&\ \ 0
+			\end{smallmatrix}
+			 &
+			\begin{smallmatrix}
+				A_u&&\\
+				&\ddots&\\
+				&&A_u&\\
+				&&&A_u
+			\end{smallmatrix}
+		\end{array}
+		\right]
+	%
+	w_{in} =
+	\begin{bmatrix}
+		\noalign{\arrayrulewidth=0.1mm}\arrayrulecolor{RoyalBlue!50}
+		\begin{smallmatrix}
+			b_x\\
+		\end{smallmatrix}
+		\\ \hline
+		\begin{smallmatrix}
+			b_x\\
+			\vdots\\
+			b_x\\
+			b_f\\
+		\end{smallmatrix}
+		\\ \hline
+		\begin{smallmatrix}
+			b_u\\
+			\vdots\\
+			b_u\\
+			b_u\\
+		\end{smallmatrix}
+	\end{bmatrix}
+\]
+\[
+	E_{in} =
+	\left[
+		\begin{smallmatrix}
+			-A_x \\
+			0 \\
+			\vdots \\
+			0 \\
+		\end{smallmatrix}
+		\right]
+\]
+
+\textbf{Cost Matrix} $\bar{H} = \mathrm{diag}(Q,..., Q, P, R,..., R)$
+
+\textbf{Finally the resulting quadratic optimization problem}
+\[\begin{aligned}
+		J^\star(x(k)) = \min_z  \left[ z^\top \ x(k)^\top \right]
+		\left[\begin{smallmatrix} \bar{H} & 0 \\ 0 & Q \end{smallmatrix}\right]
+		\left[ z^\top \ x(k)^\top \right]^\top \\
+		\text{s.t}
+		\quad G_{in}z \leq w_{in} + E_{in}x(k)
+		\quad	G_{eq}z = E_{eq}x(k)
+	\end{aligned}\]
+
+\subsubsection{Construction of QP with substitution}
+
+\textbf{Idea} Substitute the state equations.
+
+\textbf{Step 1} Rewrite cost  as
+
+\[\begin{aligned}
+		J(x(k)) = & UXXXX              \\
+		=         & \begin{bmatrix}
+			            U^\top & x(k)^\top
+		            \end{bmatrix}
+		\left[\begin{smallmatrix}
+				      H & F^\top \\
+				      F & Y
+			      \end{smallmatrix}\right]
+		\begin{bmatrix}
+			U^\top & x(k)^\top
+		\end{bmatrix}^\top
+	\end{aligned} \]
+
+%WARN: CFTOC with substitution NOT finished, step 1 AND 2
+
+\textbf{Step 2} Rewrite constraints compaclty as $GU\le w+Ex(k)$
+
+\textbf{Step 3} Rewrite constrained problem as
+\[\begin{aligned}
+		J^\star(x(k)) = \min_U
+		                       & \begin{bmatrix}
+			                         U^\top & x(k)^\top
+		                         \end{bmatrix}
+		\left[\begin{smallmatrix}
+				      H & F^\top \\
+				      F & Y
+			      \end{smallmatrix}\right]
+		\begin{bmatrix}
+			U^\top & x(k)^\top
+		\end{bmatrix}^\top                          \\
+		\mathrm{subj. \ to \ } & GU \leq w + Ex(k)
+	\end{aligned} \]
+
+%HACK: L_p norm, and transform cftoc to LP
+
+%TODO: Receiding horizon control Notation
