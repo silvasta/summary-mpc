@@ -1,9 +1,9 @@
 
 \subsection{Optimality Conditions}
 
-\begin{sstTitleBox}{\center\textbf{\large
-			Lagrange Duality
-		}}
+\begin{sstTitleBox}{
+		Lagrange Duality
+	}
 	\begin{centering}
 		\begin{sstOnlyFrame}
 			\vspace{-1.5mm}
@@ -12,12 +12,11 @@
 				\text{ s.t.}\ g(x)\le0,h(x)=0
 				\label{eq:dual}
 			\end{equation}
-			% \vspace{-7mm}
 		\end{sstOnlyFrame}
 
 		%TODO: Definitions lambda...
 
-		\begin{sstFrame}
+		\begin{sstFullFrame}
 			{\color{white}
 				\vspace{-2mm}
 				\[\begin{aligned}
@@ -31,12 +30,9 @@
 					\end{aligned}\]
 				\vspace{-2.7mm}
 			}
-		\end{sstFrame}
+		\end{sstFullFrame}
 	\end{centering}
 \end{sstTitleBox}
-
-%TODO: Primal dual Example LP, Example QP
-
 
 \begin{proposition}[Weak Duality]
 	$d(\lambda,\nu)\le f^\star,\forall\lambda\ge0,\nu\in\mathbb{R}^{h}$
@@ -69,7 +65,7 @@
 			and $(\lambda^\star\ge0,\nu^\star)\in\mathbb{R}^{n_g}\times\mathbb{R}^{n_h}$
 			is a maximizer of the dual $\Leftrightarrow$
 			is equivalent to the following statements:
-			\begin{sstFrame}[BrickRed]
+			\begin{sstFullFrame}[BrickRed]
 				\vspace{-3mm}
 				\color{white}
 				\small
@@ -85,7 +81,7 @@
 						                & \text{\footnotesize slackness)}                            &  & \nu^{\star T} h(x^\star)                              =  0
 					\end{aligned}\]
 				\vspace{-4mm}
-			\end{sstFrame}
+			\end{sstFullFrame}
 			In addition we have:
 			$\sup_{\lambda\ge0,\nu\in\mathbb{R}^{n_h}}q(\lambda,\nu)=\inf_{x\in\mathcal{C}}f(x)$
 		\end{centering}
@@ -98,6 +94,4 @@ and $\lambda,\nu$ maximizes dual,
 but the converse is no longer true.
 There can be primal-minimizer/dual-maximizer not satisfy KKT.
 
-%TODO Example KKT QP
-
-%TODO: Sensitivity Analysis
+%NOTE: Sensitivity Analysis

@@ -13,13 +13,13 @@ What can go wrong with \textit{standard} MPC?
 	}
 
 	V1
-	\begin{sstFrame}[ForestGreen]
+	\begin{sstOnlyFrame}[ForestGreen]
 		\small
 		\color{white}
 		\[
 			J^\star(x(k))= \min\sum_{i=0}^{N-1}
 			x_i^\top Q x_i + u_i^\top R u_i\]
-	\end{sstFrame}
+	\end{sstOnlyFrame}
 
 	\[\begin{aligned}
 			\mathrm{subj.\ to }\   x_{i+1} & = Ax_i + Bu_i \\
@@ -78,7 +78,7 @@ What can go wrong with \textit{standard} MPC?
 
 %TODO: Conclusion text, extension to nonlinear MPC (easy)
 
-\begin{sstFrame}[ForestGreen!20]
+\begin{sstOnlyFrame}[ForestGreen!20]
 	% \center
 
 	\textbf{Finite-horizon MPC may not satisfy constraints for all time!}
@@ -93,4 +93,4 @@ What can go wrong with \textit{standard} MPC?
 	whose infinite-horizon cost can be expressed in closed-form.
 
 	-	Extends to non-linear systems, but compute sets is difficult!
-\end{sstFrame}
+\end{sstOnlyFrame}

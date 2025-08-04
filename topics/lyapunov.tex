@@ -1,10 +1,9 @@
 
-\subsection{Lyapunov} %HACK: remove Lyapunov section title?
-
-\begin{sstTitleBox}[Plum]{\center\textbf{{\large
-					Lyapunov
-				}	}
-		Александр Михайлович Ляпунов
+\begin{sstTitleBox}[Plum]{{
+				\Large
+				Lyapunov
+			}\small
+		% Александр Михайлович Ляпунов
 	}
 
 	\begin{sstOnlyFrame}[Plum]
@@ -38,6 +37,7 @@
 			of a system $x(k+1)=g(x(k))$,
 			a function $V$, continuous at the origin,
 			finite and such that
+
 			$\forall\ x\in \mathbb{R}^{n}$:
 			\[
 				|x|   \to\infty              \Rightarrow V(x)  \to\infty\]
@@ -63,8 +63,6 @@
 			\textbf{globally asymptotically stable}.
 		\end{theorem}
 	\end{sstOnlyFrame}
-
-	%WARN: Lyapunov, DIRECT?, indirect, check  L15.p11
 
 	\begin{sstOnlyFrame}[Plum]
 		\begin{theorem}[Lyapunov indirect method]
@@ -96,17 +94,10 @@
 	\begin{sstOnlyFrame}[Plum]
 		\begin{theorem}[Existence of solution, DT Lyapunov equation]
 			The discrete-time Lyapunov equation has a unique solution
-			$P > 0$ iff $A$ has all eigenvalues inside the unit circle,
-			i.e. iff the system $x(k+1) = Ax(k)$ is stable.
-			%NOTE: remove one iff? Lyapunov existence of suluteion
+			$P > 0$
+			% iff $A$ has all eigenvalues inside the unit circle, i.e.
+			iff the system $x(k+1) = Ax(k)$ is stable.
 		\end{theorem}
 	\end{sstOnlyFrame}
 \end{sstTitleBox}
-
-\begin{sstTitleBox}[Plum]{\center\textbf{{\large
-					Lyapunov
-				}
-			Александр Михайлович Ляпунов
-		}}
-	Здраствуй
-\end{sstTitleBox}
+%TODO: Lyapunov for LQR to Lyapunov L2.p43

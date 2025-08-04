@@ -5,8 +5,8 @@
 %-----------------------------------------------------------------
 % Document Type
 %-----------------------------------------------------------------
-\documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
-% \documentclass[layout=preview,secnumdepth=4,tight]{sst-custom}
+% \documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
+\documentclass[layout=preview,secnumdepth=2,tight]{sst-custom}
 %-----------------------------------------------------------------
 
 %-----------------------------------------------------------------
@@ -15,38 +15,42 @@
 \usepackage{algpseudocode} % pseudocode
 % \usepackage[nodisplayskipstretch]{setspace}
 % \setstretch{.7}
-\usetikzlibrary{ shapes.geometric, arrows, backgrounds, positioning, arrows.meta }
+\usepackage{setspace}
 %--------------\--------------------------------------------------
-
 \begin{document}
 
 \iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
+		%-----------------------------------------------------------------
+		% %%% Debug
+		% Column width is: \the\columnwidth\\
+		% Preview width is: \the\previewwidth
 		%-----------------------------------------------------------------
 		\input{title-blue-grey.tex}
 		%-----------------------------------------------------------------
 		\iftoggle{use-small-font}{\footnotesize}{}
 		%-----------------------------------------------------------------
 		\renewcommand{\contentsname}{}
-		\vspace{-8mm}
-		\tableofcontents
+		\vspace{-5mm}
+		\begin{spacing}{0.9}
+			\tableofcontents
+		\end{spacing}
+		%-----------------------------------------------------------------
+		\input{topics/requirements-mpc.tex}
 		% \vfill\null
 		% \columnbreak
 		%-----------------------------------------------------------------
-		% %%% Debug
-		% Column width is: \the\columnwidth\\
-		% Preview width is: \the\previewwidth
-		%-----------------------------------------------------------------
-		\input{topics/requirements-mpc.tex}
 		\section{Introduction to Systems and Controls}
 		\input{topics/models-and-systems.tex}
 		\input{topics/lyapunov.tex}
+		%-----------------------------------------------------------------
 		\section{Optimization}
 		\input{topics/optimization.tex}
-		\input{topics/lagrange-dual.tex}
+		%-----------------------------------------------------------------
 		\section{Invariance}
 		\input{topics/invariance.tex}
-		\section{Optimal Control}
+		%-----------------------------------------------------------------
 		\input{topics/riccatti.tex}
+		\section{Optimal Control}
 		\input{topics/optimal-control.tex}
 		%-----------------------------------------------------------------
 		\section{Nominal MPC}

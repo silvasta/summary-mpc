@@ -48,14 +48,13 @@
 	thus $\mathcal{O}\notin \mathrm{pre}(\mathcal{O})$
 \end{proof}
 
-\begin{lemma}{Invariant Sets from Lyapunov Functions}
+\begin{lemma}{\ssthl{Invariant Sets from Lyapunov Functions}}
 
 	If $V:\mathbb{R}^n \to \mathbb{R}$ is a Lyapunov function
 	for $x(k+1) = g(x(k))$, then
 	$Y := \{x \mid V(x) \leq \alpha\}$
 	is an invariant set for all $\alpha \geq 0$
 \end{lemma}
-%WARN: Lyapunov invarian Lemma
 \begin{proof}
 	Lyapunov property $V(g(x)) - V(x) < 0$
 	implies that once $V(x(k))\leq \alpha$,
@@ -67,12 +66,6 @@
 $x(k+1) = Ax(k)$, $A^\top P A - P \prec 0 \prec P$
 and resulting  Lyapunov function
 $V(x(k)) = x(k)^\top P x(k)$
-% \textbf{Example System}
-% $V(x(k)) = x(k)^\top P x(k)$
-% Lyapunov function
-% for $x(k+1) = Ax(k)$
-% with
-% $A^\top P A - P \prec 0 \prec P$
 
 \textbf{Goal} Find the largest $\alpha$ s.t the
 invarinat set $Y_\alpha \in \mathcal{X}$
@@ -82,10 +75,8 @@ $\qquad Y_\alpha := \{x \mid x^\top P x \leq \alpha\}\subset \mathcal{X} := \{x 
 Equivalent to $\max_\alpha \alpha \quad \text{s.t. }\
 	h_{Y_\alpha}(F_i) \leq f_i \ \forall i \in \{1\dots n\}$
 
-...
-
-USE ELIPSOID
 %TODO: Maximum Elipsoid set
+
 \subsection{Control Invariance}
 
 
@@ -115,9 +106,9 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 	\Leftrightarrow
 	\pre(\mathcal{C})\cap\mathcal{C} = \mathcal{C}$
 
-\begin{sstTitleBox}[BrickRed]{\center\textbf{\large
-			Control Law from Control Invariant Set
-		}}
+\begin{sstTitleBox}[BrickRed]{
+		Control Law from Control Invariant Set
+	}
 
 	\begin{sstOnlyFrame}[BrickRed]
 
@@ -155,6 +146,7 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 
 \subsection{Computing Invariant Sets and Pre-sets}
 
+%WARN: Structure compute invariant set
 
 \begin{minipage}{0.53\linewidth}
 	\begin{sstFullFrame}[ForestGreen]

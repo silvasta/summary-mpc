@@ -50,6 +50,7 @@ System $Ax(k) + w(k)$, set $\Omega:= \{x \mid Fx \leq f\}$
 %TODO: image robust invariant set?
 %
 where $h_{\mathcal{W}^i}(F)$ is the support function
+%WARN: support function, r8
 
 \begin{theorem}[Geometric condition for robust invariance]
 	Set $\mathcal{O}^\mathcal{W}$
@@ -60,18 +61,6 @@ where $h_{\mathcal{W}^i}(F)$ is the support function
 
 %HACK: Conceptual Algorithm Robust Invariance
 
-\begin{definition}[Minkowski Sum]
-	For $A, B \subset \mathbb{R}^{n}$,
-	the Minkowski Sum is
-	$A \oplus B := \{x + y | x \in A, y \in B\}$
-\end{definition}
-%TODO: Minkowski, Pontryagin move to math, maybe box
-
-\begin{definition}[Pontryagin Difference]
-	For $A, B \subset \mathbb{R}^{n}$,
-	the Pontryagin Difference is
-	$A \ominus B := \{x | x+e \in A, \forall e \in B\}$
-\end{definition}
 
 \subsubsection{Impact of Bounded Additive Noise}
 
@@ -94,7 +83,7 @@ Terminal State Constraint
 ...is called disturbance reachable set,
 %TODO: F i = bigplus, formula and notation
 
-\subsection{Open Loop Robust MPC}
+\subsubsection{Open Loop Robust MPC}
 \begin{align*}
 	\min_U                & \left[ l_f(x_N) + \textstyle\sum_{i=0}^{N-1} l(x_i, u_i) \right]                                    \\
 	\mathrm{subj.\ to }\  & x_{i+1} = A x_i + B u_i                                                                             \\

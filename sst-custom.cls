@@ -10,6 +10,7 @@
 \RequirePackage[explicit]{titlesec}
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage[shortlabels]{enumitem}
+\usepackage{svg}
 \RequirePackage{amsmath}
 \RequirePackage{adjustbox}
 \RequirePackage{amssymb}
@@ -29,10 +30,15 @@
 \RequirePackage{pgffor}
 \RequirePackage{siunitx}
 \RequirePackage{subcaption}
-\RequirePackage{tcolorbox}
+\RequirePackage[most]{tcolorbox}
 \RequirePackage{colortbl}
 %-----------------------------------------------------------------
-% OPTIONS
+\usetikzlibrary{ shapes.geometric, arrows, backgrounds, positioning, arrows.meta }
+%-----------------------------------------------------------------
+\RequirePackage{silence}
+\WarningFilter{latex}{Command \underbar has changed}
+\WarningFilter{latex}{Command \underline has changed}% OPTIONS
+%-----------------------------------------------------------------
 %-----------------------------------------------------------------
 \DeclareOption{landscape}{\PassOptionsToClass{landscape}{article}}
 %-----------------------------------------------------------------
@@ -88,6 +94,16 @@
 		centering
 	]{geometry}
 }{}
+% 	\RequirePackage[
+% 		paperheight=218mm,
+% 		paperwidth=305mm,
+% 		top=5mm,
+% 		bottom=5mm,
+% 		inner=5mm,
+% 		outer=5mm,
+% 		centering
+% 	]{geometry}
+% }{}
 %-----------------------------------------------------------------
 % Preview
 %-----------------------------------------------------------------
@@ -207,7 +223,49 @@
 \sethlcolor{BrickRed}%!90}
 % \sethlcolor{RoyalBlue}%!90}
 \definecolor{hltext}{rgb}{256,256,256}
+\newcommand{\ssthl}[1]{%
+	\textbf{\textcolor{hltext}{\hl{#1}}}%
+}
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+% Color frames
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 \colorlet{default-box-color}{RoyalBlue}
+
+% box with title and coloured background
+\newtcolorbox{sstTitleBox}[2][default-box-color]{
+	colframe=#1,
+	colback=#1!20,
+	bottom=0pt,
+	left=0pt,
+	right=0pt,
+	top=2pt,
+	title=\center\textbf{\large #2},
+	% breakable
+	% HACK: use breakable boxes if better config possible!
+}
+% only thin, empty frame with white background
+\newtcolorbox{sstOnlyFrame}[1][default-box-color]{
+	colframe=#1,
+	colback=white,
+	left=0pt,
+	bottom=0pt,
+	right=0pt,
+	top=0pt,
+	arc=0mm,
+	boxrule=.25mm,
+}
+% one color box, full filled frame
+\newtcolorbox{sstFullFrame}[1][default-box-color]{
+	colframe=#1,
+	colback=#1,
+	left=0pt,
+	bottom=0pt,
+	right=0pt,
+	top=0pt,
+	arc=0mm,
+	boxrule=.25mm,
+}
+
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 % Coding Boxes
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -245,54 +303,6 @@
 	xleftmargin=1mm,
 	xrightmargin=1mm,
 	frame=tlbr,
-}
-% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-% Color frames
-% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-\newtcolorbox{sstFrame}[1][default-box-color]{
-	colframe=#1,
-	colback=#1,
-	left=0pt,
-	bottom=0pt,
-	right=0pt,
-	top=0pt,
-	%%%
-	arc=0mm,%FIX: arc
-	boxrule=0mm,
-}
-\newtcolorbox{sstOnlyFrame}[1][default-box-color]{
-	colframe=#1,
-	colback=white,
-	left=0pt,
-	bottom=0pt,
-	right=0pt,
-	top=0pt,
-	%%%
-	arc=0mm,
-	boxrule=.25mm,
-}
-\newtcolorbox{sstFullFrame}[1][default-box-color]{
-	colframe=#1,
-	colback=#1,
-	left=0pt,
-	bottom=0pt,
-	right=0pt,
-	top=0pt,
-	%%%
-	arc=0mm,
-	boxrule=.25mm,
-}
-\newtcolorbox{sstTitleBox}[2][default-box-color]{
-	colframe=#1,
-	colback=#1!20,
-	bottom=0pt,
-	left=0pt,
-	right=0pt,
-	top=2pt,
-	title=#2,
-	%%%
-	arc=0mm,%FIX: arc
-	% boxrule=0.2mm,
 }
 % ----------------------------------------------------------------
 % CUSTOM COMMANDS

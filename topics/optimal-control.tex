@@ -1,33 +1,75 @@
 
+\begin{sstTitleBox}
+	{Discrete-Time Optimal Control Problem}
+	\begin{sstOnlyFrame}
 
-%TODO: box for: Unconstrained Finite Horizon Control Problem
+		\textbf{Cost Function}
+		\vspace{-3mm}
+		\begin{equation}
+			J(x_0,U)= \sum_{i=0}^{N-1} l(x_i,u_i) + l_f(x_N)
+		\end{equation}
+		% \vspace{-2mm}
 
-
+		\begin{minipage}[t]{0.25\linewidth}
+			\center
+			\textbf{Stage Cost}
+			$l_f(x_i,u_i)$
+			\textbf{Terminal Cost}
+			$l_f(x_N)$
+		\end{minipage}
+		\begin{minipage}[t]{0.59\linewidth}
+			\vspace{-5.5mm}
+			\begin{align*}
+				\textbf{Constraints}                      \\
+				x_{i+1}    & = g(x_i,u_i)                 \\
+				x_0        & = x(k)                       \\
+				h(x_i,u_i) & \le 0 \quad\text{(optional)}
+			\end{align*}
+		\end{minipage}
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
 
 \subsection{Unconstrained Finite Horizon Control}
 
+\begin{sstTitleBox}
+	{Linear Quadratic Optimal Control}
+	\begin{sstOnlyFrame}
+		\textbf{Cost Function}
+		\vspace{-3mm}
+		\begin{equation}
+			J^\star(x(0)) := \min_U
+			\sum_{i=0}^{N-1}
+			x_i^\top Q x_i + u_i^\top R u_i
+			+x_N^\top P x_N
+		\end{equation}
+		% \vspace{-2mm}
 
-$$\begin{aligned}
-		J^\star(x(0)) :=
-		\min_U & x_N^\top P x_N +
-		\textstyle\sum_{i=0}^{N-1}
-		x_i^\top Q x_i + u_i^\top R u_i
-		\\
-		\text{subject to  }
-		       & x_{i+1}                = Ax_i+Bu_i
-		\quad i  = 0,\dots,N-1                      \\
-		       & x_0                    = x(0)
-	\end{aligned}$$
+		\begin{minipage}[t]{0.33\linewidth}
+			\center
+			\textbf{Terminal weight}
 
-$P\succeq0$, with $P=P^T$
-terminal weight
+			$P\succeq0$ symetric
 
-$Q\succeq0$, with $Q = Q^T$
-state weight
+			\textbf{State weight}
 
-$R\succ0$, with $R = R^T$
-input weight
+			$Q\succeq0$ symetric
 
+			\textbf{Input weight}
+
+			$R\succ0$ symetric
+		\end{minipage}
+		\begin{minipage}[t]{0.49\linewidth}
+			\textbf{Constraints}
+
+			No input or state constraints!
+			\[
+				x(k+1)=Ax_k+Bu_k
+			\]
+			Only dynamics matter.
+		\end{minipage}
+
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
 
 \subsubsection{Batch Approach}
 
@@ -177,14 +219,9 @@ $u_i^\star = F_i x_i$ depending on each $x_i$.
 		J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
 	\]
 	\begin{centering}
-		\begin{sstFrame}[ForestGreen]
-			\vspace{-1.5mm}
-			\color{white}
-			\[ \begin{aligned}
-					J^\star (x(k)) = & \min_{U}  I_f(x_N) + \sum_{i=0}^{N-1} I(x_{i}, u_{i}) \\
-				\end{aligned} \]
-			\vspace{-2.5mm}
-		\end{sstFrame}
+		\[ \begin{aligned}
+				J^\star (x(k)) = & \min_{U}  I_f(x_N) + \sum_{i=0}^{N-1} I(x_{i}, u_{i}) \\
+			\end{aligned} \]
 		\[ \begin{aligned}
 				\text{s.t} \quad & x_{i+1} = A x_{i} + Bu_{i},\ i = 0,\dots,N-1                                                  \\
 				                 & x_{i} \in \mathcal{X},\ u_{i} \in \mathcal{U},\ \mathcal{X}_N \in \mathcal{X}_f, \ x_0 = x(k)

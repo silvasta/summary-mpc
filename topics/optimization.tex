@@ -2,9 +2,9 @@
 
 % A mathematical optimization problem is generally formulated as:
 
-\begin{sstTitleBox}[Plum]{\textbf{\large
-			Mathematical Optimization Problem
-		}}
+\begin{sstTitleBox}[Plum]{
+		Mathematical Optimization Problem
+	}
 	\begin{minipage}{0.70\linewidth}
 		\begin{sstOnlyFrame}[Plum]
 			\textbf{Decision variable} $x  \in \mathbb{R}^{n}$
@@ -69,7 +69,9 @@
 		open ball with center $x^\star$ and radius $\epsilon$
 	\end{sstOnlyFrame}
 \end{sstTitleBox}
-\subsection{Convex Sets}
+
+
+\subsection{Convex Sets, POLYTOPES}
 
 \begin{definition}[Convex Set]
 	Set $\mathcal{C}$ is convex if and only if
@@ -77,6 +79,19 @@
 		\ \forall\ x,y \in \mathcal{C},
 		\ \forall\ \theta \in [0,1]\]
 \end{definition}
+
+
+\textbf{Intersection}
+$\mathcal{C}_1, \mathcal{C}_2$ cv
+$\Rightarrow \mathcal{C}_1 \cap \mathcal{C}_2$ convex \textbf{(cv)}
+
+\textbf{Image under affine map}
+$\mathcal{C} \subseteq  \mathbb{R}^{n}$ cv
+$\Rightarrow \{Ax+b \mid x \in \mathcal{C} \}$ cv
+
+\textbf{Inverse IoaM}
+$\mathcal{C} \subseteq  \mathbb{R}^{m}$ cv
+$\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 
 \begin{definition}[Hyperplanes]
 	$\{x \in \mathbb{R}^n \mid a\T x=b\}$
@@ -123,18 +138,6 @@
 
 %TODO: norm p1,2,...
 
-\textbf{Intersection}
-$\mathcal{C}_1, \mathcal{C}_2$ cv
-$\Rightarrow \mathcal{C}_1 \cap \mathcal{C}_2$ convex \textbf{(cv)}
-
-\textbf{Image under affine map}
-$\mathcal{C} \subseteq  \mathbb{R}^{n}$ cv
-$\Rightarrow \{Ax+b \mid x \in \mathcal{C} \}$ cv
-
-\textbf{Inverse IoaM}
-$\mathcal{C} \subseteq  \mathbb{R}^{m}$ cv
-$\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
-
 \begin{theorem}{Minkowski-Weyl}
 
 	The following statements are equivalent
@@ -152,22 +155,30 @@ $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 	% \end{itemize}
 \end{theorem}
 
+\begin{definition}[Minkowski Sum]
+	For $A, B \subset \mathbb{R}^{n}$, the
 
-\begin{sstTitleBox}[Apricot]{\textbf{\large
-			MOST COMMON Polytopic Constraints
-		}
-		% small text
-	}
+	\ssthl{ Minkowski Sum } is
+	$A \oplus B := \{x + y | x \in A, y \in B\}$
+\end{definition}
+\[
+	[a,b]\oplus[c,d] = [a+c,b+d]
+\]
+\begin{definition}[Pontryagin Difference]
+	For $A, B \subset \mathbb{R}^{n}$, the
+	\ssthl{Pontryagin Difference }is
+	$A \ominus B := \{x | x+e \in A, \forall e \in B\}$
+\end{definition}
+\[
+	[a,b]\ominus[c,d] = [a-c,b-d]
+\]
 
-	%HACK: Polytopic Invariant Set, example e5 Subset test
-	%Intersection of Polytopes Compute
-	%Most Common Polytopic constraints? L5.p61
+% \includesvg{images/Pontryagin.svg}
+\includegraphics{images/Pontryagin.png}
 
-	\[\begin{aligned}
-			1
-		\end{aligned}\]
-
-\end{sstTitleBox}
+%HACK: Polytopic Invariant Set, example e5 Subset test
+%Intersection of Polytopes Compute
+%Most Common Polytopic constraints? L5.p61
 
 \subsection{Convex Functions}
 
@@ -175,7 +186,7 @@ $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 	$f: \mathcal{C}_\text{convex} \to\mathbb{R}$ is convex iff
 	\[
 		f(\theta x + (1-\theta)y)\le \theta f(x)+ (1-\theta)f(y),
-		\ \forall\ x,y \in \mathcal{C},
+		\ \forall\ x,y
 		\ \forall\ \theta \in [0,1]\]
 	$f$ is strictly convex if this inequality is strict.
 \end{definition}
@@ -201,7 +212,6 @@ $g: \mathbb{R} \rightarrow \mathbb{R}$ with $g(t)=f(x+tv)$
 convex in $t\ \forall\ x,v \in \mathbb{R}^{n}$
 $\rightarrow f$ convex (restriction to a line)
 
-%NOTE: first, second order convexity
 
 - the point wise maximum of convex functions is convex
 
@@ -209,22 +219,18 @@ $\rightarrow f$ convex (restriction to a line)
 
 - $f(Ax+b)$ is convex if $f$ is convex
 
-%TODO: Level set sublevel set
+%NOTE: Level set sublevel set, first, second order convexity
 
-%NOTE: Example convex funcions
 
-\subsection{Convex Optimization}
+\input{topics/lagrange-dual.tex}
 
-%NOTE:Definition cvOP
+\subsection{Convex Optimization Problems}
 
 \begin{theorem}
 	For a convex optimization problem,
 	\textbf{any} locally optimal solution is globally
 	optimal (local optima are global optima).
 \end{theorem}
-
-
-%TODO: Equivalent OP, Slack
 
 \textbf{Linear Programming}
 $ \operatorname{minimize} c\T x
@@ -233,7 +239,6 @@ $ \operatorname{minimize} c\T x
 Step 1:
 $\mathcal{L}(x,\lambda_1,\lambda_2) =
 	c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
-%TODO: LP L3.p40
 Step 2:
 $\underset{x \in \mathcal{\mathbb{R}}^n}{\operatorname{inf}}
 	\mathcal{L}=\lambda_1\T b$
@@ -247,4 +252,5 @@ $c-A\T\lambda\ge0,\lambda\ge0$
 
 \textbf{Quadratic Programming}
 min ...
-%TODO: QP
+
+%TODO: LP L3.p40 QP
