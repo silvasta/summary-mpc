@@ -2,112 +2,54 @@
 \textbf{Uncertain System}
 $x(k+1) = g(x(k), u(k), w(k); \theta)$
 
-%TODO: Examples of uncertain models
-
-\subsection{Robust Invariance}
-
-\begin{definition}[Robust Positive Invariant Set $\mathcal{O}^\mathcal{W}$]
-	For the autonomous system
-	$x(k+1)=g(x(k),w(k))$,
-	the set $\mathcal{O}^\mathcal{W}$
-	is robust positive invariant
-	if:
-	\[
-		x\in\mathcal{O}^\mathcal{W}\Rightarrow
-		g(x,w) \in \mathcal{O}^\mathcal{W},
-		\quad \forall w \in \mathcal{W}
-	\]
-\end{definition}
-
-Given set $\Omega$ and dynamic system $x(k+1) = g(x(k), w(k))$,
-\begin{align*}
-	\mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid g(x,w)\} \in \Omega \ \forall w \in \mathcal{W}
-\end{align*}
-
-%WARN: Robust  pre set  to pre set 
-
-\begin{definition}[Robust Pre-Sets]
-	The set of states that
-	in the dynamic system $x(k+1) = g(x(k),w(k))$
-	for all disturbance $w\in\mathcal{W}$
-	in one time step evolves into the target set $\Omega$
-	is the \textbf{pre-set} of $\Omega$
-	$\Rightarrow \pre^\mathcal{W}(\Omega) :=
-		\{x|g(x,w)\in \Omega\ \forall w\in\mathcal{W}\}$
-\end{definition}
-
-\textbf{Computing Robust Pre-Sets for Linear Systems}
-
-System $Ax(k) + w(k)$, set $\Omega:= \{x \mid Fx \leq f\}$
-\begin{align*}
-	\mathrm{pre}^{\mathcal{W}}(\Omega)
-	 & = \{ x \mid FAx + Fw \leq f\}
-	\\
-	 & = \{ x \mid FAx \leq f- \max_{w\in\mathcal{W}}Fw \}
-	\\
-	 & = \{ x \mid FAx \leq f -  h_{\mathcal{W}^i}(F) \}
-\end{align*}
-%TODO: image robust invariant set?
-%
-where $h_{\mathcal{W}^i}(F)$ is the support function
-%WARN: support function, r8
-
-\begin{theorem}[Geometric condition for robust invariance]
-	Set $\mathcal{O}^\mathcal{W}$
-	is robust positive invariant iff
-	$\mathcal{O}^\mathcal{W} \subseteq
-		\pre^\mathcal{W}(\mathcal{O}^\mathcal{W})$
-\end{theorem}
-
-%HACK: Conceptual Algorithm Robust Invariance
-
-
-\subsubsection{Impact of Bounded Additive Noise}
-
-\textbf{Defining a Cost to Minimize}
-Expected value,
-worst case, max W
-nominal case w=0
+%TODO: uncertain constained linear system, 4 steps, do once for all occurances
 
 \subsubsection{Robust Constraint Satisfaction}
-%WARN: 4 steps, do once for all occurances
 
-The idea: Compute a set of tighter constraints such that if the nominal
+\textbf{Idea}
+Compute a set of tighter constraints such that if the nominal
 system meets these constraints, then the uncertain system will too.
 We then do MPC on the nominal system.
 
-Goal: Ensure that constraints are satisfied for the MPC sequence.
+\textbf{Goal}
+Ensure  constraints satisfied for the MPC sequence.
 
-Terminal State Constraint
+\textbf{Disturbance reachable set}
+\quad
+$\mathcal{F}_i = \bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
 
-...is called disturbance reachable set,
-%TODO: F i = bigplus, formula and notation
 
-\subsubsection{Open Loop Robust MPC}
-\begin{align*}
-	\min_U                & \left[ l_f(x_N) + \textstyle\sum_{i=0}^{N-1} l(x_i, u_i) \right]                                    \\
-	\mathrm{subj.\ to }\  & x_{i+1} = A x_i + B u_i                                                                             \\
-	                      & x_i \in \mathcal{X} \ominus ( \textstyle\bigoplus_{j=0}^{i-1} A^j \mathcal{W} ), \quad
-	u_i \in \mathcal{U}                                                                                                         \\
-	                      & x_0 = x(k), \quad x_N \in \mathcal{X}_f \ominus ( \textstyle\bigoplus_{j=0}^{N-1} A^j \mathcal{W} )
-\end{align*}
 
-\subsection{Closed Loop Robust MPC}
+\begin{sstTitleBox}{Robust Open-Loop MPC}
+	\begin{sstOnlyFrame}
+		\begin{minipage}[t]{0.55\linewidth}
+			\[\begin{aligned}
+					\min_U \      & \sum_{i=0}^{N-1} l(x_i, u_i) + l_f(x_N) \\
+					\text{s.t.}\  & x_{i+1} = Ax_i + Bu_i                   \\
+				\end{aligned}\]
+		\end{minipage}
+		\begin{minipage}[t]{0.4\linewidth}
+			\[\begin{aligned}
+					 & x_0 = x(k)                                  \\
+					 & x_i \in \mathcal{X} \ominus \mathcal{F}_i   \\
+					 & u_i \in \mathcal{U}                         \\
+					 & x_N \in \mathcal{X}_f \ominus \mathcal{F}_N \\
+				\end{aligned}\]
+		\end{minipage}
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
 
-%WARN: again uncertain constrained Linear system
-% closed loop predictions, AND mpc L9.p10
+\subsubsection{Closed Loop Robust MPC}
 
 \textbf{Idea}
 Separate the available control authority into two parts:
-
-1.
-$z(k+1)=Az(k)+Bv(k)$
-steers
-noise-free \textit{nominal} system
-to origin
-
-2.
-$u_i=K(x_i-z_i)+v_i$
+\[
+	z(k+1)=Az(k)+Bv(k)
+\]
+steers noise-free \textit{nominal} system to origin
+\[
+	u_i=K(x_i-z_i)+v_i
+\]
 compensates for deviations,
 i.e. a \textit{tracking} controller,
 to keep the real trajectory
@@ -119,38 +61,35 @@ and optimize over the nominal inputs $\{v_0,...,v_{N−1}\}$
 and nominal trajectory $\{z_0,...,z_N\}$,
 which results in a convex problem.
 
-%TODO: error dynamics and uncertain state evolution
+$e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
 
-\textbf{Minimum Robust Invariant Set}
+\subsection{Robust Constraint-Tightening MPC}
+\begin{sstTitleBox}{Robust Constraint-Tightening MPC}
+	\begin{sstOnlyFrame}
+		\begin{minipage}[t]{0.57\linewidth}
+			\[\begin{aligned}
+					\min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N) \\
+					\mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                   \\
+				\end{aligned}\]
+		\end{minipage}
+		\begin{minipage}[t]{0.4\linewidth}
+			\[\begin{aligned}
+					 & z_0 = x(k)                                       \\
+					 & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
+					 & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
+					 & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
+				\end{aligned}\]
+		\end{minipage}
 
-$F_\infty = \bigoplus_{j=0}^\infty A_K^j \mathcal{W}$,
-$F_0 := \{0\}\Rightarrow$
-$F_n = F_{n+1} = F_\infty$%TODO: mathcal F
-
-%WARN: Pseudo algorithm
-
-\begin{sstTitleBox}{\subsection{Robust Constraint-Tightening MPC}}
-	% \begin{sstTitleBox}{Robust Constraint-tightening MPC}
-
-	\[\begin{aligned}
-			\min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N)      \\
-			\mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                        \\
-			                     & z_i \in \mathcal{X} \ominus \mathcal{F}_i    \\
-			                     & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i) \\
-			                     & z_N \in \mathcal{X}_f \ominus \mathcal{N}_N  \\
-			                     & z_0 = x(k)                                   \\
-		\end{aligned}\]
-
-	$F_i := \mathcal{W} \oplus A_K\mathcal{W} \oplus \dots A_K^{i}\mathcal{W}$
-
-	$$\text{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star$$
+		\vspace{1mm}
+		$\mathcal{F}_0:={0}$
+		\quad
+		$F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
+		\[
+			\textbf{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star\]
+	\end{sstOnlyFrame}
 
 \end{sstTitleBox}
-
-\textbf{Motivation} can robustly ensure constraint satisfactkon at each time step
-
-\textbf{Note} need terminal set $\mathcal{X}_f$ that is robust invariant under tube controller $K$
-
 
 \subsection{Robust Tube MPC}
 
@@ -163,18 +102,17 @@ Ideally $\mathcal{E}$ is selected as the minimum RPI set $F_\infty$
 
 We know that the real trajectory stays ‘nearby’ the nominal one%TODO: xi ∈ zi ⊕ E
 because we plan to apply the controller%TODO: ui = K (xi − zi ) + vi
-in the future
+in the future%FIX:
 (we won’t actually do this, but it’s a valid sub-optimal plan)
 
 We must ensure that all possible state trajectories satisfy the constraints
 This is now equivalent to ensuring that %TODO: zi ⊕ E ⊂ X
 (address input constraints later)
 
-%WARN: Pretext Tube
 
 What do we need to make this work?
 
-- Compute the set E that the error will remain inside
+\ssthl{Compute the set E that the error will remain inside}
 
 Previously we wanted the \textbf{maximum robust invariant set}, or the largest set in
 which our terminal control law works.
@@ -182,88 +120,42 @@ which our terminal control law works.
 We now want the \textbf{minimum robust invariant set}, or the smallest set that the
 state will remain inside despite the noise.
 
-- Modify constraints on nominal trajectory $\{z_i\}$
+Modify constraints on nominal trajectory $\{z_i\}$
 
 $x_i \in z_i \oplus \mathcal{E} =
 	\{z_i + e | e \in \mathcal{E}\}$
 
-- Formulate as convex optimization problem
-
-BOX
-
-... and then prove that
-
-- Constraints are robustly satisfied
-
-- The closed-loop system is robustly stable
-
-
-\begin{sstTitleBox}[BrickRed]{\textbf{\large
-			Tube MPC
-		}
-		% small text
+\begin{sstTitleBox}{
+		Tube MPC
 	}
 
-	\[\begin{aligned}
-			\text{Feasible set:}  & \quad
-			\mathcal{Z}(x_0):=
-			\begin{cases}
-				z_{i+1} & = Az_i+Bv_i                         \\
-				z_i     & \in \mathcal{X}\ominus\mathcal{E}   \\
-				v_i     & \in \mathcal{U}\ominus K\mathcal{E} \\
-				z_N     & \in \mathcal{X}_f                   \\
-				x_0     & \in z_0\oplus\mathcal{E}            \\
-			\end{cases}
-			\\
-			\text{Cost function:} & \quad
-			J(Z,V):=\sum_{i=0}^{N-1}
-			l(z_i,v_i)+l_f(z_N)
-			\\
-			\text{Optimization:}  & \quad
-			(V^\star(x_0),Z^\star(x_0))=  \\
-			                      &
-			\quad\quad\argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x_0)\}
-			\\
-			\text{Control law:}   & \quad
-			\mu_\text{tube}(x):=
-			K(x-z_0^\star(x))+v_0^\star(x)
-		\end{aligned}\]
-
-	\begin{centering}
-		\begin{sstOnlyFrame}[BrickRed]
-			\vspace{-1.5mm}
-			\[ \begin{aligned}
-					% formula
-					\text{Feasible set:}  & \quad
-					\mathcal{Z}(x_0):=
-					\begin{cases}
-						z_{i+1} & = Az_i+Bv_i                         \\
-						z_i     & \in \mathcal{X}\ominus\mathcal{E}   \\
-						v_i     & \in \mathcal{U}\ominus K\mathcal{E} \\
-						z_N     & \in \mathcal{X}_f                   \\
-						x_0     & \in z_0\oplus\mathcal{E}            \\
-					\end{cases}
-					\\
-					\text{Cost function:} & \quad
-					J(Z,V):=\sum_{i=0}^{N-1}
-					l(z_i,v_i)+l_f(z_N)
-					\\
-					\text{Optimization:}  & \quad
-					(V^\star(x_0),Z^\star(x_0))=  \\
-					                      &
-					\quad\quad\argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x_0)\}
-					\\
-					\text{Control law:}   & \quad
-					\mu_\text{tube}(x):=
-					K(x-z_0^\star(x))+v_0^\star(x)
-				\end{aligned} \]
-			\vspace{-2.5mm}
-		\end{sstOnlyFrame}
-	\end{centering}
+	\begin{sstOnlyFrame}
+		\[\begin{aligned}
+				\textbf{Cost function} & \quad
+				J(Z,V):=\sum_{i=0}^{N-1}
+				l(z_i,v_i)+l_f(z_N)
+				\\
+				\textbf{Feasible set}  & \quad
+				\mathcal{Z}(x_0):=
+				\begin{cases}
+					z_{i+1} & = Az_i+Bv_i                         \\
+					z_i     & \in \mathcal{X}\ominus\mathcal{E}   \\
+					v_i     & \in \mathcal{U}\ominus K\mathcal{E} \\
+					z_N     & \in \mathcal{X}_f                   \\
+					x_0     & \in z_0\oplus\mathcal{E}            \\
+				\end{cases}
+				\\
+				\textbf{Optimization}  & \quad
+				(V^\star(x_0),Z^\star(x_0))=                                                   \\
+				                       & \quad\argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x_0)\}
+				\\
+				\textbf{Control law}   & \quad
+				\mu_\text{tube}(x):=
+				K(x-z_0^\star(x))+v_0^\star(x)
+			\end{aligned}\]
+	\end{sstOnlyFrame}
 
 \end{sstTitleBox}
-
-ASSUMPTIONS %WARN: assumptions tube AND general, L9.p36
 
 \begin{theorem}[Robust Invariance of Tube MPC]
 	The set $\mathcal{Z} := \{x|\mathcal{Z}(x)\neq \emptyset\}$
@@ -273,7 +165,6 @@ ASSUMPTIONS %WARN: assumptions tube AND general, L9.p36
 	$x, u \in \mathcal{X} \times \mathcal{U}$.
 \end{theorem}
 
-%TODO: proof tube
 
 
 \begin{theorem}[Robust Stability of Tube MPC]
@@ -282,20 +173,20 @@ ASSUMPTIONS %WARN: assumptions tube AND general, L9.p36
 	converges  to the  limit of the set $\mathcal{E}$.
 \end{theorem}
 
-\textbf{Putting it all together: Tube MPC}
+\textbf{Tube MPC - Quick Summary}
 
 To implement tube MPC:
 
 \textbf{— Offline —}
 
-1. Choose a stabilizing controller $K$
+1. Stabilizing controller $K$
 so that $A + BK$ is (Schur) stable
 
 2. Compute the minimal robust invariant set
 $E = F_\infty$ for the system
 $x(k+1) = (A + BK)x(k) + w(k), w \in \mathcal{W}^1$
 
-3. Compute the tightened constraints
+3. Compute tightened constraints
 $\bar{\mathcal{X}} := \mathcal{X} \ominus \mathcal{E},
 	\bar{\mathcal{U}} := \mathcal{U} \ominus K\mathcal{E}$
 
@@ -307,13 +198,8 @@ satisfying assumptions* %TODO: insert link to assumptions
 
 1. Measure / estimate state $x$
 
-2. Solve the problem
-$(V^\star(x_0),Z^\star(x_0))=
-	\argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x_0)\}$
+2. Solve optimization problem for
+$(V^\star(x_0),Z^\star(x_0))$
 
 3. Set the input to
 $u	=	K(x-z_0^\star(x))+v_0^\star(x)$
-
-%NOTE: example tube, offline design
-
-%TODO summary tube TODO summary robust

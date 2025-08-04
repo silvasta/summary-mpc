@@ -5,8 +5,8 @@
 %-----------------------------------------------------------------
 % Document Type
 %-----------------------------------------------------------------
-% \documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
-\documentclass[layout=preview,secnumdepth=2,tight]{sst-custom}
+\documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
+% \documentclass[layout=preview,secnumdepth=2,tight]{sst-custom}
 %-----------------------------------------------------------------
 
 %-----------------------------------------------------------------
@@ -19,7 +19,7 @@
 %--------------\--------------------------------------------------
 \begin{document}
 
-\iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
+\iftoggle{do-multicol}{ \begin{multicols}{\numcolumns}}{}
 		%-----------------------------------------------------------------
 		% %%% Debug
 		% Column width is: \the\columnwidth\\
@@ -42,6 +42,7 @@
 		\section{Introduction to Systems and Controls}
 		\input{topics/models-and-systems.tex}
 		\input{topics/lyapunov.tex}
+		\input{topics/optimal-control.tex}
 		%-----------------------------------------------------------------
 		\section{Optimization}
 		\input{topics/optimization.tex}
@@ -51,7 +52,6 @@
 		%-----------------------------------------------------------------
 		\input{topics/riccatti.tex}
 		\section{Optimal Control}
-		\input{topics/optimal-control.tex}
 		%-----------------------------------------------------------------
 		\section{Nominal MPC}
 		\input{topics/nominal-mpc.tex}
@@ -65,6 +65,6 @@
 		\section{Implementation}
 		\input{topics/implementation.tex}
 		%-----------------------------------------------------------------
-		\iftoggle{do-multicol}{\end{multicols*}}{}
+		\iftoggle{do-multicol}{\end{multicols}}{}
 
 \end{document}

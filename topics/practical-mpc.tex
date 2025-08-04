@@ -40,39 +40,25 @@ $\rightarrow$
 compute
 $\min u_s^\top R_s u_s$
 (cheapest)
-
-$$
+\[
 	\min_U |z_N - Hx_s|_{P_z}^2
-	+ \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
+	\!+\! \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
 	+ | u_i - u_s |_{R}^2
-	%WARN: Constraints, do one general for entiry summary
-$$
+\]
 
 \subsection{Offset-free Reference Tracking}
 
 \subsubsection{Reference Tracking}
 
 \begin{align*}
-	\begin{aligned}
-		\Delta x & = x - x_s
-		\\
-		\Delta u & = u - u_s
-	\end{aligned}
-	\ \Rightarrow \
+	 &
 	\begin{aligned}
 		\Delta x_{k+1}
 		 & = x_{k+1} -x_s                          \\
 		 & = A\Delta x_k + B u_k - (A x_s + B u_s) \\
 		 & = A\Delta x_k + B\Delta u_k             \\
 	\end{aligned}
-\end{align*}
-
-%TODO: Structure delta notation
-% + check with linearization for no doubling
-% + move to lecture
-
-
-\begin{align*}
+	\\&
 	\begin{aligned}
 		G_x  x & \leq h_x \\
 		G_u  u & \leq h_u
@@ -84,35 +70,31 @@ $$
 	\end{aligned}
 \end{align*}
 
-%WARN: MPC for Tracking: Convergence, L7.p20
+\subsubsection{Convergence}
 
-Assume target feasible with $x_s \in \mathcal{X}, u_s \in \mathcal{U}$,
-choose terminal weight $V_f(x)$ and constraint $\mathcal{X}_f$ as in regulation case satisfying
-\begin{itemize}[leftmargin=1em]
-	\item $\mathcal{X}_f \subseteq \mathcal{X}, K x \in \mathcal{U} \quad \forall x \in \mathcal{X}_f$
-	\item $V_f(x(k+1)) - V_f(x(k)) \leq -l (x(k), Kx(k)) \quad \forall x \in \mathcal{X}_f$
-\end{itemize}
+Assume feasible target with
+$x_s \in \mathcal{X}, u_s \in \mathcal{U}$,
+choose terminal weight $V_f(x)$ and constraint $\mathcal{X}_f$
+as in regulation case satisfying
+\[
+	V_f(x(k+1)) - V_f(x(k)) \leq -l(x(k), Kx(k))
+\]
+\[
+	\text{and }
+	(A+BK) x \in \mathcal{X} \quad \forall x \in \mathcal{X}_f
+	\text{ for both}
+\]
 If in addition the target reference $x_s, u_s$ is such that
-\begin{itemize}[leftmargin=1em]
-	\item $x_s \oplus \mathcal{X}_f \subseteq \mathcal{X}, K\Delta x + u_s \in \mathcal{U}, \quad \forall \Delta x \in \mathcal{X}_f$
-\end{itemize}
-then CL system converges to target reference
-\begin{align*}
-	x(k) \to x_s, z(k) = Hx(k) \xrightarrow{k\to\infty}r
-\end{align*}
+\[
+	x_s \oplus \mathcal{X}_f \subseteq \mathcal{X}, K\Delta x + u_s \in \mathcal{U}, \quad \forall \Delta x \in \mathcal{X}_f
+\]
+then the closed loop system converges to the target reference.
 
 \begin{proof}
-	%TODO: proof tracking
-
-	\begin{itemize}[leftmargin = 1em]
-		\item Invariance under local ctrol law inherited from regulation case
-		\item Constraint satisfaction provided by extra conditions
-		      \begin{itemize}
-			      \item $x_s \oplus \mathcal{X}_f \subseteq \mathcal{X} \to x\in \mathcal{X} \forall \Delta \in\mathcal{X_f}$
-			      \item $K\Delta x + u_s \in \mathcal{U} \forall \Delta x \in \mathcal{X}_f \to u\in\mathcal{U}$
-		      \end{itemize}
-		\item Fron asympt stability of the regulation problem: $\Delta x (k) \xrightarrow{k\to\infty}0$
-	\end{itemize}
+	Invariance under local control law is inherited from regulation case.
+	Constraint satisfaction is provided by extra conditions and
+	convergence comes from the asymptotic stability of the regulation problem:
+	$\Delta x(k)\rightarrow0$ for $k\rightarrow\infty$
 \end{proof}
 
 \textbf{Terminal set} use
@@ -140,10 +122,9 @@ $d_{k+1}  = d_k$
 
 Observable iff
 $\begin{bsmallmatrix}
-		A - \mathbb{I} & B_d \\ C & C_d
-		%FIXME: I eye 1, be carful with cost I(x,u) l(x,u)
+		A - I & B_d \\ C & C_d
 	\end{bsmallmatrix}$
-has full rank $(=n_x + n_d)$
+has full rank (assuming $n_x = n_d)$
 
 \textbf{Observer For Augmented Model}
 
@@ -233,120 +214,122 @@ choose $L$ s.t error dynamics converge to $0$
 \textbf{Goal}
 Track constant reference:
 $Hy(k) = z(k) \to r$, $k\to\infty$
-
+%
 \begin{align*}
-	\begin{aligned}
-		%TODO: I-A or A-I (doesnt mater but should be same as steady-state)
-		x_s & = Ax_s + Bu_s +B_d\hat{d}_\infty  \\
-		z_s & = H(Cx_s + C_d\hat{d}_\infty) = r
-	\end{aligned}
-	% \ \Longleftrightarrow \
-	\begin{aligned}
-		\begin{bsmallmatrix}
-			A-I & B \\
-			HC  & 0
-		\end{bsmallmatrix}
-		\begin{bsmallmatrix}
-			x_s \\
-			u_s
-		\end{bsmallmatrix}
-		=
-		\begin{bsmallmatrix}
-			0 \\
-			r-HC_d\hat{d}
-		\end{bsmallmatrix}
-	\end{aligned}
+	x_s & = Ax_s + Bu_s +B_d\hat{d}_\infty  \\
+	z_s & = H(Cx_s + C_d\hat{d}_\infty) = r
 \end{align*}
-
-%WARN: Tracking, Concept!!!
-
+\begin{align*}
+	\begin{bmatrix}
+		A-I & B \\
+		HC  & 0
+	\end{bmatrix}
+	\begin{bmatrix}
+		x_s \\
+		u_s
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		0 \\
+		r-HC_d\hat{d}
+	\end{bmatrix}
+\end{align*}
+%
 \input{tracking-diagram.tex}
 
-
-\begin{theorem}[Offset-free Tracking: Main Result]
-	Assuming
-	$n_d = n_y$,
-	RHC recursively feasible,
-	unconstrained for $k \geq j$,
-	control law  $\kappa(\cdot)= \kappa(\hat{x}(k),\hat{d}(k),r)$
-	and closed loop system
-	\begin{align*}
-		x(k+1)        = & Ax(k) + B\kappa(\cdot) + B_d d                                 \\
-		\hat{x}(k+1)  = & (A + L_x C)\hat{x}(k) + (B_d + L_x C_d)\hat{d}(k)              \\
-		                & + B\kappa(\cdot) - L_x y(k)                                    \\
-		\hat{d}(k+1)  = & L_d C \hat{x}(k) + (\mathbb{I} + L_d C_d)\hat{d}(k) - L_d y(k)
-	\end{align*}
-	converges, then $z(k) = Hy(k) \to r$
-	as $k\to\infty$
-\end{theorem}
-
-% \subsection{Enlarging the Feasible Set}
-
-%TODO: MPC without Terminal Set
+\begin{sstTitleBox}[BrickRed]{
+		Offset-free Tracking - Main Result
+	}
+	\begin{sstOnlyFrame}[BrickRed]
+		\begin{theorem}
+			Assuming RHC recursively feasible, $n_d = n_y$,
+			unconstrained for $k \geq j$,
+			and the closed loop system
+			\begin{align*}
+				x(k+1)        = & Ax(k) + B\kappa(\cdot) + B_d d
+				\ \  \text{with }(\cdot)=(\hat{x},\hat{d},r)                                     \\
+				\hat{x}(k+1)  = & (A + L_x C)\hat{x}(k) + (B_d + L_x C_d)\hat{d}(k)              \\
+				                & + B\kappa(\cdot) - L_x y(k)                                    \\
+				\hat{d}(k+1)  = & L_d C \hat{x}(k) + (\mathbb{I} + L_d C_d)\hat{d}(k) - L_d y(k)
+			\end{align*}
+			converges, then $z(k) = Hy(k) \to r$
+			as $k\to\infty$
+		\end{theorem}
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
 
 \subsection{Soft Constraints}
 
-Input constraints are dictated by physical constraints on
-the actuators and are usually hard
+\textbf{Input constraints} are dictated by physical constraints on
+the actuators and are \textbf{usually hard }
 
-- State/output constraints arise from practical restrictions
+\textbf{State/output constraints} arise from practical restrictions
 on the allowed operating range and are \textbf{rarely hard}
 
-- Hard state/output constraints always lead to
+\textbf{Hard state/output constraints} always lead to
 \textbf{complications in the controller implementation}
-%TODO: summarize soft constraints intro text
 
-\begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
-			Soft Constrained MPC Problem Setup
-		}
-		% small text
+\begin{sstTitleBox}{
+		Soft Constrained MPC
 	}
 
-	% \begin{adjustbox}{rndcorners=0.5mm}
-	% 	\begin{sstOnlyFrame}[ForestGreen]
-	% 		$
-	% 			\min\sum_{i=0}^{N-1}
-	% 			x_i^\top Q x_i + u_i^\top R u_i+
-	% 		$
-	% 		\textcolor{hltext}{\hl{$l_\epsilon(\epsilon_i)$}}
-	% 		% +l_\epsilon(\epsilon_i)
-	% 		$
-	% 			+x_N^\top P x_i+
-	% 		$
-	% 		% +l_\epsilon(\epsilon_N)
-	% 		% $
-	% 		\textcolor{hltext}{\hl{$l_\epsilon(\epsilon_N)$}}
-	% 	\end{sstOnlyFrame}
-	% \end{adjustbox}
+	\begin{sstOnlyFrame}
+		\begin{equation}
+			\min_u\sum_{i=0}^{N-1}
+			x_i^\top Q x_i + u_i^\top R u_i
+			+\color{BrickRed}l_\epsilon(\epsilon_i)\color{black}
+			+x_N^\top P x_i
+			+\color{BrickRed}l_\epsilon(\epsilon_N)
+		\end{equation}
 
-	\begin{adjustbox}{rndcorners=0.5mm}
-		\begin{sstOnlyFrame}[ForestGreen]
-			\[
-				\min_u\sum_{i=0}^{N-1}
-				x_i^\top Q x_i + u_i^\top R u_i
-				+\color{BrickRed}l_\epsilon(\epsilon_i)\color{black}
-				+x_N^\top P x_i
-				+\color{BrickRed}l_\epsilon(\epsilon_N)
-			\]
-		\end{sstOnlyFrame}
-	\end{adjustbox}
-	\[\begin{aligned}
-			\text{subj.\ to }\   x_{i+1}      & = Ax_i + Bu_i      \\
-			H_xx_i                            & \le k_x+\epsilon_i \\
-			H_uu_i                            & \le k_u            \\
-			\text{slack variable }	\epsilon_i & \ge0
-		\end{aligned}\]
+		\vspace{-7mm}
+		\begin{minipage}[b]{0.45\linewidth}
+			\textbf{Quadratic penalty}
 
+			$l_\epsilon(\epsilon_i) = \epsilon_i^\top S \epsilon_i$
+
+			\quad			(e.g $S = Q$)
+
+			\textbf{+ linear norm penalty}
+
+			$l_\epsilon(\epsilon_i) +=
+				v|\epsilon_i|_{1/\infty}$
+		\end{minipage}
+		\begin{minipage}[b]{0.54\linewidth}
+			\begin{align*}
+				\textbf{Constraints}
+				\\
+				x_{i+1}    & =Ax_i + Bu_i       \\
+				H_xx_i     & \le k_x+\epsilon_i \\
+				H_uu_i     & \le k_u            \\
+				\epsilon_i & \ge0
+				\ \
+				\text{slack variable }
+			\end{align*}
+		\end{minipage}
+	\end{sstOnlyFrame}
+	\begin{sstOnlyFrame}
+		\begin{minipage}[t]{0.44\linewidth}
+			\begin{align*}
+				\textbf{Original}
+				\quad
+				\min_z       & f(z)     \\
+				\text{s.t. } & g(z)\le0
+			\end{align*}
+		\end{minipage}
+		\begin{minipage}[t]{0.55\linewidth}
+			\begin{align*}
+				\textbf{Softened}
+				\quad
+				\min_{z,\epsilon}  f(z) & +l_\epsilon(\epsilon) \\
+				\text{s.t. }       g(z) & \le \epsilon          \\
+				\epsilon                & \ge0
+			\end{align*}
+		\end{minipage}
+	\end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\textbf{Quadratic penalty}
-$l_\epsilon(\epsilon_i) =
-	\epsilon_i^\top S \epsilon_i$ (e.g $S = Q$)
 
-\textbf{Linear Penalty}
-$v|\epsilon_i|_{1/\infty}$
-
-%TODO: mathematical formulation slack
 
 \textbf{Requirement on $l_\epsilon(\epsilon)$}
 If the original problem has a feasible solution $z^\star$,
@@ -357,7 +340,3 @@ and $\epsilon = 0$.
 	$l_\epsilon(\epsilon) = v \cdot \epsilon$ satisfies requirement for any $v > \lambda^\star \geq 0$,
 	where $\lambda^\star$ is optimal Lagrange multiplier for original problem
 \end{theorem}
-
-%HACK: Simplification: Separation of Objectives
-
-%NOTE: summary for lecture

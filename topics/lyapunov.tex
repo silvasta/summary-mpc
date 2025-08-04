@@ -1,5 +1,5 @@
 
-\begin{sstTitleBox}[Plum]{{
+\begin{sstBreakBox}[Plum]{{
 				\Large
 				Lyapunov
 			}\small
@@ -87,7 +87,10 @@
 			\textbf{Lyapunov equation}
 		\end{minipage}
 		\begin{minipage}[b]{0.64\linewidth}
-			\[A^TPA-P=-Q,\quad Q>0\]
+			\begin{equation}
+				A^TPA-P=-Q,\quad Q>0
+				\label{lipunov:dt}
+			\end{equation}
 		\end{minipage}
 	\end{sstOnlyFrame}
 
@@ -99,5 +102,5 @@
 			iff the system $x(k+1) = Ax(k)$ is stable.
 		\end{theorem}
 	\end{sstOnlyFrame}
-\end{sstTitleBox}
+\end{sstBreakBox}
 %TODO: Lyapunov for LQR to Lyapunov L2.p43

@@ -1,17 +1,15 @@
 
-\begin{sstTitleBox}
-	{Discrete-Time Optimal Control Problem}
+\begin{sstTitleBox}{
+		Discrete-Time Optimal Control Problem
+	}
 	\begin{sstOnlyFrame}
-
 		\textbf{Cost Function}
 		\vspace{-3mm}
 		\begin{equation}
 			J(x_0,U)= \sum_{i=0}^{N-1} l(x_i,u_i) + l_f(x_N)
 		\end{equation}
 		% \vspace{-2mm}
-
 		\begin{minipage}[t]{0.25\linewidth}
-			\center
 			\textbf{Stage Cost}
 			$l_f(x_i,u_i)$
 			\textbf{Terminal Cost}
@@ -29,7 +27,7 @@
 	\end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsection{Unconstrained Finite Horizon Control}
+\subsection{Unconstrained Finite Horizon Control Problem}
 
 \begin{sstTitleBox}
 	{Linear Quadratic Optimal Control}
@@ -41,11 +39,11 @@
 			\sum_{i=0}^{N-1}
 			x_i^\top Q x_i + u_i^\top R u_i
 			+x_N^\top P x_N
+			\label{oc:lq-oc}
 		\end{equation}
-		% \vspace{-2mm}
 
+		\vspace{-2mm}
 		\begin{minipage}[t]{0.33\linewidth}
-			\center
 			\textbf{Terminal weight}
 
 			$P\succeq0$ symetric
@@ -73,8 +71,8 @@
 
 \subsubsection{Batch Approach}
 
-expresses cost function in terms of $x(0)$ and input sequence $U$
-
+express cost function in terms of $x(0)$ and input sequence $U$
+%
 \[ \begin{bmatrix}
 		x_0    \\
 		x_1    \\
@@ -102,16 +100,19 @@ expresses cost function in terms of $x(0)$ and input sequence $U$
 		\vdots \\
 		u_{N-1}
 	\end{bmatrix} \]
-
+%
+$X:=\mathcal{S}^x x(0) + \mathcal{S}^u U$
+\quad
+$J(x(0),U) =
+	X^\top \overline{Q}X
+	+ U^\top \overline{R}U$
 
 $\overline{Q} := \mathop{\mathrm{blockdiag}}(Q,\dots, Q,P)$
 \quad
 $\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
 
 \textbf{Optimal Input}
-(from $\nabla_UJ(x(0),U)=2HU+2F^\top x(0)=0$)
-%TODO: maybe derivation?
-%WARN: definition S, F unclear
+set $\nabla_UJ(x(0),U)=2HU+2F^\top x(0)=0$
 \[ U^\star(x(0)) =
 	- \bigl(
 	\underbrace{
@@ -124,31 +125,29 @@ $\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
 	x(0)
 \]
 
-
 \textbf{Optimal Cost}
-
-\scalebox{0.97}[1]{$
-		\scriptstyle
-		J^\star(x(0)) = x(0)^\top (
-		\mathcal{S}_x^\top \overline{Q} \mathcal{S}_x
-		- \mathcal{S}_x^\top \overline{Q} \mathcal{S}_u
-		(\mathcal{S}_u^\top \overline{Q} \mathcal{S}_u
-		+ \overline{R})^{-1}
-		\mathcal{S}_u^\top \overline{Q} \mathcal{S}_x
-		)x(0)$}
-
+$(x_0=x(0))$
+\[
+	\scriptstyle
+	J^\star(x_0) = x_0^\top (
+	\mathcal{S}_x^\top \overline{Q} \mathcal{S}_x
+	- \mathcal{S}_x^\top \overline{Q} \mathcal{S}_u
+	(\mathcal{S}_u^\top \overline{Q} \mathcal{S}_u
+	+ \overline{R})^{-1}
+	\mathcal{S}_u^\top \overline{Q} \mathcal{S}_x
+	)x_0
+\]
 
 \subsubsection{Recursive Approach}
 
-uses dynamic programming to solve problem backwards from $N$
-
-\[\begin{aligned}
-		J_j^\star(x(j)) :=
-		\min_{U_{j\to N}} & x_N^\top P x_N \!+
-		\sum_{i=j}^{N-1}x_i^\top Q x_i + u_i^\top R u_i
-	\end{aligned}\]
-
-
+use dynamic programming to solve problem backwards from $N$
+%
+\begin{align*}
+	J_j^\star(x(j)) :=
+	\min_{U_{j\to N}} & x_N^\top P x_N \!+
+	\sum_{i=j}^{N-1}x_i^\top Q x_i + u_i^\top R u_i
+\end{align*}
+%
 \begin{minipage}[t]{0.64\linewidth}
 	\textbf{From Principle Of Optimality}
 	\[
@@ -162,85 +161,117 @@ uses dynamic programming to solve problem backwards from $N$
 		J_i^\star(x_i) = x_i^\top P_i x_i
 	\]
 \end{minipage}
-
+%
 \textbf{Optimal Control Policy}
+use Riccatti
 \[
 	u_i^\star = F_i x_i =
 	-(B^\top P_{i+1}B + R)^{-1}
 	B^\top P_{i+1} A \cdot x(i)
 \]
 
-\subsubsection{Comparison of Batch and Recursive Approaches}
+\subsubsection{Comparison of Batch and Recursive Approach}
 
+Dynamic programming yields \textbf{feedback policies}
+$u_i^\star = F_i x_i$ depending on each $x_i$.
 Batch optimization returns sequence $U^\star(x(0))$
 of \textbf{numeric values} depending only on x(0),
-dynamic programming yields \textbf{feedback policies}
-$u_i^\star = F_i x_i$ depending on each $x_i$.
 
-\subsection{Infinite Horizon LQR}
-\begin{sstTitleBox}[ForestGreen]{\center\textbf{\large
-			LQR
-		}
-		% small text
+\subsection{Infinite Horizon Control Problem}
+
+\begin{sstTitleBox}{
+		Linear Quadratic Regulator
 	}
-
-	\[ \begin{aligned}
-			J_\infty^\star(x(k))  & = \min \sum_{i=0}^\infty
+	\begin{sstOnlyFrame}
+		\textbf{Cost Function}
+		\vspace{-3mm}
+		\begin{equation}
+			J_\infty^\star(x(k)) =
+			\min_{u(\cdot)} \sum_{i=0}^\infty
 			x_i^\top Q x_i + u_i^\top R u_i                                   \\
-			\mathrm{subj.\ to }\  & x_{i+1} = Ax_i + Bu_i,\quad    x_0 = x(k)
-		\end{aligned} \]
+		\end{equation}
 
-	Same u as for finite problem but with ARE
-	Constant  Feedback Matrix $F\infty$
-	asymptotically stable for.. Q,R,stabi,detect
-	%TODO: details  LQR
+		\vspace{-5mm}
+		\begin{minipage}[t]{0.67\linewidth}
+			\begin{align*}
+				 & \textbf{Constraints}
+				 & x_{i+1}                & = Ax_i + Bu_i
+				\\
+				 &                        & x_0             & = x(k)
+				\\ \\
+				 & \textbf{Optimal Input}
+				 & u^\star(k)             & = F_\infty x(k)
+				 & \text{(use Riccatti)}
+			\end{align*}
+		\end{minipage}
+		\begin{align*}
+			F_\infty x(k)		=           - (B^\top P_\infty B + R)^{-1}
+			B^\top P_\infty A x(k)
+		\end{align*}
+	\end{sstOnlyFrame}
 
-	%WARN: Lemma  Lyapunov (look at proof)
+	\begin{sstOnlyFrame}
+		\begin{lemma}[Lyapunov function for LQR]
+			If $(A,B)$ is stabilizable
+			and $Q,R \succ 0$ then
+			$J^\star(x) = x^\top P_\infty x$
+			is a \ssthl{ Lyapunov function }
+			for the system $x^+ = (A+BF_\infty)x$
+			where $F_\infty$ is the constant feedback matrix
+			and $P_\infty \succ 0$ solves the Riccatti equation..
+		\end{lemma}
 
+	\end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\textbf{Choice of P}
-
-1. Match infinite solution, use ARE
-
-2. Assume no control needed after N, use Lyapunov Equation %TODO: Lyapunov link
-(makes only sense when asymptotically stable, otherwise P not positive definite)
-
-3. set constraint $x_{i+N}=0$
-
-\subsection{Constrained Finite Time Optimal Control
-}
-
-\begin{sstTitleBox}[ForestGreen]{\textbf{\large
-			CFTOC Problem
-		}
+\begin{sstTitleBox}[BrickRed]{
+		Choice of P
 	}
-	\[
-		J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
-	\]
-	\begin{centering}
-		\[ \begin{aligned}
-				J^\star (x(k)) = & \min_{U}  I_f(x_N) + \sum_{i=0}^{N-1} I(x_{i}, u_{i}) \\
-			\end{aligned} \]
-		\[ \begin{aligned}
-				\text{s.t} \quad & x_{i+1} = A x_{i} + Bu_{i},\ i = 0,\dots,N-1                                                  \\
-				                 & x_{i} \in \mathcal{X},\ u_{i} \in \mathcal{U},\ \mathcal{X}_N \in \mathcal{X}_f, \ x_0 = x(k)
-			\end{aligned} \]
-		N is the time horizon and X , U, Xf are polyhedral regions
-		%TODO: feasible set
-	\end{centering}
-	%HACK: L4.p9 combine with UCFTOC
+	\begin{sstOnlyFrame}[BrickRed]
+		\ssthl{ 1 }
+		Match the infinite solution $P_N = P_\infty$
+
+		\ssthl{ 2 }
+		Use solution of the Lyapunov Equation (\ref{lipunov:dt})
+		if the system is asymptotically stable
+		(otherwise P not positive definite),
+		assumes no control needed after end of horizon.
+
+		\ssthl{ 3 }
+		Set $P=0$ und use instead constraint $x_{i+N}=0$
+	\end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsubsection{Transform Quadratic Cost CFTOC into QP}
+\subsection{Constrained Finite Time Optimal Control Problem}
 
-\textbf{Goal}
-$\min_{z\in\mathbb{R}^n}
+\begin{sstTitleBox}{
+		CFTOC
+	}
+	\begin{sstOnlyFrame}
+		\textbf{Cost Function} equal to
+		Linear Quadratic Optimal Control (\ref{oc:lq-oc})
+		% \vspace{-5mm}
+		\textbf{Constraints}
+		as in (\ref{oc:lq-oc})
+		\ssthl{ + }
+		$ x_N      \in \mathcal{X}_f$,
+		$ x_{i<N}  \in \mathcal{X}$,
+		$ u_i      \in \mathcal{U}$
+	\end{sstOnlyFrame}
+
+\end{sstTitleBox}
+
+\subsubsection{Quadratic Cost CFTOC}
+\[
+	J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
+\]
+\subsubsection{Goal: Transform  into QP}
+\[
+	\min_{z\in\mathbb{R}^n}
 	\textstyle\frac{1}{2}z^\top H z + q^\top z + r
-	\quad\text{s.t. }Gz\leq h,\ Az = b$
+	\quad\text{s.t. }Gz\leq h,\ Az = b\]
 
-
-\subsubsection{Construction of QP without substitution}
+\subsubsection{Construction of QP without Substitution}
 
 \textbf{Idea} Keep state equations as equality constraints
 
@@ -278,12 +309,25 @@ $x_{i+1} = Ax_i + Bu_i$
 \]
 
 \textbf{Inequalities}
-$G_{in}z \leq w_{in} + E_{in}x(k)$ from
-$\mathcal{X}   = \{x \mid A_x x \leq b_x\},
-	\mathcal{U}   = \{u \mid A_u u \leq b_u\},
-	\mathcal{X}_f = \{x \mid A_f x \leq b_f\}$
-%TODO: inequality constraint order
+$G_{in}z \leq w_{in} + E_{in}x(k)$
+for $\mathcal{X},\mathcal{U}$
 
+\begin{minipage}[c]{0.5\linewidth}
+	$\mathcal{X} = \{x \mid A_x x \le \mathcal{X}_fq b_x\}$
+	$\mathcal{U}   = \{u \mid A_u u \leq b_u\}$
+	$\mathcal{X}_f = \{x \mid A_f x \leq b_f\}$
+\end{minipage}
+\begin{minipage}[b]{0.4\linewidth}
+	\[E_{in} =
+		\left[
+			\begin{smallmatrix}
+				-A_x \\
+				0 \\
+				\vdots \\
+				0 \\
+			\end{smallmatrix}
+			\right]\]
+\end{minipage}
 \[
 	G_{in} =
 	\left[
@@ -350,17 +394,6 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 		\end{smallmatrix}
 	\end{bmatrix}
 \]
-\[
-	E_{in} =
-	\left[
-		\begin{smallmatrix}
-			-A_x \\
-			0 \\
-			\vdots \\
-			0 \\
-		\end{smallmatrix}
-		\right]
-\]
 
 \textbf{Cost Matrix} $\bar{H} = \mathrm{diag}(Q,..., Q, P, R,..., R)$
 
@@ -381,7 +414,7 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 \textbf{Step 1} Rewrite cost  as
 
 \[\begin{aligned}
-		J(x(k)) = & UXXXX              \\
+		J(x(k)) = & U^\top HU+2x(k)^\top FU+x(k)^\top Y x(k) \\
 		=         & \begin{bmatrix}
 			            U^\top & x(k)^\top
 		            \end{bmatrix}
@@ -394,9 +427,9 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 		\end{bmatrix}^\top
 	\end{aligned} \]
 
-%WARN: CFTOC with substitution NOT finished, step 1 AND 2
-
 \textbf{Step 2} Rewrite constraints compaclty as $GU\le w+Ex(k)$
+
+\includegraphics[width=\columnwidth]{images/qp_with_substitution.png}
 
 \textbf{Step 3} Rewrite constrained problem as
 \[\begin{aligned}
@@ -414,6 +447,5 @@ $\mathcal{X}   = \{x \mid A_x x \leq b_x\},
 		\mathrm{subj. \ to \ } & GU \leq w + Ex(k)
 	\end{aligned} \]
 
-%HACK: L_p norm, and transform cftoc to LP
+%HACK:  transform cftoc to LP, l-norm substitution L4.p30
 
-%TODO: Receiding horizon control Notation

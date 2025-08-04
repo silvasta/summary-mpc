@@ -143,6 +143,59 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 	\end{sstOnlyFrame}
 \end{sstTitleBox}
 
+\subsection{Robust Invariance}
+
+\begin{definition}[Robust Positive Invariant Set $\mathcal{O}^\mathcal{W}$]
+	For the autonomous system
+	$x(k+1)=g(x(k),w(k))$,
+	the set $\mathcal{O}^\mathcal{W}$
+	is robust positive invariant
+	if:
+	\[
+		x\in\mathcal{O}^\mathcal{W}\Rightarrow
+		g(x,w) \in \mathcal{O}^\mathcal{W},
+		\quad \forall w \in \mathcal{W}
+	\]
+\end{definition}
+
+Given set $\Omega$ and dynamic system $x(k+1) = g(x(k), w(k))$,
+\begin{align*}
+	\mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid g(x,w)\} \in \Omega \ \forall w \in \mathcal{W}
+\end{align*}
+
+
+\begin{definition}[Robust Pre-Sets]
+	The set of states that
+	in the dynamic system $x(k+1) = g(x(k),w(k))$
+	for all disturbance $w\in\mathcal{W}$
+	in one time step evolves into the target set $\Omega$
+	is the \textbf{pre-set} of $\Omega$
+	$\Rightarrow \pre^\mathcal{W}(\Omega) :=
+		\{x|g(x,w)\in \Omega\ \forall w\in\mathcal{W}\}$
+\end{definition}
+
+\begin{theorem}[Geometric condition for robust invariance]
+	Set $\mathcal{O}^\mathcal{W}$
+	is robust positive invariant iff
+	$\mathcal{O}^\mathcal{W} \subseteq
+		\pre^\mathcal{W}(\mathcal{O}^\mathcal{W})$
+\end{theorem}
+
+\textbf{Minimum Robust Invariant Set}
+
+$\mathcal{F}_\infty = \bigoplus_{j=0}^\infty A_K^j \mathcal{W}$,
+$\mathcal{F}_0 := \{0\}\Rightarrow$
+$\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$%TODO: mathcal \mathcal{F}
+
+
+%
+%NOTE: some robust, impact bounde...
+% \textbf{Defining a Cost to Minimize}
+% Expected value,
+% worst case, max W
+% nominal case w=0
+
+
 
 \subsection{Computing Invariant Sets and Pre-sets}
 
@@ -167,25 +220,35 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 
 
 \begin{align*}
-	\intertext{\textbf{System for Pre-Set Computation}}
-	x(k+1)                & = Ax(k) +Bu(k)
+	\intertext{\textbf{System for \ssthl{ Pre-Set Computation }}}
+	x(k+1)                             & = Ax(k) +Bu(k)
 	% & \text{dynamics}
 	\\
-	u(k)\in\mathcal{U}  : & =\{u|Gu\le g\}
+	u(k)\in\mathcal{U}  :              & =\{u|Gu\le g\}
 	% & \text{constraints}
 	\\
-	\mathcal{S}:          & = \{x|Fx\leq f\}
+	\mathcal{S}:                       & = \{x|Fx\leq f\}
 	% & \text{set to check}
 	\intertext{\textbf{Invariant Pre-Set}}
-	\pre(S):              & =  \{x \mid Ax \in S\}                               \\
-	                      & =  \{ x \mid FAx \leq f\}                            \\
+	\pre(S):                           & =  \{x \mid Ax \in S\}                               \\
+	                                   & =  \{ x \mid FAx \leq f\}                            \\
 	\intertext{\textbf{Control Invariant Pre-Set}}
-	\pre(S):              & =  \{x \mid\exists u\in\mathcal{U}, Ax+Bu \in S\}    \\
-	                      & =  \{x \mid\exists u\in\mathcal{U}, FAx+FBu \leq f\} \\
-	                      & =  \left\{x \mid\exists u\in\mathcal{U},
+	\pre(S):                           & =  \{x \mid\exists u\in\mathcal{U}, Ax+Bu \in S\}    \\
+	                                   & =  \{x \mid\exists u\in\mathcal{U}, FAx+FBu \leq f\} \\
+	                                   & =  \left\{x \mid\exists u\in\mathcal{U},
 	\begin{bmatrix} FA & FB \\0&G \end{bmatrix}
 	\begin{bmatrix} x \\u \end{bmatrix}
 	\leq \begin{bmatrix} f \\g \end{bmatrix} \right\}
 	\intertext{This is a \textbf{projection} operation}
+	\intertext{\textbf{System for \ssthl{ Robust Pre-Set Computation }}}                      \\
+	x(k+1)                             & = Ax(k) + w(k)                                       \\
+	\Omega:                            & = \{x \mid Fx \leq f\}                               \\
+	\intertext{\textbf{Robust Invariant Pre-Set}}
+	\mathrm{pre}^{\mathcal{W}}(\Omega) & = \{ x \mid FAx + Fw \leq f\}                        \\
+	                                   & = \{ x \mid FAx \leq f- \max_{w\in\mathcal{W}}Fw \}  \\
+	                                   & = \{ x \mid FAx \leq f -  h_{\mathcal{W}^i}(F) \}
 \end{align*}
+%
+where $h_{\mathcal{W}^i}(F)$ is the \textbf{support function}
+%WARN: support function, r8
 
