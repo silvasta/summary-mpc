@@ -1,10 +1,6 @@
 
-
-% \subsection{Exact ODE Solution of a Linear System}
-
 \textbf{Idea}
 Create a model by solving the systems physical equations
-
 \[
 	x(t) = e^{A^c(t-t_0)}x_0 +
 	\textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau
@@ -27,8 +23,9 @@ Nonlinear system  stable enough around an equilibrium
 System equations
 $\dot{x_s} = g(x_s,u_s)=0$, $y_s = h(x_s,u_s)$
 
-Find stationary operating point $x_s,u_s$ and plug in derivative:
-
+Find stationary operating point $x_s,u_s$
+and plug in derivative:
+%
 \begin{align*}
 	\begin{aligned}
 		\Delta \dot{x} & =\dot{x} -\dot{x_s}         \\
@@ -65,7 +62,7 @@ exist, such as Euler, quality depends on sampling time
 \end{minipage}
 
 \textbf{Exact Discretization of Linear Time-Invariant Models}
-
+%
 \begin{align*}
 	x(t_{k+1}) & =
 	\underbrace{e^{A^c T_s}}
@@ -78,10 +75,9 @@ exist, such as Euler, quality depends on sampling time
 	A^i B u(k+N-1-i)
 \end{align*}
 
-
 \subsection{Analysis of Discrete-Time LTI Systems}
 
-\textbf{Controllabe}
+\textbf{Controllable}
 $
 	\text{if rank}(\mathcal{C}) = n
 	,\;
@@ -104,7 +100,6 @@ $
 		C^\top & \cdots & (CA^{n-1})^\top
 	\end{bmatrix}^\top
 $
-%TODO: controllability, stability, ... improve
 
 $\forall x(0)\exists$ finite time $N$, s.t. the measurements
 

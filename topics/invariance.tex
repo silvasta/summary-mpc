@@ -24,30 +24,6 @@
 	$\Rightarrow \pre(\mathcal{S}) := \{x\mid g(x)\in \mathcal{S}\}$
 \end{definition}
 
-\begin{theorem}[Geometric condition for invariance]
-	Set $\mathcal{O}$ is positively invariant set iff
-	$\mathcal{O}\subseteq\pre(\mathcal{O})
-		\Leftrightarrow
-		\pre(\mathcal{O})\cap\mathcal{O} = \mathcal{O}$
-\end{theorem}
-\begin{proof}
-	\textbf{Necessary} if
-	$\mathcal{O} \nsubseteq  \mathrm{pre}(\mathcal{O})$,
-	then $\exists\bar{x} \in \mathcal{O}$
-	s.t $\bar{x} \notin \mathrm{pre}(\mathcal{O})$
-	$\leadsto \bar{x}\in\mathcal{O},
-		\bar{x}\notin\mathrm{pre}(\mathcal{O})$,
-	thus $\mathcal{O}$ not positively invariant
-
-	\textbf{Sufficient} if
-	$\mathcal{O}$ not pos invar set,
-	then $\exists \bar{x}\in\mathcal{O}$
-	s.t $g(\bar{x}) \notin\mathcal{O}$
-	$\leadsto \bar{x}\in\mathcal{O},
-		\bar{x}\notin\mathrm{pre}(\mathcal{O})$
-	thus $\mathcal{O}\notin \mathrm{pre}(\mathcal{O})$
-\end{proof}
-
 \begin{lemma}{\ssthl{Invariant Sets from Lyapunov Functions}}
 
 	If $V:\mathbb{R}^n \to \mathbb{R}$ is a Lyapunov function
@@ -75,7 +51,34 @@ $\qquad Y_\alpha := \{x \mid x^\top P x \leq \alpha\}\subset \mathcal{X} := \{x 
 Equivalent to $\max_\alpha \alpha \quad \text{s.t. }\
 	h_{Y_\alpha}(F_i) \leq f_i \ \forall i \in \{1\dots n\}$
 
-%TODO: Maximum Elipsoid set
+
+
+\begin{theorem}[Geometric condition for invariance]
+	Set $\mathcal{O}$ is positively invariant set iff
+	$\mathcal{O}\subseteq\pre(\mathcal{O})
+		\Leftrightarrow
+		\pre(\mathcal{O})\cap\mathcal{O} = \mathcal{O}$
+\end{theorem}
+\begin{proof}
+	\textbf{Necessary} if
+	$\mathcal{O} \nsubseteq  \mathrm{pre}(\mathcal{O})$,
+	then $\exists\bar{x} \in \mathcal{O}$
+	s.t $\bar{x} \notin \mathrm{pre}(\mathcal{O})$
+	$\leadsto \bar{x}\in\mathcal{O},
+		\bar{x}\notin\mathrm{pre}(\mathcal{O})$,
+	thus $\mathcal{O}$ not positively invariant
+
+	\textbf{Sufficient} if
+	$\mathcal{O}$ not positive invariant set,
+	then $\exists \bar{x}\in\mathcal{O}$
+	s.t $g(\bar{x}) \notin\mathcal{O}$
+	$\leadsto \bar{x}\in\mathcal{O},
+		\bar{x}\notin\mathrm{pre}(\mathcal{O})$
+	thus $\mathcal{O}\notin \mathrm{pre}(\mathcal{O})$
+\end{proof}
+
+
+%TODO: Maximum Ellipsoid set
 
 \subsection{Control Invariance}
 
@@ -125,9 +128,11 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 
 		\end{centering}
 		\begin{sstFullFrame}[BrickRed]\color{white}
-			\[
-				\kappa(x):=\argmin\{f(x,u) \mid g(x,u)\in\mathcal{C}\}
-			\]
+			\begin{centering}
+
+				$\kappa(x):=\argmin\{f(x,u) \mid g(x,u)\in\mathcal{C}\}$
+
+			\end{centering}
 		\end{sstFullFrame}
 
 		with $f$ as any function (including $f(x,u)=0)$
@@ -185,40 +190,53 @@ Given set $\Omega$ and dynamic system $x(k+1) = g(x(k), w(k))$,
 
 $\mathcal{F}_\infty = \bigoplus_{j=0}^\infty A_K^j \mathcal{W}$,
 $\mathcal{F}_0 := \{0\}\Rightarrow$
-$\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$%TODO: mathcal \mathcal{F}
-
-
-%
-%NOTE: some robust, impact bounde...
-% \textbf{Defining a Cost to Minimize}
-% Expected value,
-% worst case, max W
-% nominal case w=0
-
-
+$\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$
 
 \subsection{Computing Invariant Sets and Pre-sets}
 
-%WARN: Structure compute invariant set
+\begin{sstTitleBox}[ForestGreen]{
+		Conceptual Algorithm
+	}
 
-\begin{minipage}{0.53\linewidth}
-	\begin{sstFullFrame}[ForestGreen]
-		\color{white}
-		\begin{algorithmic}
-			\State $\Omega_0 \leftarrow \mathcal{X}$
-			\Loop
-			\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
-			\If{$\Omega_{i+1}=\Omega_i$}
-			\State\Return $\mathcal{O}_\infty = \Omega_i$
-			\EndIf
-			\EndLoop
-		\end{algorithmic}
-	\end{sstFullFrame}
-\end{minipage}
+	\begin{minipage}{0.53\linewidth}
+		\begin{sstFullFrame}[ForestGreen]
+			\vspace{1.2mm}
+			\color{white}
+			\begin{algorithmic}
+				\State $\Omega_0 \leftarrow \mathcal{X}$
+				\Loop
+				\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+				\If{$\Omega_{i+1}=\Omega_i$}
+				\State\Return $\mathcal{O}_\infty = \Omega_i$
+				\EndIf
+				\EndLoop
+			\end{algorithmic}
+			\vspace{1.1mm}
+		\end{sstFullFrame}
+	\end{minipage}
+	\begin{minipage}{0.46\linewidth}
+		\begin{sstOnlyFrame}[ForestGreen]
+			\textbf{Pseudo algorithm}
 
-(Same but much harder for control invariat sets)
+			Inputs, outputs, especially
+			pre-set calculation will be different,
+			the overall concept not, used for:
 
+			\textbf{Invariant Sets}
 
+			\textbf{Control Invariant Sets}
+
+			\textbf{Robust Invariant Sets}
+
+		\end{sstOnlyFrame}
+	\end{minipage}
+	\begin{sstOnlyFrame}[ForestGreen]
+		Replace Intersection with Minkowski Sum and
+		Pre-Set with $A^i\mathcal{W}$ to get an Idea for
+		\textbf{Minimum Robust Invariant set}
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
+\vspace{-3mm}
 \begin{align*}
 	\intertext{\textbf{System for \ssthl{ Pre-Set Computation }}}
 	x(k+1)                             & = Ax(k) +Bu(k)
@@ -250,5 +268,4 @@ $\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$%TODO: mathcal \mathcal{
 \end{align*}
 %
 where $h_{\mathcal{W}^i}(F)$ is the \textbf{support function}
-%WARN: support function, r8
-
+$\sigma_\mathcal{C}(a)  = \sup_{x \in \mathcal{C}}a\T x$

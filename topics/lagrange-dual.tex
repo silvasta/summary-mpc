@@ -5,14 +5,12 @@
 		Lagrange Duality
 	}
 	\begin{centering}
-		\begin{sstOnlyFrame}
-			\vspace{-1.5mm}
-			\begin{equation}\text{Consider }
-				f^\star = \inf_{x\in\mathcal{\mathbb{R}}^n}f(x)
-				\text{ s.t.}\ g(x)\le0,h(x)=0
-				\label{eq:dual}
-			\end{equation}
-		\end{sstOnlyFrame}
+		\vspace{-1.5mm}
+		\begin{equation}\text{Consider }
+			f^\star = \inf_{x\in\mathcal{\mathbb{R}}^n}f(x)
+			\text{ s.t.}\ g(x)\le0,h(x)=0
+			\label{eq:dual}
+		\end{equation}
 
 		%TODO: Definitions lambda...
 
@@ -39,10 +37,9 @@
 \end{proposition}
 
 \begin{definition}[Constraint qualification]
-	\textbf{Slaters Condition} holds if $\exists$
+	\textbf{Slater's Condition} holds if $\exists$
 	at least one
-	strictly feasible point
-	% \textbf{strictly feasible point}
+	\textbf{strictly feasible point}
 	$\hat{x}{\ (h(\hat{x})=0,\ g(\hat{x})<0)}$
 \end{definition}
 
@@ -76,7 +73,7 @@
 						\\
 						\textbf{KKT-3 } & \text{\footnotesize (dual feasibility)}                    &  & \lambda^\star  , \nu^\star \in \mathbb{R}^{n_h}       \ge       0
 						\\
-						\textbf{KKT-4 } & \text{\footnotesize (compementary}                         &  & \lambda^{\star T} g(x^\star)                          =                          0
+						\textbf{KKT-4 } & \text{\footnotesize (complementary}                        &  & \lambda^{\star T} g(x^\star)                          =                          0
 						\\
 						                & \text{\footnotesize slackness)}                            &  & \nu^{\star T} h(x^\star)                              =  0
 					\end{aligned}\]

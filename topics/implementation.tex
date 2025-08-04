@@ -1,15 +1,13 @@
-Two options:
+
+CFTOC problem is
+\textbf{multiparametric quadratic program}
+\ssthl{ mp-QP }
+
+Two options to solve it:
 
 - Iterative optimization methods
 
 - Explicit solution
-
-EXPLICIT:
-
-The CFTOC problem is a
-\textbf{multiparametric quadratic program (mp-QP)}
-
-%TODO: explain mp-QP
 
 
 Let $I := {1, . . . , m}$ be the set of constraint indices.
@@ -36,15 +34,90 @@ Sequential search
 
 Logarithmic search
 
-OPTIMIZATION
 
-%WARN: LP QP example L10.p22, Descent  Methods L10
 
-L-Smooth
+\subsubsection{Large Scale Convex Optimization}
 
-(UN-)CONSTRAINED OPTIMIZATION
+\begin{definition}[Lipschitz continuity]
+	$q: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}$
+	is Lipschitz with constant $L$ if:
+	$|q(x)-q(y)| \le L |x-y| \forall x,y \in \mathbb{R}^{m}$
+\end{definition}
+\vspace{-4mm}
+$$f \text{ is\textbf{ Lipschitz }(Lip) with constant } L
+	\Leftrightarrow
+	|\nabla f(x)|_2\le L$$
+\vspace{-4mm}
 
-Projected Gradient Method %TODO: projected gradient
+\begin{theorem}
+	$\mathcal{C} \subseteq \mathbb{R}^{n}$ non-empty closed \textbf{(cl)} convex set, $y \notin \mathcal{C}$
+	$\rightarrow \exists\ a \ne 0, b \in \mathbb{R}$
+	s.t. $a\T x + b < a\T y + b,
+		\forall x \in \mathcal{C}$
+\end{theorem}
+
+
+\begin{definition}[smoothness]
+	$f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
+	is $L$-smooth \textbf{($L$-sm)} if
+	$\nabla f(x)$
+	satisfies
+	$|\nabla f(x)-\nabla f(y)|\le L|x-y|$
+	$\forall x,y \in \mathbb{R}^{n}$
+\end{definition}
+
+Taylor
+$\rightarrow$
+$f(y)\le f(x)+\nabla f(x)\T (y-x) +\frac{L}{2}|x-y|^2$
+
+\begin{definition}[strong convexity]
+	$f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
+	is $\mu$-strongly convex \textbf{($\mu$-scv)} if
+	$f(y)\ge f(x)+\nabla f(x)\T(y-x)+\frac{\mu}{2}|x-y|^2$
+	% $\forall x,y \in \mathbb{R}^{n}$
+\end{definition}
+
+\textbf{How to find $\mu/L$},
+Spectra of Hessian $\nabla^2f$, min/max eigenvalue
+
+\textbf{Gradient Descent}
+
+$x_{k+1}=x_k-T\nabla f(x_k)$
+for
+$k = (k_0,\dots,k_N)$
+given
+$x_0,T$
+
+
+\textbf{Line search}
+optimal step
+$\nu_t^*=\argmin_{\nu\in\mathbb{R}}f(x_t-\nu\nabla f(x_t))$
+
+
+\begin{definition}[]
+	\textcolor{hltext}{\hl{ $\operatorname{prox}_\mathcal{C}(x)=$
+	$\operatorname{argmin}_{y\in\mathcal{C}}\frac{1}{2}|x-y|^2$ }}
+	$\mathcal{C}\subset \mathbb{R}^{n}$
+\end{definition}
+
+\begin{lemma}
+	cl, cv
+	$\mathcal{C}\subset \mathbb{R}^{n}$
+	$\rightarrow$
+	$|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|$
+	$\le$
+	$|x-y|$
+	$\leftarrow$
+	$|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|^2$
+	$\le$
+	$(\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y))\T(x-y)$
+\end{lemma}
+
+
+\textbf{Projected Gradient Descent}
+
+$x_{k+1}=\operatorname{prox}_\mathcal{C}(x_k-T\nabla f(x_k))$,
+for $x_0,k_{0..N},T\in(0,2/L)$
 
 \begin{adjustbox}{rndcorners=0.5mm}
 	\begin{lstlisting}[style=sst]
@@ -63,5 +136,4 @@ def get_next_u(y: Measurement, r: Reference):
 
     return u
 \end{lstlisting}
-
 \end{adjustbox}

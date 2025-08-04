@@ -9,17 +9,18 @@
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage[explicit]{titlesec}
 \RequirePackage[hidelinks]{hyperref}
+\RequirePackage[most]{tcolorbox}
 \RequirePackage[shortlabels]{enumitem}
-\usepackage{svg}
-\RequirePackage{amsmath}
 \RequirePackage{adjustbox}
+\RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{atbegshi}
 \RequirePackage{booktabs}
 \RequirePackage{calc}
 \RequirePackage{caption}
-\RequirePackage{empheq}
+\RequirePackage{colortbl}
 \RequirePackage{csquotes}
+\RequirePackage{empheq}
 \RequirePackage{float}
 \RequirePackage{graphicx}
 \RequirePackage{lipsum}
@@ -30,8 +31,7 @@
 \RequirePackage{pgffor}
 \RequirePackage{siunitx}
 \RequirePackage{subcaption}
-\RequirePackage[most]{tcolorbox}
-\RequirePackage{colortbl}
+\RequirePackage{svg}
 %-----------------------------------------------------------------
 \usetikzlibrary{ shapes.geometric, arrows, backgrounds, positioning, arrows.meta }
 %-----------------------------------------------------------------
@@ -94,16 +94,6 @@
 		centering
 	]{geometry}
 }{}
-% 	\RequirePackage[
-% 		paperheight=218mm,
-% 		paperwidth=305mm,
-% 		top=5mm,
-% 		bottom=5mm,
-% 		inner=5mm,
-% 		outer=5mm,
-% 		centering
-% 	]{geometry}
-% }{}
 %-----------------------------------------------------------------
 % Preview
 %-----------------------------------------------------------------
@@ -240,9 +230,9 @@
 	right=0pt,
 	top=2pt,
 	title=\center\textbf{\large #2},
-	% breakable
+	breakable
 }
-% for to long boxes, not floating..
+% for boxes with fail break...
 \newtcolorbox{sstBreakBox}[2][default-box-color]{
 	colframe=#1,
 	colback=#1!20,
@@ -251,7 +241,7 @@
 	right=0pt,
 	top=2pt,
 	title=\center\textbf{\large #2},
-	breakable
+	% breakable
 }
 % only thin, empty frame with white background
 \newtcolorbox{sstOnlyFrame}[1][default-box-color]{
@@ -281,11 +271,9 @@
 % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 \RequirePackage{listings}
 \definecolor{text}{HTML}{f2f4f8}
-% \definecolor{background}{HTML}{2e3440}
-% \definecolor{background}{HTML}{222222}
-\definecolor{background}{HTML}{484848}
+\definecolor{background}{HTML}{222222}
 \definecolor{string}{HTML}{1fa25a}
-\definecolor{comment}{HTML}{b6b8bb}%!20
+\definecolor{comment}{HTML}{b6b8bb}
 \definecolor{keyword}{HTML}{ca4780}
 \definecolor{function}{HTML}{6690d9}
 \definecolor{builtin}{HTML}{a27fd9}
@@ -328,7 +316,7 @@
 \newtheorem{remark}{Remark}
 \newtheorem{lemma}{Lemma}
 %-----------------------------------------------------------------
-\newcommand{\T}{^\textnormal{\scriptsize T}}%TODO: remove
+\newcommand{\T}{^\textnormal{\scriptsize T}}%TODO: replace with proper T
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\dom}{dom}
 \DeclareMathOperator{\pre}{pre}
