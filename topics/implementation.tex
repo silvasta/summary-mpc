@@ -137,3 +137,36 @@ def get_next_u(y: Measurement, r: Reference):
     return u
 \end{lstlisting}
 \end{adjustbox}
+
+\begin{sstTitleBox}[black]
+	{\textbf{TRANSFORM P-Nj}}
+	\footnotesize
+	\textbf{$\ell_\infty$-Minimization}
+	\begin{sstOnlyFrame}[black]
+		\[
+			\begin{aligned}
+				\min_{x\in\mathbb{R}^m} & \lvert\lvert x \rvert\rvert_\infty \\
+				\mathrm{subj.\ to }\    & Fx \leq g
+			\end{aligned}
+			\quad \Longleftrightarrow \quad
+			\begin{aligned}
+				\min_{x, t}           & t                                                             \\
+				\mathrm{subj.\ to }\  & -\boldsymbol{1_m}t \leq x \leq \boldsymbol{1_m}t, \ Fx \leq g
+			\end{aligned}
+		\]
+	\end{sstOnlyFrame}
+	\textbf{$\ell_1$-Minimization}
+	\begin{sstFullFrame}[yellow]
+		\[
+			\begin{aligned}
+				\min_{x\in\mathbb{R}^m} & \lvert\lvert x \rvert\rvert_1 \\
+				\mathrm{subj.\ to }\    & Fx \leq g
+			\end{aligned}
+			\quad \Longleftrightarrow \quad
+			\begin{aligned}
+				\min_{x\in\mathbb{R}^m, t\in\mathbb{R}^m} & \boldsymbol{1_m}^\top t       \\
+				\mathrm{subj.\ to }\                      & -t \leq x \leq t, \ Fx \leq g
+			\end{aligned}
+		\]
+	\end{sstFullFrame}
+\end{sstTitleBox}

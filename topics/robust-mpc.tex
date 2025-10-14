@@ -2,8 +2,6 @@
 \textbf{Uncertain System}
 $x(k+1) = g(x(k), u(k), w(k); \theta)$
 
-%TODO: uncertain constained linear system, 4 steps, do once for all occurances
-
 \subsubsection{Robust Constraint Satisfaction}
 
 \textbf{Idea}
@@ -100,19 +98,21 @@ $\mathcal{E}: \epsilon_i \in \mathcal{E}  ⇒ \epsilon_{i+1} \in \mathcal{E}$
 
 Ideally $\mathcal{E}$ is selected as the minimum RPI set $F_\infty$
 
-We know that the real trajectory stays ‘nearby’ the nominal one%TODO: xi ∈ zi ⊕ E
-because we plan to apply the controller%TODO: ui = K (xi − zi ) + vi
-in the future%FIX:
+We know that the real trajectory stays ‘nearby’ the nominal one $x_i \in z_i \oplus \mathcal{E}$
+because we plan to apply the controller $u_i = K (x_i − z_i) + v_i)$
+in the future.
+
 (we won’t actually do this, but it’s a valid sub-optimal plan)
 
 We must ensure that all possible state trajectories satisfy the constraints
-This is now equivalent to ensuring that %TODO: zi ⊕ E ⊂ X
+This is now equivalent to ensuring that $x_i \in z_i \oplus \mathcal{E}$
+
 (address input constraints later)
 
 
 What do we need to make this work?
 
-\ssthl{Compute the set E that the error will remain inside}
+\ssthl{Compute the set $\mathcal{E}$ that the error will remain inside}
 
 Previously we wanted the \textbf{maximum robust invariant set}, or the largest set in
 which our terminal control law works.
