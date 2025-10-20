@@ -101,6 +101,7 @@ then the closed loop system converges to the target reference.
 $\mathcal{X}_f^{\text{scaled}} = \alpha \mathcal{X}_f$
 (s.t. constraints satisfied)
 
+\input{diagram/tracking-diagram.tex}
 
 \subsubsection{Disturbance Cancellation}
 
@@ -208,6 +209,7 @@ choose $L$ s.t error dynamics converge to $0$
 	$\Rightarrow$ Observer output $C\hat{x}_\infty + C_d \hat{d}_\infty$ tracks $y_\infty$ without offset
 \end{lemma}
 
+
 \subsubsection{Reference Tracking with Disturbance Cancellation}
 
 
@@ -236,7 +238,6 @@ $Hy(k) = z(k) \to r$, $k\to\infty$
 \end{align*}
 %
 
-\input{tracking-diagram.tex}
 
 \begin{sstTitleBox}[BrickRed]{
 		Offset-free Tracking - Main Result

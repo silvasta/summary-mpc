@@ -1,20 +1,17 @@
 % Needed  for babelfont
 %! TeX program = lualatex
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 % Document Type
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 \documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=2,tight]{sst-custom}
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 % experimental
-	%----------------------------------------------------------------
-\usepackage{algpseudocode} % pseudocode
-\usepackage{setspace}
-%--------------\--------------------------------------------------
+% ---------------------------------------------------------------
 \begin{document}
 
 \iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
@@ -23,29 +20,15 @@
 		% Column width is: \the\columnwidth\\
 		% Preview width is: \the\previewwidth
 		%-----------------------------------------------------------------
-		\input{title-blue-grey.tex}
+		\input{title/title-blue-grey.tex}
 		%-----------------------------------------------------------------
 		\iftoggle{use-small-font}{\footnotesize}{}
 		%-----------------------------------------------------------------
-		\renewcommand{\contentsname}{}
-		\vspace{-5mm}
-		\begin{spacing}{0.9}
-			\tableofcontents
-		\end{spacing}
+		\tableofcontents
 		%-----------------------------------------------------------------
 		\input{topics/requirements-mpc.tex}
 		%-----------------------------------------------------------------
-		\section{Introduction to Systems and Controls}
-		\input{topics/models-and-systems.tex}
-		%-----------------------------------------------------------------
-		\section{Optimization}
-		\input{topics/optimization.tex}
-		%-----------------------------------------------------------------
-		\section{Optimal Control}
-		\input{topics/optimal-control.tex}
-		%-----------------------------------------------------------------
-		\section{Invariance}
-		\input{topics/invariance.tex}
+		% MPC
 		%-----------------------------------------------------------------
 		\section{Nominal MPC}
 		\input{topics/nominal-mpc.tex}
@@ -56,7 +39,23 @@
 		\section{Robust MPC}
 		\input{topics/robust-mpc.tex}
 		%-----------------------------------------------------------------
-		\section{Implementation}
+		% Important Mathematical Tools
+		%-----------------------------------------------------------------
+		\section{Invariance}
+		\input{topics/invariance.tex}
+		%-----------------------------------------------------------------
+		\section{Optimization}
+		\input{topics/optimization.tex}
+		%-----------------------------------------------------------------
+		% Background
+		%-----------------------------------------------------------------
+		\section{Introduction to Systems and Controls}
+		\input{topics/models-and-systems.tex}
+		%-----------------------------------------------------------------
+		\section{Optimal Control}
+		\input{topics/optimal-control.tex}
+		%-----------------------------------------------------------------
+		\section{Implementation, needed?}
 		\input{topics/implementation.tex}
 		%-----------------------------------------------------------------
 		\iftoggle{do-multicol}{\end{multicols*}}{}
