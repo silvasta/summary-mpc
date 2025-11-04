@@ -1,64 +1,99 @@
 % Needed  for babelfont
 %! TeX program = lualatex
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 % Document Type
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
+% \documentclass{sst-custom}
+% \documentclass[layout=regular, columns=2]{sst-custom}
 \documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=2,tight]{sst-custom}
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 
-%-----------------------------------------------------------------
+% ----------------------------------------------------------------
 % experimental
-	%----------------------------------------------------------------
-\usepackage{algpseudocode} % pseudocode
-\usepackage{setspace}
-%--------------\--------------------------------------------------
+% ---------------------------------------------------------------
 \begin{document}
 
-\iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
-		%-----------------------------------------------------------------
-		% %%% Debug
-		% Column width is: \the\columnwidth\\
-		% Preview width is: \the\previewwidth
-		%-----------------------------------------------------------------
-		\input{title-blue-grey.tex}
-		%-----------------------------------------------------------------
-		\iftoggle{use-small-font}{\footnotesize}{}
-		%-----------------------------------------------------------------
-		\renewcommand{\contentsname}{}
-		\vspace{-5mm}
-		\begin{spacing}{0.9}
-			\tableofcontents
-		\end{spacing}
-		%-----------------------------------------------------------------
-		\input{topics/requirements-mpc.tex}
-		%-----------------------------------------------------------------
-		\section{Introduction to Systems and Controls}
-		\input{topics/models-and-systems.tex}
-		%-----------------------------------------------------------------
-		\section{Optimization}
-		\input{topics/optimization.tex}
-		%-----------------------------------------------------------------
-		\section{Optimal Control}
-		\input{topics/optimal-control.tex}
-		%-----------------------------------------------------------------
-		\section{Invariance}
-		\input{topics/invariance.tex}
-		%-----------------------------------------------------------------
-		\section{Nominal MPC}
-		\input{topics/nominal-mpc.tex}
-		%-----------------------------------------------------------------
-		\section{Practical MPC}
-		\input{topics/practical-mpc.tex}
-		%-----------------------------------------------------------------
-		\section{Robust MPC}
-		\input{topics/robust-mpc.tex}
-		%-----------------------------------------------------------------
-		\section{Implementation}
-		\input{topics/implementation.tex}
-		%-----------------------------------------------------------------
-		\iftoggle{do-multicol}{\end{multicols*}}{}
+\iftoggle{do-multicol}{
+\begin{multicols*}{\numcolumns}}{}
+  %-----------------------------------------------------------------
+  % %%% Debug
+  % Column width is: \the\columnwidth\\
+  % Preview width is: \the\previewwidth
+  %-----------------------------------------------------------------
+  \input{title/title-blue-grey.tex}
+  %-----------------------------------------------------------------
+  \iftoggle{use-small-font}{\footnotesize}{}
+  %-----------------------------------------------------------------
+  \tableofcontents
+  %-----------------------------------------------------------------
+  \input{topics/requirements-mpc.tex}
+  %-----------------------------------------------------------------
+  % MPC
+  %-----------------------------------------------------------------
+  % TODO: L2 check nominal
+  \section{Nominal MPC}
+  \input{topics/nominal-mpc.tex}
+  %-----------------------------------------------------------------
+  % TODO: L2 check check ISS
+  \section{Practical MPC}
+  \input{topics/practical-mpc.tex}
+  % TODO: L2 check soft constraint
+
+  %-----------------------------------------------------------------
+  \section{Robust MPC}
+  \input{topics/robust-mpc.tex}
+  % TODO: L3 check:
+  % - error dynamics, DRS
+  % - Constraint-tightening MPC
+  % - Homothetic tube-MPC
+
+  %-----------------------------------------------------------------
+  \section{Stochastic MPC}
+  % TODO: all, L4,5
+  % - Asymptotic Average Performance bounds
+  % - Stochastic setting
+  % - Probabilistic constraints & feasibility issues
+  % - Stochastic MPC with Recovery Initialization
+  % - Chance Constraints in Closed-Loop vs. in Prediction
+  % - Indirect Feedback SMPC
+
+  %-----------------------------------------------------------------
+  \section{Nonlinear MPC}
+  % TODO: L6
+  % - Nominal Nonlinear MPC (NMPC) Problem
+  % - Soft-constrained NMPC for Bounded Uncertainties ++ ISS
+  % - Robust NMPC
+  % - Incremental ISS and stability of the error dynamics
+  % - Homothetic tube NMPC
+  % - Stochastic NMPC
+
+  %-----------------------------------------------------------------
+  % Important Mathematical Tools
+  %-----------------------------------------------------------------
+  \section{Invariance}
+  \input{topics/invariance.tex}
+  %-----------------------------------------------------------------
+  % Background
+  %-----------------------------------------------------------------
+  \section{Introduction to Systems and Controls}
+  \input{topics/models-and-systems.tex}
+  \input{topics/lyapunov.tex}
+  %-----------------------------------------------------------------
+  \section{Optimal Control}
+  \input{topics/optimal-control.tex}
+  %-----------------------------------------------------------------
+  \section{Optimization}
+  % TODO: L6:Line Search – Descent Methods,SQP,RTI
+  \input{topics/optimization.tex}
+  %-----------------------------------------------------------------
+  \section{Implementation, needed?}
+  \input{topics/implementation.tex}
+  %-----------------------------------------------------------------
+  \iftoggle{do-multicol}{
+\end{multicols*}}{}
 
 \end{document}
+

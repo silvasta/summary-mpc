@@ -1,104 +1,104 @@
 
 \begin{sstTitleBox}[Plum]{{
-				\Large
-				Lyapunov
-			}\small
-		% Александр Михайлович Ляпунов
-	}
+      \Large
+      Lyapunov
+    }\small
+    % Александр Михайлович Ляпунов
+  }
 
-	\begin{sstOnlyFrame}[Plum]
-		\textbf{Stability} is a property of an
-		\textbf{equilibrium point} $\bar{\mathbf{x}}$
-		of a system
-	\end{sstOnlyFrame}
+  \begin{sstOnlyFrame}[Plum]
+    \textbf{Stability} is a property of an
+    \textbf{equilibrium point} $\bar{\mathbf{x}}$
+    of a system
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{definition}[Lyapunov Stability]
-			$\bar{\mathbf{x}}$ is \textbf{Lyapunov stable} if:
+  \begin{sstOnlyFrame}[Plum]
+    \begin{definition}[Lyapunov Stability]
+      $\bar{\mathbf{x}}$ is \textbf{Lyapunov stable} if:
 
-			$\forall\ \epsilon>0\ \exists\ \delta(\epsilon)$ s.t.
-			$| x(0) - \bar{x} |_{\scriptscriptstyle 2}< \delta(\epsilon) \to
-				| x(k) - \bar{x}|_{\scriptscriptstyle 2} < \epsilon$
-		\end{definition}
-	\end{sstOnlyFrame}
+      $\forall\ \epsilon>0\ \exists\ \delta(\epsilon)$ s.t.
+      $| x(0) - \bar{x} |_{\scriptscriptstyle 2}< \delta(\epsilon) \to
+      | x(k) - \bar{x}|_{\scriptscriptstyle 2} < \epsilon$
+    \end{definition}
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{definition}[Globally asymptotic stability]
-			If $\bar{\mathbf{x}}$ is attractive, i.e.,
-			$\lim_{k\to\infty} ||x(k)-\bar{x}||=0,\ \forall x(0)$
-			and Lyapunov stable
-			then $\bar{\mathbf{x}}$ is \textbf{globally asymptotically stable}.
-		\end{definition}
-	\end{sstOnlyFrame}
+  \begin{sstOnlyFrame}[Plum]
+    \begin{definition}[Globally asymptotic stability]
+      If $\bar{\mathbf{x}}$ is attractive, i.e.,
+      $\lim_{k\to\infty} ||x(k)-\bar{x}||=0,\ \forall x(0)$
+      and Lyapunov stable
+      then $\bar{\mathbf{x}}$ is \textbf{globally asymptotically stable}.
+    \end{definition}
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{definition}[Global Lyapunov function]
-			For the equilibrium $\bar{\mathbf{x}}=0$
-			of a system $x(k+1)=g(x(k))$,
-			a function $V$, continuous at the origin,
-			finite and such that
+  \begin{sstOnlyFrame}[Plum]
+    \begin{definition}[Global Lyapunov function]
+      For the equilibrium $\bar{\mathbf{x}}=0$
+      of a system $x(k+1)=g(x(k))$,
+      a function $V$, continuous at the origin,
+      finite and such that
 
-			$\forall\ x\in \mathbb{R}^{n}$:
-			\[
-				|x|   \to\infty              \Rightarrow V(x)  \to\infty\]
-			\[
-				V(x)=0 \ \text{ if }\ x=0 \quad\text{else}\quad V(x)>0             \]
-			\[
-				V(g(x)) - V(x) \leq -\alpha(x)                          \]
-			\[
-				\text{for continuous positive definite }
-				\alpha:\mathbb{R}^n\to \mathbb{R}
-			\]
+      $\forall\ x\in \mathbb{R}^{n}$:
+      \[
+      |x|   \to\infty              \Rightarrow V(x)  \to\infty\]
+      \[
+      V(x)=0 \ \text{ if }\ x=0 \quad\text{else}\quad V(x)>0             \]
+      \[
+      V(g(x)) - V(x) \leq -\alpha(x)                          \]
+      \[
+        \text{for continuous positive definite }
+        \alpha:\mathbb{R}^n\to \mathbb{R}
+      \]
 
-			then  $V:\mathbb{R}^n\to \mathbb{R}$
-			is called \textbf{Lyapunov function}.
-		\end{definition}
-	\end{sstOnlyFrame}
+      then  $V:\mathbb{R}^n\to \mathbb{R}$
+      is called \textbf{Lyapunov function}.
+    \end{definition}
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{theorem}
-			If a system admits a Lyapunov function $V(x)$,
-			then $\bar{\mathbf{x}} = 0$ is
-			\textbf{globally asymptotically stable}.
-		\end{theorem}
-	\end{sstOnlyFrame}
+  \begin{sstOnlyFrame}[Plum]
+    \begin{theorem}
+      If a system admits a Lyapunov function $V(x)$,
+      then $\bar{\mathbf{x}} = 0$ is
+      \textbf{globally asymptotically stable}.
+    \end{theorem}
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{theorem}[Lyapunov indirect method]
-			System linearized around $\bar{\mathbf{x}}=0$
-			with resulting matrix $A$ and eigenvalues $\lambda_i$.
+  \begin{sstOnlyFrame}[Plum]
+    \begin{theorem}[Lyapunov indirect method]
+      System linearized around $\bar{\mathbf{x}}=0$
+      with resulting matrix $A$ and eigenvalues $\lambda_i$.
 
-			If	$\forall |\lambda_i| < 1$
-			then the origin is asymptotically stable.
+      If  $\forall |\lambda_i| < 1$
+      then the origin is asymptotically stable.
 
-			if $\exists |\lambda_i| > 1$
-			then origin is unstable.
+      if $\exists |\lambda_i| > 1$
+      then origin is unstable.
 
-			If $\exists |\lambda_i| = 1$
-			we can't conclude anything about stability.
-		\end{theorem}
-	\end{sstOnlyFrame}
+      If $\exists |\lambda_i| = 1$
+      we can't conclude anything about stability.
+    \end{theorem}
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{minipage}[c]{0.34\linewidth}
-			\textbf{Discrete-Time}
+  \begin{sstOnlyFrame}[Plum]
+    \begin{minipage}[c]{0.34\linewidth}
+      \textbf{Discrete-Time}
 
-			\textbf{Lyapunov equation}
-		\end{minipage}
-		\begin{minipage}[b]{0.64\linewidth}
-			\begin{equation}
-				A^TPA-P=-Q,\quad Q>0
-				\label{lipunov:dt}
-			\end{equation}
-		\end{minipage}
-	\end{sstOnlyFrame}
+      \textbf{Lyapunov equation}
+    \end{minipage}
+    \begin{minipage}[b]{0.64\linewidth}
+      \begin{equation}
+        A^TPA-P=-Q,\quad Q>0
+        \label{lipunov:dt}
+      \end{equation}
+    \end{minipage}
+  \end{sstOnlyFrame}
 
-	\begin{sstOnlyFrame}[Plum]
-		\begin{theorem}[Existence of solution, DT Lyapunov equation]
-			The discrete-time Lyapunov equation has a unique solution
-			$P > 0$
-			% iff $A$ has all eigenvalues inside the unit circle, i.e.
-			iff the system $x(k+1) = Ax(k)$ is stable.
-		\end{theorem}
-	\end{sstOnlyFrame}
+  \begin{sstOnlyFrame}[Plum]
+    \begin{theorem}[Existence of solution, DT Lyapunov equation]
+      The discrete-time Lyapunov equation has a unique solution
+      $P > 0$
+      % iff $A$ has all eigenvalues inside the unit circle, i.e.
+      iff the system $x(k+1) = Ax(k)$ is stable.
+    \end{theorem}
+  \end{sstOnlyFrame}
 \end{sstTitleBox}

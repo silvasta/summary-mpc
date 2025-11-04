@@ -8,26 +8,26 @@ state $x_s$ if $z_s = Hx_s = r$
 i.e. $x_s = Ax_s + Bu_s$
 
 \begin{align*}
-	\begin{aligned}
-		x_s & = Ax_s + Bu_s \\
-		z_s & = Hx_s = r
-	\end{aligned}
-	\ \Longleftrightarrow \
-	\begin{aligned}
-		\begin{bmatrix}
-			\mathbb{I} - A & -B \\
-			H              & 0
-		\end{bmatrix}
-		\begin{bmatrix}
-			x_s \\
-			u_s
-		\end{bmatrix}
-		=
-		\begin{bmatrix}
-			0 \\
-			r
-		\end{bmatrix}
-	\end{aligned}
+  \begin{aligned}
+    x_s & = Ax_s + Bu_s \\
+    z_s & = Hx_s = r
+  \end{aligned}
+  \ \Longleftrightarrow \
+  \begin{aligned}
+    \begin{bmatrix}
+      \mathbb{I} - A & -B \\
+      H              & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_s \\
+      u_s
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      0 \\
+      r
+    \end{bmatrix}
+  \end{aligned}
 \end{align*}
 
 $\nexists$ solution
@@ -41,9 +41,9 @@ compute
 $\min u_s^\top R_s u_s$
 (cheapest)
 \[
-	\min_U |z_N - Hx_s|_{P_z}^2
-	\!+\! \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
-	+ | u_i - u_s |_{R}^2
+  \min_U |z_N - Hx_s|_{P_z}^2
+  \!+\! \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
+  + | u_i - u_s |_{R}^2
 \]
 
 \subsection{Offset-free Reference Tracking}
@@ -51,23 +51,23 @@ $\min u_s^\top R_s u_s$
 \subsubsection{Reference Tracking}
 
 \begin{align*}
-	 &
-	\begin{aligned}
-		\Delta x_{k+1}
-		 & = x_{k+1} -x_s                          \\
-		 & = A\Delta x_k + B u_k - (A x_s + B u_s) \\
-		 & = A\Delta x_k + B\Delta u_k             \\
-	\end{aligned}
-	\\&
-	\begin{aligned}
-		G_x  x & \leq h_x \\
-		G_u  u & \leq h_u
-	\end{aligned}
-	\ \Rightarrow \
-	\begin{aligned}
-		G_x \Delta x & \leq h_x - G_x x_s \\
-		G_u \Delta u & \leq h_u - G_u u_s
-	\end{aligned}
+  &
+  \begin{aligned}
+    \Delta x_{k+1}
+    & = x_{k+1} -x_s                          \\
+    & = A\Delta x_k + B u_k - (A x_s + B u_s) \\
+    & = A\Delta x_k + B\Delta u_k             \\
+  \end{aligned}
+  \\&
+  \begin{aligned}
+    G_x  x & \leq h_x \\
+    G_u  u & \leq h_u
+  \end{aligned}
+  \ \Rightarrow \
+  \begin{aligned}
+    G_x \Delta x & \leq h_x - G_x x_s \\
+    G_u \Delta u & \leq h_u - G_u u_s
+  \end{aligned}
 \end{align*}
 .
 \subsubsection{Convergence}
@@ -77,33 +77,34 @@ $x_s \in \mathcal{X}, u_s \in \mathcal{U}$,
 choose terminal weight $V_f(x)$ and constraint $\mathcal{X}_f$
 as in regulation case satisfying
 \[
-	V_f(x(k+1)) - V_f(x(k)) \leq -l(x(k), Kx(k))
+  V_f(x(k+1)) - V_f(x(k)) \leq -l(x(k), Kx(k))
 \]
 \[
-	\text{and }
-	(A+BK) x \in \mathcal{X} \quad \forall x \in \mathcal{X}_f
-	\text{ for both}
+  \text{and }
+  (A+BK) x \in \mathcal{X} \quad \forall x \in \mathcal{X}_f
+  \text{ for both}
 \]
 If in addition the target reference $x_s, u_s$ is such that
 \[
-	x_s \oplus \mathcal{X}_f \subseteq \mathcal{X}, K\Delta x + u_s \in \mathcal{U}, \quad \forall \Delta x \in \mathcal{X}_f
+  x_s \oplus \mathcal{X}_f \subseteq \mathcal{X}, K\Delta x + u_s \in
+  \mathcal{U}, \quad \forall \Delta x \in \mathcal{X}_f
 \]
 then the closed loop system converges to the target reference.
 
 \begin{proof}
-	Invariance under local control law is inherited from regulation case.
-	Constraint satisfaction is provided by extra conditions and
-	convergence comes from the asymptotic stability of the regulation problem:
-	$\Delta x(k)\rightarrow0$ for $k\rightarrow\infty$
+  Invariance under local control law is inherited from regulation case.
+  Constraint satisfaction is provided by extra conditions and
+  convergence comes from the asymptotic stability of the regulation problem:
+  $\Delta x(k)\rightarrow0$ for $k\rightarrow\infty$
 \end{proof}
 
 \textbf{Terminal set} use
 $\mathcal{X}_f^{\text{scaled}} = \alpha \mathcal{X}_f$
 (s.t. constraints satisfied)
 
+\input{diagram/tracking-diagram.tex}
 
 \subsubsection{Disturbance Cancellation}
-
 
 \textbf{Approach}
 Model the disturbance,
@@ -114,149 +115,150 @@ the disturbance estimate to remove offset.
 
 \textbf{Augmented Model}
 \begin{align*}
-	x_{k+1} & = Ax_k + Bu_k + B_d d_k \\
-	y_k     & = Cx_k + C_d d_k
+  x_{k+1} & = Ax_k + Bu_k + B_d d_k \\
+  y_k     & = Cx_k + C_d d_k
 \end{align*}
 \textbf{Constant disturbance}
 $d_{k+1}  = d_k$
 
 Observable iff
-$\begin{bsmallmatrix}
-		A - I & B_d \\ C & C_d
-	\end{bsmallmatrix}$
+$
+\begin{bsmallmatrix}
+  A - I & B_d \\ C & C_d
+\end{bsmallmatrix}$
 has full rank (assuming $n_x = n_d)$
 
 \textbf{Observer For Augmented Model}
 
 $
-	\begin{bmatrix}
-		\hat{x}_{k+1} \\
-		\hat{d}_{k+1}
-	\end{bmatrix}
-	\!=\!
-	\begin{bmatrix}
-		A & \hspace{-2mm} B_d       \\
-		0 & \hspace{-2mm}\mathbb{I}
-	\end{bmatrix}
-	\begin{bmatrix}
-		\hat{x}_{k} \\
-		\hat{d}_{k}
-	\end{bmatrix}
-	\!+\!
-	\begin{bmatrix}
-		B \\
-		0
-	\end{bmatrix}
-	\!u_{k}
-	+
-	\hspace{-.5mm}
-	\begin{bmatrix}
-		L_x \\
-		L_d
-	\end{bmatrix}
-	\hspace{-.5mm}
-	(C\hat{x}_{k} \!+\! C_d \hat{d}_{k}-y_{k})
+\begin{bmatrix}
+  \hat{x}_{k+1} \\
+  \hat{d}_{k+1}
+\end{bmatrix}
+\!=\!
+\begin{bmatrix}
+  A & \hspace{-2mm} B_d       \\
+  0 & \hspace{-2mm}\mathbb{I}
+\end{bmatrix}
+\begin{bmatrix}
+  \hat{x}_{k} \\
+  \hat{d}_{k}
+\end{bmatrix}
+\!+\!
+\begin{bmatrix}
+  B \\
+  0
+\end{bmatrix}
+\!u_{k}
++
+\hspace{-.5mm}
+\begin{bmatrix}
+  L_x \\
+  L_d
+\end{bmatrix}
+\hspace{-.5mm}
+(C\hat{x}_{k} \!+\! C_d \hat{d}_{k}-y_{k})
 $
-
 
 \textbf{Error Dynamics} $\Rightarrow$
 choose $L$ s.t error dynamics converge to $0$
 \begin{align*}
-	\begin{bsmallmatrix}
-		x_{k+1} - \hat{x}_{k+1} \\
-		d_{k+1} - \hat{d}_{k+1}
-	\end{bsmallmatrix}
-	= \left(
-	\begin{bsmallmatrix}
-		A & B_d        \\
-		0 & \mathbb{I}
-	\end{bsmallmatrix}
-	+
-	\begin{bsmallmatrix}
-		L_x \\
-		L_d
-	\end{bsmallmatrix}
-	\begin{bsmallmatrix}
-		C & C_d
-	\end{bsmallmatrix}
-	\right)
-	\begin{bsmallmatrix}
-		x_{k} - \hat{x}_{k} \\
-		d_{k} - \hat{d}_{k}
-	\end{bsmallmatrix}
+  \begin{bsmallmatrix}
+    x_{k+1} - \hat{x}_{k+1} \\
+    d_{k+1} - \hat{d}_{k+1}
+  \end{bsmallmatrix}
+  = \left(
+    \begin{bsmallmatrix}
+      A & B_d        \\
+      0 & \mathbb{I}
+    \end{bsmallmatrix}
+    +
+    \begin{bsmallmatrix}
+      L_x \\
+      L_d
+    \end{bsmallmatrix}
+    \begin{bsmallmatrix}
+      C & C_d
+    \end{bsmallmatrix}
+  \right)
+  \begin{bsmallmatrix}
+    x_{k} - \hat{x}_{k} \\
+    d_{k} - \hat{d}_{k}
+  \end{bsmallmatrix}
 \end{align*}
 
 \begin{lemma}
-	Steady-state of an asym. stable
-	observer satisfies:
-	\begin{align*}
-		\begin{bmatrix}
-			A-\mathbb{I} & B \\
-			C            & 0
-		\end{bmatrix}
-		\begin{bmatrix}
-			\hat{x}_\infty \\
-			u_\infty
-		\end{bmatrix}
-		=
-		\begin{bmatrix}
-			-B_d \hat{d}_\infty \\
-			y_\infty - C_d \hat{d}_\infty
-		\end{bmatrix}
-		\ (\text{for }n_y = n_d)
-	\end{align*}
-	$\Rightarrow$ Observer output $C\hat{x}_\infty + C_d \hat{d}_\infty$ tracks $y_\infty$ without offset
+  Steady-state of an asym. stable
+  observer satisfies:
+  \begin{align*}
+    \begin{bmatrix}
+      A-\mathbb{I} & B \\
+      C            & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+      \hat{x}_\infty \\
+      u_\infty
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      -B_d \hat{d}_\infty \\
+      y_\infty - C_d \hat{d}_\infty
+    \end{bmatrix}
+    \ (\text{for }n_y = n_d)
+  \end{align*}
+  $\Rightarrow$ Observer output $C\hat{x}_\infty + C_d
+  \hat{d}_\infty$ tracks $y_\infty$ without offset
 \end{lemma}
 
 \subsubsection{Reference Tracking with Disturbance Cancellation}
-
 
 \textbf{Goal}
 Track constant reference:
 $Hy(k) = z(k) \to r$, $k\to\infty$
 %
 \begin{align*}
-	x_s & = Ax_s + Bu_s +B_d\hat{d}_\infty  \\
-	z_s & = H(Cx_s + C_d\hat{d}_\infty) = r
+  x_s & = Ax_s + Bu_s +B_d\hat{d}_\infty  \\
+  z_s & = H(Cx_s + C_d\hat{d}_\infty) = r
 \end{align*}
 \begin{align*}
-	\begin{bmatrix}
-		A-I & B \\
-		HC  & 0
-	\end{bmatrix}
-	\begin{bmatrix}
-		x_s \\
-		u_s
-	\end{bmatrix}
-	=
-	\begin{bmatrix}
-		0 \\
-		r-HC_d\hat{d}
-	\end{bmatrix}
+  \begin{bmatrix}
+    A-I & B \\
+    HC  & 0
+  \end{bmatrix}
+  \begin{bmatrix}
+    x_s \\
+    u_s
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    0 \\
+    r-HC_d\hat{d}
+  \end{bmatrix}
 \end{align*}
 %
 
-\input{tracking-diagram.tex}
-
 \begin{sstTitleBox}[BrickRed]{
-		Offset-free Tracking - Main Result
-	}
-	\begin{sstOnlyFrame}[BrickRed]
-		\begin{theorem}
-			Assuming RHC recursively feasible, $n_d = n_y$,
-			unconstrained for $k \geq j$,
-			and the closed loop system
-			\begin{align*}
-				x(k+1)        = & Ax(k) + B\kappa(\cdot) + B_d d
-				\ \  \text{with }(\cdot)=(\hat{x},\hat{d},r)                                     \\
-				\hat{x}(k+1)  = & (A + L_x C)\hat{x}(k) + (B_d + L_x C_d)\hat{d}(k)              \\
-				                & + B\kappa(\cdot) - L_x y(k)                                    \\
-				\hat{d}(k+1)  = & L_d C \hat{x}(k) + (\mathbb{I} + L_d C_d)\hat{d}(k) - L_d y(k)
-			\end{align*}
-			converges, then $z(k) = Hy(k) \to r$
-			as $k\to\infty$
-		\end{theorem}
-	\end{sstOnlyFrame}
+    Offset-free Tracking - Main Result
+  }
+  \begin{sstOnlyFrame}[BrickRed]
+    \begin{theorem}
+      Assuming RHC recursively feasible, $n_d = n_y$,
+      unconstrained for $k \geq j$,
+      and the closed loop system
+      \begin{align*}
+        x(k+1)        = & Ax(k) + B\kappa(\cdot) + B_d d
+        \ \  \text{with }(\cdot)=(\hat{x},\hat{d},r)
+        \\
+        \hat{x}(k+1)  = & (A + L_x C)\hat{x}(k) + (B_d + L_x
+        C_d)\hat{d}(k)              \\
+        & + B\kappa(\cdot) - L_x y(k)                                    \\
+        \hat{d}(k+1)  = & L_d C \hat{x}(k) + (\mathbb{I} + L_d
+        C_d)\hat{d}(k) - L_d y(k)
+      \end{align*}
+      converges, then $z(k) = Hy(k) \to r$
+      as $k\to\infty$
+    \end{theorem}
+  \end{sstOnlyFrame}
 \end{sstTitleBox}
 
 \subsection{Soft Constraints}
@@ -271,66 +273,64 @@ on the allowed operating range and are \textbf{rarely hard}
 \textbf{complications in the controller implementation}
 
 \begin{sstTitleBox}{
-		Soft Constrained MPC
-	}
+    Soft Constrained MPC
+  }
 
-	\begin{sstOnlyFrame}
-		\begin{equation}
-			\min_u\sum_{i=0}^{N-1}
-			x_i^\top Q x_i + u_i^\top R u_i
-			+\color{BrickRed}l_\epsilon(\epsilon_i)\color{black}
-			+x_N^\top P x_i
-			+\color{BrickRed}l_\epsilon(\epsilon_N)
-		\end{equation}
+  \begin{sstOnlyFrame}
+    \begin{equation}
+      \min_u\sum_{i=0}^{N-1}
+      x_i^\top Q x_i + u_i^\top R u_i
+      +\color{BrickRed}l_\epsilon(\epsilon_i)\color{black}
+      +x_N^\top P x_i
+      +\color{BrickRed}l_\epsilon(\epsilon_N)
+    \end{equation}
 
-		\vspace{-7mm}
-		\begin{minipage}[b]{0.45\linewidth}
-			\textbf{Quadratic penalty}
+    \vspace{-7mm}
+    \begin{minipage}[b]{0.45\linewidth}
+      \textbf{Quadratic penalty}
 
-			$l_\epsilon(\epsilon_i) = \epsilon_i^\top S \epsilon_i$
+      $l_\epsilon(\epsilon_i) = \epsilon_i^\top S \epsilon_i$
 
-			\quad			(e.g $S = Q$)
+      \quad      (e.g $S = Q$)
 
-			\textbf{+ linear norm penalty}
+      \textbf{+ linear norm penalty}
 
-			$l_\epsilon(\epsilon_i) +=
-				v|\epsilon_i|_{1/\infty}$
-		\end{minipage}
-		\begin{minipage}[b]{0.54\linewidth}
-			\begin{align*}
-				\textbf{Constraints}
-				\\
-				x_{i+1}    & =Ax_i + Bu_i       \\
-				H_xx_i     & \le k_x+\epsilon_i \\
-				H_uu_i     & \le k_u            \\
-				\epsilon_i & \ge0
-				\ \
-				\text{slack variable }
-			\end{align*}
-		\end{minipage}
-	\end{sstOnlyFrame}
-	\begin{sstOnlyFrame}
-		\begin{minipage}[t]{0.44\linewidth}
-			\begin{align*}
-				\textbf{Original}
-				\quad
-				\min_z       & f(z)     \\
-				\text{s.t. } & g(z)\le0
-			\end{align*}
-		\end{minipage}
-		\begin{minipage}[t]{0.55\linewidth}
-			\begin{align*}
-				\textbf{Softened}
-				\quad
-				\min_{z,\epsilon}  f(z) & +l_\epsilon(\epsilon) \\
-				\text{s.t. }       g(z) & \le \epsilon          \\
-				\epsilon                & \ge0
-			\end{align*}
-		\end{minipage}
-	\end{sstOnlyFrame}
+      $l_\epsilon(\epsilon_i) +=
+      v|\epsilon_i|_{1/\infty}$
+    \end{minipage}
+    \begin{minipage}[b]{0.54\linewidth}
+      \begin{align*}
+        \textbf{Constraints}
+        \\
+        x_{i+1}    & =Ax_i + Bu_i       \\
+        H_xx_i     & \le k_x+\epsilon_i \\
+        H_uu_i     & \le k_u            \\
+        \epsilon_i & \ge0
+        \ \
+        \text{slack variable }
+      \end{align*}
+    \end{minipage}
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \begin{minipage}[t]{0.44\linewidth}
+      \begin{align*}
+        \textbf{Original}
+        \quad
+        \min_z       & f(z)     \\
+        \text{s.t. } & g(z)\le0
+      \end{align*}
+    \end{minipage}
+    \begin{minipage}[t]{0.55\linewidth}
+      \begin{align*}
+        \textbf{Softened}
+        \quad
+        \min_{z,\epsilon}  f(z) & +l_\epsilon(\epsilon) \\
+        \text{s.t. }       g(z) & \le \epsilon          \\
+        \epsilon                & \ge0
+      \end{align*}
+    \end{minipage}
+  \end{sstOnlyFrame}
 \end{sstTitleBox}
-
-
 
 \textbf{Requirement on $l_\epsilon(\epsilon)$}
 If the original problem has a feasible solution $z^\star$,
@@ -338,6 +338,8 @@ then the softened problem should have the same solution $z^\star$,
 and $\epsilon = 0$.
 
 \begin{theorem}[Exact Penalty Funtcion]
-	$l_\epsilon(\epsilon) = v \cdot \epsilon$ satisfies requirement for any $v > \lambda^\star \geq 0$,
-	where $\lambda^\star$ is optimal Lagrange multiplier for original problem
+  $l_\epsilon(\epsilon) = v \cdot \epsilon$ satisfies requirement for
+  any $v > \lambda^\star \geq 0$,
+  where $\lambda^\star$ is optimal Lagrange multiplier for original problem
 \end{theorem}
+
