@@ -191,47 +191,46 @@ $\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$
 
 \subsection{Computing Invariant Sets and Pre-sets}
 
-\begin{sstTitleBox}[ForestGreen]{
-    Conceptual Algorithm
-  }
+% TODO: Conceptual Algorithm
+% \begin{sstTitleBox}[ForestGreen]{
+%   }
+%   \begin{minipage}{0.53\linewidth}
+%     \begin{sstFullFrame}[ForestGreen]
+%       \color{white}
+%       \begin{algorithmic}
+%         \State $\Omega_0 \leftarrow \mathcal{X}$
+%         \Loop
+%         \State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+%         \If{$\Omega_{i+1}=\Omega_i$}
+%         \State\Return $\mathcal{O}_\infty = \Omega_i$
+%         \EndIf
+%         \EndLoop
+%       \end{algorithmic}
+%     \end{sstFullFrame}
+%   \end{minipage}
+%   \begin{minipage}{0.46\linewidth}
+%     \begin{sstOnlyFrame}[ForestGreen]
+%       \textbf{Pseudo algorithm}
+%
+%       Inputs, outputs, especially
+%       pre-set calculation will be different,
+%       the overall concept not, used for:
+%
+%       \textbf{Invariant Sets}
+%
+%       \textbf{Control Invariant Sets}
+%
+%       \textbf{Robust Invariant Sets}
+%
+%     \end{sstOnlyFrame}
+%   \end{minipage}
+%   \begin{sstOnlyFrame}[ForestGreen]
+%     Replace Intersection with Minkowski Sum and
+%     Pre-Set with $A^i\mathcal{W}$ to get an Idea for
+%     \textbf{Minimum Robust Invariant set}
+%   \end{sstOnlyFrame}
+% \end{sstTitleBox}
 
-  \begin{minipage}{0.53\linewidth}
-    \begin{sstFullFrame}[ForestGreen]
-      \color{white}
-      % \begin{algorithmic}
-      %   \State $\Omega_0 \leftarrow \mathcal{X}$
-      %   \Loop
-      %   \State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
-      %   \If{$\Omega_{i+1}=\Omega_i$}
-      %   \State\Return $\mathcal{O}_\infty = \Omega_i$
-      %   \EndIf
-      %   \EndLoop
-      % \end{algorithmic}
-    \end{sstFullFrame}
-  \end{minipage}
-  \begin{minipage}{0.46\linewidth}
-    \begin{sstOnlyFrame}[ForestGreen]
-      \textbf{Pseudo algorithm}
-
-      Inputs, outputs, especially
-      pre-set calculation will be different,
-      the overall concept not, used for:
-
-      \textbf{Invariant Sets}
-
-      \textbf{Control Invariant Sets}
-
-      \textbf{Robust Invariant Sets}
-
-    \end{sstOnlyFrame}
-  \end{minipage}
-  \begin{sstOnlyFrame}[ForestGreen]
-    Replace Intersection with Minkowski Sum and
-    Pre-Set with $A^i\mathcal{W}$ to get an Idea for
-    \textbf{Minimum Robust Invariant set}
-  \end{sstOnlyFrame}
-\end{sstTitleBox}
-\vspace{-3mm}
 \begin{align*}
   \intertext{\textbf{System for \ssthl{ Pre-Set Computation }}}
   x(k+1)                             & = Ax(k) +Bu(k)
