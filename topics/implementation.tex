@@ -9,23 +9,25 @@ Two options to solve it:
 
 - Explicit solution
 
-
 Let $I := {1, . . . , m}$ be the set of constraint indices.
 \begin{definition}
-	[Active Set]
-	$A(x)$ and it's complement $NA(x)$
-	\begin{align*}
-		A(x) :=  & \{j\in I: G_jz^\star(x) - S_jx = w_j \} \\
-		NA(x) := & \{j\in I: G_jz^\star(x) - S_jx < w_j \}
-	\end{align*}
+  [Active Set]
+  $A(x)$ and it's complement $NA(x)$
+  \begin{align*}
+    A(x) :=  & \{j\in I: G_jz^\star(x) - S_jx = w_j \} \\
+    NA(x) := & \{j\in I: G_jz^\star(x) - S_jx < w_j \}
+  \end{align*}
 \end{definition}
 
 \begin{definition}[Critical Region]
-	$CR_A$ is set of parameters $x$ for which set $A\subseteq I$ of constraints $i$ active at the optimum.
-	For given $\bar{x} \in \mathcal{K}^\star$ let $(A,NA) := (A(\bar{x}), NA(\bar{X}))$. Then
-	\begin{align*}
-		CR_A := \{x\in\mathcal{K}^\star : A(x) = A\} \quad \text{(states share active set)}
-	\end{align*}
+  $CR_A$ is set of parameters $x$ for which set $A\subseteq I$ of
+  constraints $i$ active at the optimum.
+  For given $\bar{x} \in \mathcal{K}^\star$ let $(A,NA) :=
+  (A(\bar{x}), NA(\bar{X}))$. Then
+  \begin{align*}
+    CR_A := \{x\in\mathcal{K}^\star : A(x) = A\} \quad \text{(states
+    share active set)}
+  \end{align*}
 \end{definition}
 
 \textbf{Online evaluation: Point location}
@@ -34,47 +36,45 @@ Sequential search
 
 Logarithmic search
 
-
-
 \subsubsection{Large Scale Convex Optimization}
 
 \begin{definition}[Lipschitz continuity]
-	$q: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}$
-	is Lipschitz with constant $L$ if:
-	$|q(x)-q(y)| \le L |x-y| \forall x,y \in \mathbb{R}^{m}$
+  $q: \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}$
+  is Lipschitz with constant $L$ if:
+  $|q(x)-q(y)| \le L |x-y| \forall x,y \in \mathbb{R}^{m}$
 \end{definition}
 \vspace{-4mm}
 $$f \text{ is\textbf{ Lipschitz }(Lip) with constant } L
-	\Leftrightarrow
-	|\nabla f(x)|_2\le L$$
+\Leftrightarrow
+|\nabla f(x)|_2\le L$$
 \vspace{-4mm}
 
 \begin{theorem}
-	$\mathcal{C} \subseteq \mathbb{R}^{n}$ non-empty closed \textbf{(cl)} convex set, $y \notin \mathcal{C}$
-	$\rightarrow \exists\ a \ne 0, b \in \mathbb{R}$
-	s.t. $a\T x + b < a\T y + b,
-		\forall x \in \mathcal{C}$
+  $\mathcal{C} \subseteq \mathbb{R}^{n}$ non-empty closed
+  \textbf{(cl)} convex set, $y \notin \mathcal{C}$
+  $\rightarrow \exists\ a \ne 0, b \in \mathbb{R}$
+  s.t. $a^T x + b < a^T y + b,
+  \forall x \in \mathcal{C}$
 \end{theorem}
 
-
 \begin{definition}[smoothness]
-	$f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
-	is $L$-smooth \textbf{($L$-sm)} if
-	$\nabla f(x)$
-	satisfies
-	$|\nabla f(x)-\nabla f(y)|\le L|x-y|$
-	$\forall x,y \in \mathbb{R}^{n}$
+  $f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
+  is $L$-smooth \textbf{($L$-sm)} if
+  $\nabla f(x)$
+  satisfies
+  $|\nabla f(x)-\nabla f(y)|\le L|x-y|$
+  $\forall x,y \in \mathbb{R}^{n}$
 \end{definition}
 
 Taylor
 $\rightarrow$
-$f(y)\le f(x)+\nabla f(x)\T (y-x) +\frac{L}{2}|x-y|^2$
+$f(y)\le f(x)+\nabla f(x)^T (y-x) +\frac{L}{2}|x-y|^2$
 
 \begin{definition}[strong convexity]
-	$f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
-	is $\mu$-strongly convex \textbf{($\mu$-scv)} if
-	$f(y)\ge f(x)+\nabla f(x)\T(y-x)+\frac{\mu}{2}|x-y|^2$
-	% $\forall x,y \in \mathbb{R}^{n}$
+  $f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
+  is $\mu$-strongly convex \textbf{($\mu$-scv)} if
+  $f(y)\ge f(x)+\nabla f(x)^T(y-x)+\frac{\mu}{2}|x-y|^2$
+  % $\forall x,y \in \mathbb{R}^{n}$
 \end{definition}
 
 \textbf{How to find $\mu/L$},
@@ -88,31 +88,28 @@ $k = (k_0,\dots,k_N)$
 given
 $x_0,T$
 
-
 \textbf{Line search}
 optimal step
 $\nu_t^*=\argmin_{\nu\in\mathbb{R}}f(x_t-\nu\nabla f(x_t))$
 
-
 \begin{definition}[]
-	\textcolor{hltext}{\hl{ $\operatorname{prox}_\mathcal{C}(x)=$
-	$\operatorname{argmin}_{y\in\mathcal{C}}\frac{1}{2}|x-y|^2$ }}
-	$\mathcal{C}\subset \mathbb{R}^{n}$
+  \textcolor{hltext}{\hl{ $\operatorname{prox}_\mathcal{C}(x)=$
+  $\operatorname{argmin}_{y\in\mathcal{C}}\frac{1}{2}|x-y|^2$ }}
+  $\mathcal{C}\subset \mathbb{R}^{n}$
 \end{definition}
 
 \begin{lemma}
-	cl, cv
-	$\mathcal{C}\subset \mathbb{R}^{n}$
-	$\rightarrow$
-	$|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|$
-	$\le$
-	$|x-y|$
-	$\leftarrow$
-	$|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|^2$
-	$\le$
-	$(\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y))\T(x-y)$
+  cl, cv
+  $\mathcal{C}\subset \mathbb{R}^{n}$
+  $\rightarrow$
+  $|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|$
+  $\le$
+  $|x-y|$
+  $\leftarrow$
+  $|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|^2$
+  $\le$
+  $(\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y))^T(x-y)$
 \end{lemma}
-
 
 \textbf{Projected Gradient Descent}
 
@@ -120,7 +117,7 @@ $x_{k+1}=\operatorname{prox}_\mathcal{C}(x_k-T\nabla f(x_k))$,
 for $x_0,k_{0..N},T\in(0,2/L)$
 
 \begin{adjustbox}{rndcorners=0.5mm}
-	\begin{lstlisting}[style=sst]
+  \begin{lstlisting}[style=sst]
 def get_next_u(y: Measurement, r: Reference):
     """
     System handler for offset-free tracking
@@ -139,34 +136,39 @@ def get_next_u(y: Measurement, r: Reference):
 \end{adjustbox}
 
 \begin{sstTitleBox}[black]
-	{\textbf{TRANSFORM P-Nj}}
-	\footnotesize
-	\textbf{$\ell_\infty$-Minimization}
-	\begin{sstOnlyFrame}[black]
-		\[
-			\begin{aligned}
-				\min_{x\in\mathbb{R}^m} & \lvert\lvert x \rvert\rvert_\infty \\
-				\mathrm{subj.\ to }\    & Fx \leq g
-			\end{aligned}
-			\quad \Longleftrightarrow \quad
-			\begin{aligned}
-				\min_{x, t}           & t                                                             \\
-				\mathrm{subj.\ to }\  & -\boldsymbol{1_m}t \leq x \leq \boldsymbol{1_m}t, \ Fx \leq g
-			\end{aligned}
-		\]
-	\end{sstOnlyFrame}
-	\textbf{$\ell_1$-Minimization}
-	\begin{sstFullFrame}[yellow]
-		\[
-			\begin{aligned}
-				\min_{x\in\mathbb{R}^m} & \lvert\lvert x \rvert\rvert_1 \\
-				\mathrm{subj.\ to }\    & Fx \leq g
-			\end{aligned}
-			\quad \Longleftrightarrow \quad
-			\begin{aligned}
-				\min_{x\in\mathbb{R}^m, t\in\mathbb{R}^m} & \boldsymbol{1_m}^\top t       \\
-				\mathrm{subj.\ to }\                      & -t \leq x \leq t, \ Fx \leq g
-			\end{aligned}
-		\]
-	\end{sstFullFrame}
+  {\textbf{TRANSFORM P-Nj}}
+  \footnotesize
+  \textbf{$\ell_\infty$-Minimization}
+  \begin{sstOnlyFrame}[black]
+    \[
+      \begin{aligned}
+        \min_{x\in\mathbb{R}^m} & \lvert\lvert x \rvert\rvert_\infty \\
+        \mathrm{subj.\ to }\    & Fx \leq g
+      \end{aligned}
+      \quad \Longleftrightarrow \quad
+      \begin{aligned}
+        \min_{x, t}           & t
+        \\
+        \mathrm{subj.\ to }\  & -\boldsymbol{1_m}t \leq x \leq
+        \boldsymbol{1_m}t, \ Fx \leq g
+      \end{aligned}
+    \]
+  \end{sstOnlyFrame}
+  \textbf{$\ell_1$-Minimization}
+  \begin{sstFullFrame}[yellow]
+    \[
+      \begin{aligned}
+        \min_{x\in\mathbb{R}^m} & \lvert\lvert x \rvert\rvert_1 \\
+        \mathrm{subj.\ to }\    & Fx \leq g
+      \end{aligned}
+      \quad \Longleftrightarrow \quad
+      \begin{aligned}
+        \min_{x\in\mathbb{R}^m, t\in\mathbb{R}^m} &
+        \boldsymbol{1_m}^\top t       \\
+        \mathrm{subj.\ to }\                      & -t \leq x \leq t,
+        \ Fx \leq g
+      \end{aligned}
+    \]
+  \end{sstFullFrame}
 \end{sstTitleBox}
+

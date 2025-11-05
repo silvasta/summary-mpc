@@ -5,7 +5,9 @@
 % ----------------------------------------------------------------
 % Document Type
 % ----------------------------------------------------------------
-\documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
+% \documentclass{sst-custom}
+\documentclass{sst-custom}[layout=regular, columns=2]
+% \documentclass[layout=summary, columns=4,secnumdepth=2,tight]{sst-custom}
 % \documentclass[layout=preview,secnumdepth=2,tight]{sst-custom}
 % ----------------------------------------------------------------
 
@@ -14,50 +16,53 @@
 % ---------------------------------------------------------------
 \begin{document}
 
-\iftoggle{do-multicol}{ \begin{multicols*}{\numcolumns}}{}
-		%-----------------------------------------------------------------
-		% %%% Debug
-		% Column width is: \the\columnwidth\\
-		% Preview width is: \the\previewwidth
-		%-----------------------------------------------------------------
-		\input{title/title-blue-grey.tex}
-		%-----------------------------------------------------------------
-		\iftoggle{use-small-font}{\footnotesize}{}
-		%-----------------------------------------------------------------
-		\tableofcontents
-		%-----------------------------------------------------------------
-		\input{topics/requirements-mpc.tex}
-		%-----------------------------------------------------------------
-		% MPC
-		%-----------------------------------------------------------------
-		\section{Nominal MPC}
-		\input{topics/nominal-mpc.tex}
-		%-----------------------------------------------------------------
-		\section{Practical MPC}
-		\input{topics/practical-mpc.tex}
-		%-----------------------------------------------------------------
-		\section{Robust MPC}
-		\input{topics/robust-mpc.tex}
-		%-----------------------------------------------------------------
-		% Important Mathematical Tools
-		%-----------------------------------------------------------------
-		\section{Invariance}
-		\input{topics/invariance.tex}
-		%-----------------------------------------------------------------
-		\section{Optimization}
-		\input{topics/optimization.tex}
-		%-----------------------------------------------------------------
-		% Background
-		%-----------------------------------------------------------------
-		\section{Introduction to Systems and Controls}
-		\input{topics/models-and-systems.tex}
-		%-----------------------------------------------------------------
-		\section{Optimal Control}
-		\input{topics/optimal-control.tex}
-		%-----------------------------------------------------------------
-		\section{Implementation, needed?}
-		\input{topics/implementation.tex}
-		%-----------------------------------------------------------------
-		\iftoggle{do-multicol}{\end{multicols*}}{}
+\iftoggle{do-multicol}{
+\begin{multicols*}{\numcolumns}}{}
+  %-----------------------------------------------------------------
+  % %%% Debug
+  % Column width is: \the\columnwidth\\
+  % Preview width is: \the\previewwidth
+  %-----------------------------------------------------------------
+  \input{title/title-blue-grey.tex}
+  %-----------------------------------------------------------------
+  \iftoggle{use-small-font}{\footnotesize}{}
+  %-----------------------------------------------------------------
+  \tableofcontents
+  %-----------------------------------------------------------------
+  \input{topics/requirements-mpc.tex}
+  %-----------------------------------------------------------------
+  % MPC
+  %-----------------------------------------------------------------
+  \section{Nominal MPC}
+  \input{topics/nominal-mpc.tex}
+  %-----------------------------------------------------------------
+  \section{Practical MPC}
+  \input{topics/practical-mpc.tex}
+  %-----------------------------------------------------------------
+  \section{Robust MPC}
+  \input{topics/robust-mpc.tex}
+  %-----------------------------------------------------------------
+  % Important Mathematical Tools
+  %-----------------------------------------------------------------
+  \section{Invariance}
+  \input{topics/invariance.tex}
+  %-----------------------------------------------------------------
+  \section{Optimization}
+  \input{topics/optimization.tex}
+  %-----------------------------------------------------------------
+  % Background
+  %-----------------------------------------------------------------
+  \section{Introduction to Systems and Controls}
+  \input{topics/models-and-systems.tex}
+  %-----------------------------------------------------------------
+  \section{Optimal Control}
+  \input{topics/optimal-control.tex}
+  %-----------------------------------------------------------------
+  \section{Implementation, needed?}
+  \input{topics/implementation.tex}
+  %-----------------------------------------------------------------
+  \iftoggle{do-multicol}{
+\end{multicols*}}{}
 
 \end{document}
+
