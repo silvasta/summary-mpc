@@ -89,10 +89,23 @@ $\mathcal{C} \subseteq  \mathbb{R}^{m}$ cv
 $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
 
 \begin{definition}[Hyperplanes]
+<<<<<<< HEAD
+  $\{x \in \mathbb{R}^n \mid a\T x=b\}$
+||||||| 1e64ddf
+	$\{x \in \mathbb{R}^n \mid a\T x=b\}$
+=======
+>>>>>>> ampc
   $\{x \in \mathbb{R}^n \mid a^T x=b\}$
 \end{definition}
 \begin{definition}[Halfspaces]
+<<<<<<< HEAD
+  $\{x \in \mathbb{R}^n \mid a\T x\le b\}$
+||||||| 1e64ddf
+	$\{x \in \mathbb{R}^n \mid a\T x\le b\}$
+=======
+>>>>>>> ampc
   $\{x \in \mathbb{R}^n \mid a^T x\le b\}$
+
   can be \textbf{open} (strict inequality)
   or \textbf{closed} (non-strict inequality)
 \end{definition}
@@ -184,7 +197,7 @@ $\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
   $f:\mathbb{R}^n \rightarrow \mathbb{R}$ cv
   $\Leftrightarrow$
   epi$(f)$ is cv set
-  \[\operatorname{epi}(f):=\{(x,t)\in \mathbb{R}^{n+1} | f(x)\le t\}\]
+  $$\operatorname{epi}(f):=\{(x,t)\in \mathbb{R}^{n+1} | f(x)\le t\}$$
 \end{definition}
 
 \textbf{Check Convexity} $f$ is convex if it is
@@ -216,15 +229,36 @@ $\rightarrow f$ convex (restriction to a line)
 \end{theorem}
 
 \textbf{Linear Programming}
+<<<<<<< HEAD
+$ \operatorname{minimize} c\T x
+||||||| 1e64ddf
+$ \operatorname{minimize} c\T x
+	\text{ s.t. } Ax-b \ge 0,\ x\ge0$
+=======
+>>>>>>> ampc
 $ \operatorname{minimize} c^T x
 \text{ s.t. } Ax-b \ge 0,\ x\ge0$
 
 Step 1:
 $\mathcal{L}(x,\lambda_1,\lambda_2) =
+<<<<<<< HEAD
+c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
+||||||| 1e64ddf
+	c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
+=======
+>>>>>>> ampc
 c^T x-\lambda_1^T (Ax-b) -\lambda_2^T x,\ \lambda_i \ge0$
 
 Step 2:
 $\underset{x \in \mathcal{\mathbb{R}}^n}{\operatorname{inf}}
+<<<<<<< HEAD
+\mathcal{L}=\lambda_1\T b$
+, if $c-A\T\lambda_1-\lambda_2=0$, else $-\infty$
+||||||| 1e64ddf
+	\mathcal{L}=\lambda_1\T b$
+, if $c-A\T\lambda_1-\lambda_2=0$, else $-\infty$
+=======
+>>>>>>> ampc
 \mathcal{L}=\lambda_1^T b$
 , if $c-A^T\lambda_1-\lambda_2=0$, else $-\infty$
 
@@ -247,6 +281,14 @@ s.t. $Gx\le h,\ Ax=b$
 
 \textbf{Second-Order Cone Program}
 
+<<<<<<< HEAD
+minimize $f\T x \text{ s.t. }
+|A_ix+b|\le c_i\T x+d_i, Fx=g$
+||||||| 1e64ddf
+minimize $f\T x \text{ s.t. }
+	|A_ix+b|\le c_i\T x+d_i, Fx=g$
+=======
+>>>>>>> ampc
 minimize $f^T x \text{ s.t. }
 |A_ix+b|\le c_i^T x+d_i, Fx=g$
 

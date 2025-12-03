@@ -2,11 +2,11 @@
 \textbf{Idea}
 Create a model by solving the systems physical equations
 \[
-	x(t) = e^{A^c(t-t_0)}x_0 +
-	\textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau
+  x(t) = e^{A^c(t-t_0)}x_0 +
+  \textstyle\int_{t_0}^{t}e^{A^c(t-\tau)}B^c u(\tau)d\tau
 \]
 \centerline{\scriptsize
-	(Exact Solution to ODE of a Linear System)}
+(Exact Solution to ODE of a Linear System)}
 
 \textbf{Problem}
 Most physical systems are nonlinear
@@ -14,7 +14,7 @@ Most physical systems are nonlinear
 \textbf{Trick}
 use First Order Taylor expansion
 $f(\bar{x}) + \left. \frac{\partial f}{\partial x^\top} \right
-	\rvert_{\bar{x}} (x-\bar{x})$
+\rvert_{\bar{x}} (x-\bar{x})$
 
 \subsection{Linearization}
 \textbf{Idea}
@@ -27,20 +27,26 @@ Find stationary operating point $x_s,u_s$
 and plug in derivative:
 %
 \begin{align*}
-	\begin{aligned}
-		\Delta \dot{x} & =\dot{x} -\dot{x_s}         \\
-		               & = A^c\Delta x + B^c\Delta u \\
-		\Delta y       & = y - y_s                   \\
-		               & = C\Delta x + D\Delta u
-	\end{aligned}
-	\hspace{1mm}
-	\begin{aligned}
-		A^c             & =  \left.\frac{\partial g}{\partial x^T}\right| _{\substack{x_s                                                                    \\u_s}}
-		\hspace{-1.4mm} & \hspace{-1.4mm}B^c                                              & =   \left.\frac{\partial g}{\partial u^T}\right| _{\substack{x_s \\u_s}}
-		\\
-		C               & =  \left.\frac{\partial h}{\partial x^T}\right| _{\substack{x_s                                                                    \\u_s}}
-		\hspace{-1.4mm} & \hspace{-1.4mm}D                                                & =   \left.\frac{\partial h}{\partial u^T}\right| _{\substack{x_s \\u_s}}
-	\end{aligned}
+  \begin{aligned}
+    \Delta \dot{x} & =\dot{x} -\dot{x_s}         \\
+    & = A^c\Delta x + B^c\Delta u \\
+    \Delta y       & = y - y_s                   \\
+    & = C\Delta x + D\Delta u
+  \end{aligned}
+  \hspace{1mm}
+  \begin{aligned}
+    A^c             & =  \left.\frac{\partial g}{\partial x^T}\right|
+    _{\substack{x_s
+    \\u_s}}
+    \hspace{-1.4mm} & \hspace{-1.4mm}B^c
+    & =   \left.\frac{\partial g}{\partial u^T}\right| _{\substack{x_s \\u_s}}
+    \\
+    C               & =  \left.\frac{\partial h}{\partial x^T}\right|
+    _{\substack{x_s
+    \\u_s}}
+    \hspace{-1.4mm} & \hspace{-1.4mm}D
+    & =   \left.\frac{\partial h}{\partial u^T}\right| _{\substack{x_s \\u_s}}
+  \end{aligned}
 \end{align*}
 
 \subsection{Discretization}
@@ -49,42 +55,42 @@ For general nonlinear systems only approximate discretization methods
 exist, such as Euler, quality depends on sampling time
 
 \begin{minipage}[t]{0.5\linewidth}
-	\textbf{Approximation}\\
-	\[
-		\dot{x}^c \approx \frac{x^c(t + T_s)-x^c(t)}{T_s}
-	\]
+  \textbf{Approximation}\\
+  \[
+    \dot{x}^c \approx \frac{x^c(t + T_s)-x^c(t)}{T_s}
+  \]
 \end{minipage}
 \begin{minipage}[t]{0.45\linewidth}
-	\textbf{Notation}
+  \textbf{Notation}
 
-	$x(k):= x^c(t_0+kT_s)$\\
-	$u(k):= u^c(t_0+kT_s)$\\
+  $x(k):= x^c(t_0+kT_s)$\\
+  $u(k):= u^c(t_0+kT_s)$\\
 \end{minipage}
 
 \textbf{Exact Discretization of Linear Time-Invariant Models}
 %
 \begin{align*}
-	x(t_{k+1}) & =
-	\underbrace{e^{A^c T_s}}
-	_{=A} x(t_k) +
-	\underbrace{\textstyle\int_{0}^{T_s}
-		e^{A^c(T_s - \tau)}B^c d\tau}
-	_{B=(A^c)^{-1}(A-I)B^c} u(t_k)
-	\\
-	x(k+N)     & = A^N x(k) + \textstyle\sum_{i=0}^{N-1}
-	A^i B u(k+N-1-i)
+  x(t_{k+1}) & =
+  \underbrace{e^{A^c T_s}}
+  _{=A} x(t_k) +
+  \underbrace{\textstyle\int_{0}^{T_s}
+  e^{A^c(T_s - \tau)}B^c d\tau}
+  _{B=(A^c)^{-1}(A-I)B^c} u(t_k)
+  \\
+  x(k+N)     & = A^N x(k) + \textstyle\sum_{i=0}^{N-1}
+  A^i B u(k+N-1-i)
 \end{align*}
 
 \subsection{Analysis of Discrete-Time LTI Systems}
 
 \textbf{Controllable}
 $
-	\text{if rank}(\mathcal{C}) = n
-	,\;
-	\mathcal{C} =
-	\begin{bmatrix}
-		B & \cdots & A^{n-1} B
-	\end{bmatrix}
+\text{if rank}(\mathcal{C}) = n
+,\;
+\mathcal{C} =
+\begin{bmatrix}
+  B & \cdots & A^{n-1} B
+\end{bmatrix}
 $
 
 $\forall(x(0),x^*)\exists$ finite time $N$
@@ -94,11 +100,11 @@ with inputs $\mathcal{U}$, s.t. $x(N)=x^*$
 
 \textbf{Observable}
 $
-	\text{if rank}(\mathcal{O}) = n
-	,\;
-	\begin{bmatrix}
-		C^\top & \cdots & (CA^{n-1})^\top
-	\end{bmatrix}^\top
+\text{if rank}(\mathcal{O}) = n
+,\;
+\begin{bmatrix}
+  C^\top & \cdots & (CA^{n-1})^\top
+\end{bmatrix}^\top
 $
 
 $\forall x(0)\exists$ finite time $N$, s.t. the measurements
@@ -107,4 +113,3 @@ $y(0), \dots, y(N-1)$
 uniquely distinguish initial state $x(0)$
 
 \textbf{Detectable} iff all unobservable modes stable
-

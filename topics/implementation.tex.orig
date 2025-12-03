@@ -73,6 +73,15 @@ $f(y)\le f(x)+\nabla f(x)^T (y-x) +\frac{L}{2}|x-y|^2$
 \begin{definition}[strong convexity]
   $f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
   is $\mu$-strongly convex \textbf{($\mu$-scv)} if
+<<<<<<< HEAD
+  $f(y)\ge f(x)+\nabla f(x)\T(y-x)+\frac{\mu}{2}|x-y|^2$
+||||||| 1e64ddf
+	$f : \mathbb{R}^{n}\rightarrow \mathbb{R}$
+	is $\mu$-strongly convex \textbf{($\mu$-scv)} if
+	$f(y)\ge f(x)+\nabla f(x)\T(y-x)+\frac{\mu}{2}|x-y|^2$
+	% $\forall x,y \in \mathbb{R}^{n}$
+=======
+>>>>>>> ampc
   $f(y)\ge f(x)+\nabla f(x)^T(y-x)+\frac{\mu}{2}|x-y|^2$
   % $\forall x,y \in \mathbb{R}^{n}$
 \end{definition}
@@ -108,6 +117,21 @@ $\nu_t^*=\argmin_{\nu\in\mathbb{R}}f(x_t-\nu\nabla f(x_t))$
   $\leftarrow$
   $|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|^2$
   $\le$
+<<<<<<< HEAD
+  $(\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y))\T(x-y)$
+||||||| 1e64ddf
+	cl, cv
+	$\mathcal{C}\subset \mathbb{R}^{n}$
+	$\rightarrow$
+	$|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|$
+	$\le$
+	$|x-y|$
+	$\leftarrow$
+	$|\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y)|^2$
+	$\le$
+	$(\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y))\T(x-y)$
+=======
+>>>>>>> ampc
   $(\operatorname{prox}_\mathcal{C}(x)-\operatorname{prox}_\mathcal{C}(y))^T(x-y)$
 \end{lemma}
 

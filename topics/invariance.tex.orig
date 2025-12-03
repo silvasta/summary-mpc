@@ -149,20 +149,20 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 
 \begin{definition}[Robust Positive Invariant Set $\mathcal{O}^\mathcal{W}$]
   For the autonomous system
-  $x(k+1)=f(x(k),w(k))$,
+  $x(k+1)=g(x(k),w(k))$,
   the set $\mathcal{O}^\mathcal{W}$
   is robust positive invariant
   if:
   \[
     x\in\mathcal{O}^\mathcal{W}\Rightarrow
-    f(x,w) \in \mathcal{O}^\mathcal{W},
+    g(x,w) \in \mathcal{O}^\mathcal{W},
     \quad \forall w \in \mathcal{W}
   \]
 \end{definition}
-% TODO: (pre-)set darstellung
-Given set $\Omega$ and dynamic system $x(k+1) = f(x(k), w(k))$,
+
+Given set $\Omega$ and dynamic system $x(k+1) = g(x(k), w(k))$,
 \begin{align*}
-  \mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid f(x,w)\} \in
+  \mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid g(x,w)\} \in
   \Omega \ \forall w \in \mathcal{W}
 \end{align*}
 
@@ -191,23 +191,70 @@ $\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$
 
 \subsection{Computing Invariant Sets and Pre-sets}
 
+<<<<<<< HEAD
 \begin{sstTitleBox}[ForestGreen]{
     Conceptual Algorithm
   }
+||||||| 1e64ddf
+\begin{sstTitleBox}[ForestGreen]{
+		Conceptual Algorithm
+	}
+=======
+% TODO: Conceptual Algorithm
+% \begin{sstTitleBox}[ForestGreen]{
+%   }
+%   \begin{minipage}{0.53\linewidth}
+%     \begin{sstFullFrame}[ForestGreen]
+%       \color{white}
+%       \begin{algorithmic}
+%         \State $\Omega_0 \leftarrow \mathcal{X}$
+%         \Loop
+%         \State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+%         \If{$\Omega_{i+1}=\Omega_i$}
+%         \State\Return $\mathcal{O}_\infty = \Omega_i$
+%         \EndIf
+%         \EndLoop
+%       \end{algorithmic}
+%     \end{sstFullFrame}
+%   \end{minipage}
+%   \begin{minipage}{0.46\linewidth}
+%     \begin{sstOnlyFrame}[ForestGreen]
+%       \textbf{Pseudo algorithm}
+%
+%       Inputs, outputs, especially
+%       pre-set calculation will be different,
+%       the overall concept not, used for:
+%
+%       \textbf{Invariant Sets}
+%
+%       \textbf{Control Invariant Sets}
+%
+%       \textbf{Robust Invariant Sets}
+%
+%     \end{sstOnlyFrame}
+%   \end{minipage}
+%   \begin{sstOnlyFrame}[ForestGreen]
+%     Replace Intersection with Minkowski Sum and
+%     Pre-Set with $A^i\mathcal{W}$ to get an Idea for
+%     \textbf{Minimum Robust Invariant set}
+%   \end{sstOnlyFrame}
+% \end{sstTitleBox}
+>>>>>>> ampc
 
+<<<<<<< HEAD
   \begin{minipage}{0.53\linewidth}
     \begin{sstFullFrame}[ForestGreen]
       \vspace{1.2mm}
       \color{white}
-      % \begin{algorithmic}
-      %   \State $\Omega_0 \leftarrow \mathcal{X}$
-      %   \Loop
-      %   \State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
-      %   \If{$\Omega_{i+1}=\Omega_i$}
-      %   \State\Return $\mathcal{O}_\infty = \Omega_i$
-      %   \EndIf
-      %   \EndLoop
-      % \end{algorithmic}
+      \begin{algorithmic}
+        \State $\Omega_0 \leftarrow \mathcal{X}$
+        \Loop
+        \State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+        \If{$\Omega_{i+1}=\Omega_i$}
+        \State\Return $\mathcal{O}_\infty = \Omega_i$
+        \EndIf
+        \EndLoop
+      \end{algorithmic}
       \vspace{1.1mm}
     \end{sstFullFrame}
   \end{minipage}
@@ -274,6 +321,48 @@ $\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$
 %   \end{sstOnlyFrame}
 % \end{sstTitleBox}
 
+||||||| 1e64ddf
+	\begin{minipage}{0.53\linewidth}
+		\begin{sstFullFrame}[ForestGreen]
+			\vspace{1.2mm}
+			\color{white}
+			\begin{algorithmic}
+				\State $\Omega_0 \leftarrow \mathcal{X}$
+				\Loop
+				\State $\Omega_{i+1} \leftarrow \mathrm{pre}(\Omega_i)\cap\Omega_i$
+				\If{$\Omega_{i+1}=\Omega_i$}
+				\State\Return $\mathcal{O}_\infty = \Omega_i$
+				\EndIf
+				\EndLoop
+			\end{algorithmic}
+			\vspace{1.1mm}
+		\end{sstFullFrame}
+	\end{minipage}
+	\begin{minipage}{0.46\linewidth}
+		\begin{sstOnlyFrame}[ForestGreen]
+			\textbf{Pseudo algorithm}
+
+			Inputs, outputs, especially
+			pre-set calculation will be different,
+			the overall concept not, used for:
+
+			\textbf{Invariant Sets}
+
+			\textbf{Control Invariant Sets}
+
+			\textbf{Robust Invariant Sets}
+
+		\end{sstOnlyFrame}
+	\end{minipage}
+	\begin{sstOnlyFrame}[ForestGreen]
+		Replace Intersection with Minkowski Sum and
+		Pre-Set with $A^i\mathcal{W}$ to get an Idea for
+		\textbf{Minimum Robust Invariant set}
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
+\vspace{-3mm}
+=======
+>>>>>>> ampc
 \begin{align*}
   \intertext{\textbf{System for \ssthl{ Pre-Set Computation }}}
   x(k+1)                             & = Ax(k) +Bu(k)

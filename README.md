@@ -1,14 +1,29 @@
-# Model Predictive Control Summary
+# Model Predictive Control - Summary
 
-The entire topic compressed into four A4 pages.
+Summery of different MPC concepts,
+mainly gathered from the Lectures:
 
-Starting with a brief introduction to systems and controls,
-continuing with the necessary mathematical tools...
+- [Model Predictive Control](https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=187953&semkez=2025S&lang=de)
+- [Advanced Model Predictive Control](https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=194248&semkez=2025W&lang=de)
 
-... and finally explaining:
+## Topics
+
+### Model Predictive Controller
+
+Different setups and formulations.
 
 - Nominal MPC
-
 - Practical MPC
-
 - Robust MPC
+- Stochastic MPC
+- more will probably follow
+
+### Invariance
+
+### Optimization
+
+### Introduction to Systems and Controls
+
+### Optimal Control
+
+Unconstrained and infinite horizon problems.

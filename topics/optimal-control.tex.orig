@@ -222,6 +222,14 @@ of \textbf{numeric values} depending only on x(0),
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
+<<<<<<< HEAD
+\input{topics/lyapunov.tex}
+||||||| 1e64ddf
+\input{topics/lyapunov.tex}
+
+
+=======
+>>>>>>> ampc
 \input{topics/riccatti.tex}
 
 \subsection{Constrained Finite Time Optimal Control Problem}
@@ -457,6 +465,7 @@ for $\mathcal{X},\mathcal{U}$
 
 %HACK:  transform cftoc to LP, l-norm substitution L4.p30
 
+<<<<<<< HEAD
 \begin{sstTitleBox}[BrickRed]{
     Choice of P
   }
@@ -474,4 +483,23 @@ for $\mathcal{X},\mathcal{U}$
     Set $P=0$ und use instead constraint $x_{i+N}=0$
   \end{sstOnlyFrame}
 \end{sstTitleBox}
+||||||| 1e64ddf
+\begin{sstTitleBox}[BrickRed]{
+		Choice of P
+	}
+	\begin{sstOnlyFrame}[BrickRed]
+		\ssthl{ 1 }
+		Match the infinite solution $P_N = P_\infty$
 
+		\ssthl{ 2 }
+		Use solution of the Lyapunov Equation (\ref{lipunov:dt})
+		if the system is asymptotically stable
+		(otherwise P not positive definite),
+		assumes no control needed after end of horizon.
+
+		\ssthl{ 3 }
+		Set $P=0$ und use instead constraint $x_{i+N}=0$
+	\end{sstOnlyFrame}
+\end{sstTitleBox}
+=======
+>>>>>>> ampc
