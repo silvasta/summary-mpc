@@ -1,0 +1,268 @@
+
+\textbf{Uncertain System}
+$x(k+1) = g(x(k), u(k), w(k); \theta)$
+
+\subsubsection{Robust Constraint Satisfaction}
+
+\textbf{Idea}
+Compute a set of tighter constraints such that if the nominal
+system meets these constraints, then the uncertain system will too.
+We then do MPC on the nominal system.
+
+\textbf{Goal}
+Ensure  constraints satisfied for the MPC sequence.
+
+\textbf{Disturbance reachable set}
+\quad
+$\mathcal{F}_i = \bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
+
+\begin{sstTitleBox}{Robust Open-Loop MPC}
+  \begin{sstOnlyFrame}
+    \begin{minipage}[t]{0.55\linewidth}
+      \[
+        \begin{aligned}
+          \min_U \      & \sum_{i=0}^{N-1} l(x_i, u_i) + l_f(x_N) \\
+          \text{s.t.}\  & x_{i+1} = Ax_i + Bu_i                   \\
+      \end{aligned}\]
+    \end{minipage}
+    \begin{minipage}[t]{0.4\linewidth}
+      \[
+        \begin{aligned}
+          & x_0 = x(k)                                  \\
+          & x_i \in \mathcal{X} \ominus \mathcal{F}_i   \\
+          & u_i \in \mathcal{U}                         \\
+          & x_N \in \mathcal{X}_f \ominus \mathcal{F}_N \\
+      \end{aligned}\]
+    \end{minipage}
+  \end{sstOnlyFrame}
+\end{sstTitleBox}
+
+\subsubsection{Closed Loop Robust MPC}
+
+\textbf{Idea}
+Separate the available control authority into two parts:
+\[
+  z(k+1)=Az(k)+Bv(k)
+\]
+steers noise-free \textit{nominal} system to origin
+\[
+  u_i=K(x_i-z_i)+v_i
+\]
+compensates for deviations,
+i.e. a \textit{tracking} controller,
+to keep the real trajectory
+close to the nominal system.
+
+$\Rightarrow$
+We fix the linear feedback controller K offline,
+and optimize over the nominal inputs $\{v_0,...,v_{N−1}\}$
+and nominal trajectory $\{z_0,...,z_N\}$,
+which results in a convex problem.
+
+$e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
+
+\subsection{Robust Constraint-Tightening MPC}
+<<<<<<< HEAD
+\begin{sstTitleBox}{Robust Constraint-Tightening MPC}
+  \begin{sstOnlyFrame}
+    \begin{minipage}[t]{0.57\linewidth}
+      \[
+        \begin{aligned}
+          \min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N) \\
+          \mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                   \\
+      \end{aligned}\]
+    \end{minipage}
+    \begin{minipage}[t]{0.4\linewidth}
+      \[
+        \begin{aligned}
+          & z_0 = x(k)                                       \\
+          & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
+          & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
+          & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
+      \end{aligned}\]
+    \end{minipage}
+||||||| 1e64ddf
+\begin{sstTitleBox}{Robust Constraint-Tightening MPC}
+	\begin{sstOnlyFrame}
+		\begin{minipage}[t]{0.57\linewidth}
+			\[\begin{aligned}
+					\min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N) \\
+					\mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                   \\
+				\end{aligned}\]
+		\end{minipage}
+		\begin{minipage}[t]{0.4\linewidth}
+			\[\begin{aligned}
+					 & z_0 = x(k)                                       \\
+					 & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
+					 & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
+					 & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
+				\end{aligned}\]
+		\end{minipage}
+=======
+>>>>>>> ampc
+
+<<<<<<< HEAD
+    \vspace{1mm}
+    $\mathcal{F}_0:={0}$
+    \quad
+    $F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
+    \[
+    \textbf{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star\]
+  \end{sstOnlyFrame}
+
+||||||| 1e64ddf
+		\vspace{1mm}
+		$\mathcal{F}_0:={0}$
+		\quad
+		$F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
+		\[
+			\textbf{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star\]
+	\end{sstOnlyFrame}
+
+\end{sstTitleBox}
+=======
+>>>>>>> ampc
+\begin{sstBreakBox}{Robust Constraint-Tightening MPC}
+  % FIX: BreakBoxes
+  \begin{sstOnlyFrame}
+    \begin{minipage}[t]{0.57\linewidth}
+      \[
+        \begin{aligned}
+          \min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N) \\
+          \mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                   \\
+      \end{aligned}\]
+    \end{minipage}
+    \begin{minipage}[t]{0.4\linewidth}
+      \[
+        \begin{aligned}
+          & z_0 = x(k)                                       \\
+          & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
+          & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
+          & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
+      \end{aligned}\]
+    \end{minipage}
+    % MOVE: F_i to proper place
+    $\mathcal{F}_0:={0}$
+    \quad
+    $F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
+    \[\textbf{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star\]
+  \end{sstOnlyFrame}
+\end{sstBreakBox}
+
+\subsection{Robust Tube MPC}
+
+\textbf{Idea}
+Ignore noise and plan the nominal trajectory,
+bound maximum error at any time with RPI set
+$\mathcal{E}: \epsilon_i \in \mathcal{E}  ⇒ \epsilon_{i+1} \in \mathcal{E}$
+
+Ideally $\mathcal{E}$ is selected as the minimum RPI set $F_\infty$
+
+We know that the real trajectory stays ‘nearby’ the nominal one $x_i
+\in z_i \oplus \mathcal{E}$
+because we plan to apply the controller $u_i = K (x_i − z_i) + v_i)$
+in the future.
+
+(we won’t actually do this, but it’s a valid sub-optimal plan)
+
+We must ensure that all possible state trajectories satisfy the constraints
+This is now equivalent to ensuring that $x_i \in z_i \oplus \mathcal{E}$
+
+(address input constraints later)
+
+What do we need to make this work?
+
+\ssthl{Compute the set $\mathcal{E}$ that the error will remain inside}
+
+Previously we wanted the \textbf{maximum robust invariant set}, or
+the largest set in
+which our terminal control law works.
+
+We now want the \textbf{minimum robust invariant set}, or the
+smallest set that the
+state will remain inside despite the noise.
+
+Modify constraints on nominal trajectory $\{z_i\}$
+
+$x_i \in z_i \oplus \mathcal{E} =
+\{z_i + e | e \in \mathcal{E}\}$
+
+\begin{sstTitleBox}{
+  Tube MPC
+}
+
+\begin{sstOnlyFrame}
+  \[
+    \begin{aligned}
+      \textbf{Cost function} & \quad
+      J(Z,V):=\sum_{i=0}^{N-1}
+      l(z_i,v_i)+l_f(z_N)
+      \\
+      \textbf{Feasible set}  & \quad
+      \mathcal{Z}(x_0):=
+      \begin{cases}
+        z_{i+1} & = Az_i+Bv_i                         \\
+        z_i     & \in \mathcal{X}\ominus\mathcal{E}   \\
+        v_i     & \in \mathcal{U}\ominus K\mathcal{E} \\
+        z_N     & \in \mathcal{X}_f                   \\
+        x_0     & \in z_0\oplus\mathcal{E}            \\
+      \end{cases}
+      \\
+      \textbf{Optimization}  & \quad
+      (V^\star(x_0),Z^\star(x_0))=
+      \\
+      & \quad\argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x_0)\}
+      \\
+      \textbf{Control law}   & \quad
+      \mu_\text{tube}(x):=
+      K(x-z_0^\star(x))+v_0^\star(x)
+  \end{aligned}\]
+\end{sstOnlyFrame}
+
+\end{sstTitleBox}
+
+\begin{theorem}[Robust Invariance of Tube MPC]
+The set $\mathcal{Z} := \{x|\mathcal{Z}(x)\neq \emptyset\}$
+is a robust invariant set of the system
+$x(k+1)= Ax(k)+B\mu_\text{tube}(x(k)) + w(k)$
+subject to the constraints
+$x, u \in \mathcal{X} \times \mathcal{U}$.
+\end{theorem}
+
+\begin{theorem}[Robust Stability of Tube MPC]
+The state $x(k)$ of the system
+$x(k+1)= Ax(k)+B\mu_\text{tube}(x(k)) + w(k)$
+converges  to the  limit of the set $\mathcal{E}$.
+\end{theorem}
+
+\textbf{Tube MPC - Quick Summary}
+
+To implement tube MPC:
+
+\textbf{— Offline —}
+
+1. Stabilizing controller $K$
+so that $A + BK$ is (Schur) stable
+
+2. Compute the minimal robust invariant set
+$E = F_\infty$ for the system
+$x(k+1) = (A + BK)x(k) + w(k), w \in \mathcal{W}^1$
+
+3. Compute tightened constraints
+$\bar{\mathcal{X}} := \mathcal{X} \ominus \mathcal{E},
+\bar{\mathcal{U}} := \mathcal{U} \ominus K\mathcal{E}$
+
+4. Choose terminal weight function $l_f$
+and constraint $\mathcal{X}_f$
+satisfying assumptions* %TODO: insert link to assumptions
+
+\textbf{— Online —}
+
+1. Measure / estimate state $x$
+
+2. Solve optimization problem for
+$(V^\star(x_0),Z^\star(x_0))$
+
+3. Set the input to
+$u  =  K(x-z_0^\star(x))+v_0^\star(x)$
+

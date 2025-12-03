@@ -1,0 +1,309 @@
+
+\begin{sstBreakBox}[Plum]{
+    Mathematical Optimization Problem
+  }
+  \begin{minipage}{0.70\linewidth}
+    \begin{sstOnlyFrame}[Plum]
+      \textbf{Decision variable} $x  \in \mathbb{R}^{n}$
+
+      \textbf{Objective function} $f: \dom(f)\to\mathbb{R}$
+
+      \textbf{Inequality constraints} $g_i$
+      $\scriptstyle(i \in \#\text{constraints})$
+
+      \textbf{Equality constraints} $h_i$
+      $\scriptstyle(i \in \#\text{constraints})$
+
+      \textbf{Feasible set}
+      $\mathcal{X}\!\!:=\!\!\{x|g(x)\!\!\le\!\!0,\!h(x)\!=\!0\}$
+    \end{sstOnlyFrame}
+  \end{minipage}
+  \begin{minipage}{0.28\linewidth}
+    \begin{sstFullFrame}[Plum]
+      {\color{white}
+        \vspace{-1mm}
+        \[
+          \begin{aligned}
+            & \textbf{minimize }f(x)   \\
+            & \ \ \ \text{subject to:} \\
+            & \ \ \ g_i(x)  \le 0      \\
+            & \ \ \ h_i(x)  = 0
+        \end{aligned} \]
+        \vspace{-1mm}
+      }
+    \end{sstFullFrame}
+  \end{minipage}
+  %
+  \begin{sstOnlyFrame}[Plum]
+    \textbf{Feasible point}
+    $x\in\dom(f)$ with
+    $g_i(x)\le 0,\ h_i(x)=0$
+
+    \textbf{Strictly feasible point}
+    $x$ with strict inequality
+    $g_i(x)<0$
+
+    \textbf{Optimal value}
+    $f^\star (\text{or } p^\star)=
+    \inf\{f(x)|
+    g_i(x)\le0,h_j=0 \}$
+    $f^\star=+\infty$: OP infeasible,
+    $f^\star=-\infty$: OP unbound below
+
+    \textbf{Optimizer}
+    % (is set)
+    set:
+    $\argmin_{x \in \mathcal{X}} f(x):=
+    \{ x\in\mathcal{X}|f(x)=f^\star\}$
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}[Plum]
+    $x^\star$ is a \textbf{Global Minimum} if $f(x^\star)\leq f(x)$
+
+    $x^\star$ is a \textbf{Local Minimum} if
+    $\exists\ \epsilon > 0$ s.t.
+    $f(x^\star)\leq f(x)$
+    $\forall x \in \mathcal{X} \cap B_\epsilon(x^\star)$,
+    open ball with center $x^\star$ and radius $\epsilon$
+  \end{sstOnlyFrame}
+\end{sstBreakBox}
+
+\subsection{Convex Sets}
+
+\begin{definition}[Convex Set]
+  Set $\mathcal{C}$ is convex if and only if
+  \[\theta x + (1-\theta)y \in \mathcal{C},
+    \ \forall\ x,y \in \mathcal{C},
+  \ \forall\ \theta \in [0,1]\]
+\end{definition}
+
+\textbf{Intersection}
+$\mathcal{C}_1, \mathcal{C}_2$ cv
+$\Rightarrow \mathcal{C}_1 \cap \mathcal{C}_2$ convex \textbf{(cv)}
+
+\textbf{Image under affine map}
+$\mathcal{C} \subseteq  \mathbb{R}^{n}$ cv
+$\Rightarrow \{Ax+b \mid x \in \mathcal{C} \}$ cv
+
+\textbf{Inverse IoaM}
+$\mathcal{C} \subseteq  \mathbb{R}^{m}$ cv
+$\Rightarrow \{x\in\mathbb{R}^{n} \mid  Ax+b\in\mathcal{C}\}$ cv
+
+\begin{definition}[Hyperplanes]
+<<<<<<< HEAD
+  $\{x \in \mathbb{R}^n \mid a\T x=b\}$
+||||||| 1e64ddf
+	$\{x \in \mathbb{R}^n \mid a\T x=b\}$
+=======
+>>>>>>> ampc
+  $\{x \in \mathbb{R}^n \mid a^T x=b\}$
+\end{definition}
+\begin{definition}[Halfspaces]
+<<<<<<< HEAD
+  $\{x \in \mathbb{R}^n \mid a\T x\le b\}$
+||||||| 1e64ddf
+	$\{x \in \mathbb{R}^n \mid a\T x\le b\}$
+=======
+>>>>>>> ampc
+  $\{x \in \mathbb{R}^n \mid a^T x\le b\}$
+
+  can be \textbf{open} (strict inequality)
+  or \textbf{closed} (non-strict inequality)
+\end{definition}
+
+\begin{definition}[Polyhedra] intersection of
+  \textbf{finite} number of closed halfspaces:
+  polyhedra $\{x\in\mathbb{R}^n\mid A^{q\times n}x\preceq b^{q\times1},
+    % C^{r\times n}x=d^{r\times1}
+  \}$
+\end{definition}
+
+\begin{definition}[Polytope]
+  is a \textbf{bounded} polyhedron.
+\end{definition}
+
+\begin{definition}[Convex hull]
+  for  $\{v_1,...,v_k\}\in \mathbb{R}^{d}$ is:
+
+  co$(\{v_1,...,v_k\}):=
+  \{ x|x=\sum_{i}\lambda_iv_i,
+  \lambda\ge0, \sum_{i}\lambda_i=1 \}$
+\end{definition}
+
+\begin{definition}[Ellipsoid]
+  set:
+  $\{ x | (x\!-\!x_c)^\top A^{-1}(x\!-\!x_c) \leq 1 \}$
+  where $x_c$ is center of ellipsoid,
+  $A \succ 0$ (i.e. positive definite)
+  (Semi-axis lengths are square roots of eigenvalues of $A$)
+\end{definition}
+
+\begin{definition}[Norm Ball]
+  $B_r(x):=
+  \{\xi\in\mathbb{R}^{n}:|\xi-x|_p<r\}$
+  where $p$ defines the $l_p$ norm, $p=\{1|2|..|\infty\}$
+\end{definition}
+
+\begin{theorem}{Minkowski-Weyl}
+
+  The following statements are equivalent
+  for $\mathcal{P}\subseteq \mathbb{R}^d$
+
+  $\mathcal{P}$ is a polytope and there exists
+  $A, b$ s.t $\mathcal{P} = \{x \mid Ax \leq b\}$
+
+  $\mathcal{P}$ finitely generated,
+  $\exists$ finite set $\{v_i\}$ s.t
+  $\mathcal{P}=\text{co}(\{v_1,...,v_s\})$
+\end{theorem}
+
+\begin{definition}\ssthl{ Minkowski Sum }
+  for $A, B \subset \mathbb{R}^{n}$
+  \[
+    A \oplus B := \{x + y | x \in A, y \in B\}
+  \]
+  \[
+    \textbf{Example }  [a,b]\oplus[c,d] = [a+c,b+d]
+  \]
+\end{definition}
+
+% \includesvg{images/Pontryagin.svg}
+\includegraphics{images/Pontryagin.png}
+
+\begin{definition}\ssthl{ Pontryagin Difference }
+  for $A, B \subset \mathbb{R}^{n}$
+  \[
+    A \ominus B := \{x | x+e \in A, \forall e \in B\}
+  \]
+  \[
+    \textbf{Example }[a,b]\ominus[c,d] = [a-c,b-d]
+  \]
+\end{definition}
+
+%HACK: Polytopic Invariant Set, example e5 Subset test, Intersection
+% of Polytopes
+
+\subsection{Convex Functions}
+
+\begin{definition}[Convex Function]
+  $f: \mathcal{C}_\text{convex} \to\mathbb{R}$ is convex iff
+  \[
+    f(\theta x + (1-\theta)y)\le \theta f(x)+ (1-\theta)f(y),
+    \ \forall\ x,y
+  \ \forall\ \theta \in [0,1]\]
+  $f$ is strictly convex if this inequality is strict.
+\end{definition}
+
+\begin{definition}[Epigraph]
+  $f:\mathbb{R}^n \rightarrow \mathbb{R}$ cv
+  $\Leftrightarrow$
+  epi$(f)$ is cv set
+  $$\operatorname{epi}(f):=\{(x,t)\in \mathbb{R}^{n+1} | f(x)\le t\}$$
+\end{definition}
+
+\textbf{Check Convexity} $f$ is convex if it is
+composition of simple convex function
+with convexity preserving operations
+or if
+
+$f: \mathbb{R}^n \rightarrow \mathbb{R}$ twice differentiable,
+$\partial^2f/\partial x^2 \succeq 0\ \forall\ x \in \mathbb{R}^{n}$
+
+$g: \mathbb{R} \rightarrow \mathbb{R}$ with $g(t)=f(x+tv)$
+convex in $t\ \forall\ x,v \in \mathbb{R}^{n}$
+$\rightarrow f$ convex (restriction to a line)
+
+- the point wise maximum of convex functions is convex
+
+- the sum of convex functions is convex
+
+- $f(Ax+b)$ is convex if $f$ is convex
+
+\input{topics/lagrange-dual.tex}
+
+\subsection{Convex Optimization Problems}
+
+\begin{theorem}
+  For a convex optimization problem,
+  \textbf{any} locally optimal solution is globally
+  optimal (local optima are global optima).
+\end{theorem}
+
+\textbf{Linear Programming}
+<<<<<<< HEAD
+$ \operatorname{minimize} c\T x
+||||||| 1e64ddf
+$ \operatorname{minimize} c\T x
+	\text{ s.t. } Ax-b \ge 0,\ x\ge0$
+=======
+>>>>>>> ampc
+$ \operatorname{minimize} c^T x
+\text{ s.t. } Ax-b \ge 0,\ x\ge0$
+
+Step 1:
+$\mathcal{L}(x,\lambda_1,\lambda_2) =
+<<<<<<< HEAD
+c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
+||||||| 1e64ddf
+	c\T x-\lambda_1\T (Ax-b) -\lambda_2\T x,\ \lambda_i \ge0$
+=======
+>>>>>>> ampc
+c^T x-\lambda_1^T (Ax-b) -\lambda_2^T x,\ \lambda_i \ge0$
+
+Step 2:
+$\underset{x \in \mathcal{\mathbb{R}}^n}{\operatorname{inf}}
+<<<<<<< HEAD
+\mathcal{L}=\lambda_1\T b$
+, if $c-A\T\lambda_1-\lambda_2=0$, else $-\infty$
+||||||| 1e64ddf
+	\mathcal{L}=\lambda_1\T b$
+, if $c-A\T\lambda_1-\lambda_2=0$, else $-\infty$
+=======
+>>>>>>> ampc
+\mathcal{L}=\lambda_1^T b$
+, if $c-A^T\lambda_1-\lambda_2=0$, else $-\infty$
+
+Step 3: Dual,
+maximize $b^T\lambda$
+s.t.
+$c-A^T\lambda\ge0,\lambda\ge0$
+(again LP)
+
+\begin{proposition}
+  The optimal solution of a linear program (if it exists)
+  lies always on the boundary of the feasible set
+  and there exists an optimal solution that is a vertex of the feasible set.
+\end{proposition}
+
+\textbf{Quadratic Programming}
+convex if $P=P^T$ positive semi-definite
+minimize $\frac{1}{2}x^T Px+q^T x$
+s.t. $Gx\le h,\ Ax=b$
+
+\textbf{Second-Order Cone Program}
+
+<<<<<<< HEAD
+minimize $f\T x \text{ s.t. }
+|A_ix+b|\le c_i\T x+d_i, Fx=g$
+||||||| 1e64ddf
+minimize $f\T x \text{ s.t. }
+	|A_ix+b|\le c_i\T x+d_i, Fx=g$
+=======
+>>>>>>> ampc
+minimize $f^T x \text{ s.t. }
+|A_ix+b|\le c_i^T x+d_i, Fx=g$
+
+Second-order cone
+$C_{n+1}=\{ (x,t)\mid
+x\in\mathbb{R}^{n}, t\in \mathbb{R}, |x|\le t \}$
+
+$|A_ix+b|\le c_i^T x+d_i$
+$\Leftrightarrow$
+$(A_ix+b, c_i^T x+d_i)\in C_{n+1}$
+
+\textbf{Semi-Definite Programming} with symmetric $F_i,X,A_i$
+
+minimize $c^T x$
+s.t.
+$\sum_{i=1}^{n}x_iF_i+G\preceq0$,
+$Ax=b$
+
