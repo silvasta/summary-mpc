@@ -13,6 +13,7 @@ We then do MPC on the nominal system.
 Ensure  constraints satisfied for the MPC sequence.
 
 \textbf{Disturbance reachable set}
+% MOVE: DRS to sets
 \quad
 $\mathcal{F}_i = \bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
 
@@ -52,7 +53,8 @@ compensates for deviations,
 i.e. a \textit{tracking} controller,
 to keep the real trajectory
 close to the nominal system.
-
+% REMOVE: unneccesary robust  stuff
+% TODO: Error dynamics, short and compact
 $\Rightarrow$
 We fix the linear feedback controller K offline,
 and optimize over the nominal inputs $\{v_0,...,v_{N−1}\}$
@@ -62,6 +64,7 @@ which results in a convex problem.
 $e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
 
 \subsection{Robust Constraint-Tightening MPC}
+
 \begin{sstTitleBox}{Robust Constraint-Tightening MPC}
   \begin{sstOnlyFrame}
     \begin{minipage}[t]{0.57\linewidth}
@@ -77,11 +80,14 @@ $e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
           & z_0 = x(k)                                       \\
           & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
           & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
+          % FIX: with L3.15
           & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
       \end{aligned}\]
     \end{minipage}
   \end{sstOnlyFrame}
   \begin{sstOnlyFrame}
+    % MOVE: F_i to proper place
+    % HACK: control law, as default box content
     $\mathcal{F}_0:={0}$
     \quad
     $F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
@@ -90,35 +96,11 @@ $e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\begin{sstBreakBox}{Robust Constraint-Tightening MPC}
-  % FIX: BreakBoxes
-  \begin{sstOnlyFrame}
-    \begin{minipage}[t]{0.57\linewidth}
-      \[
-        \begin{aligned}
-          \min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N) \\
-          \mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                   \\
-      \end{aligned}\]
-    \end{minipage}
-    \begin{minipage}[t]{0.4\linewidth}
-      \[
-        \begin{aligned}
-          & z_0 = x(k)                                       \\
-          & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
-          & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
-          & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
-      \end{aligned}\]
-    \end{minipage}
-    % MOVE: F_i to proper place
-    $\mathcal{F}_0:={0}$
-    \quad
-    $F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
-    \[\textbf{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star\]
-  \end{sstOnlyFrame}
-\end{sstBreakBox}
+% TODO: algorithm L3.15
 
 \subsection{Robust Tube MPC}
 
+% NEXT: L3.24 Tube MPC
 \textbf{Idea}
 Ignore noise and plan the nominal trajectory,
 bound maximum error at any time with RPI set

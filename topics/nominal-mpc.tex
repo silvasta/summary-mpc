@@ -5,24 +5,25 @@
   \begin{sstOnlyFrame}
     \begin{equation}
       \underset U\argmin
-      \sum_{i=0}^{N-1} l(x_i,u_i) + l_f(x_N)
+      \sum_{i=0}^{N-1} I(x_i,u_i) + I_f(x_N)
       \label{mpc:nominal}
     \end{equation}
 
     \vspace{-3mm}
     \begin{minipage}[t]{0.67\linewidth}
       \begin{align*}
+        % TODO: better ordering formulation
         \textbf{Constraints}
         \quad
         x_0     & = x(k)            \\
-        x_{i+1} & =Ax_i + Bu_i      \\
+        x_{i+1} & = f(x_i,u_i) \quad \text{linear case}: Ax_i + Bu_i      \\
         x_{i}   & \in \mathcal{X}   \\
         u_i     & \in \mathcal{U}   \\
         x_N     & \in \mathcal{X}_f
       \end{align*}
     \end{minipage}
 
-    $l_f(\cdot) $and$ \mathcal{X}_f$
+    $I_f(\cdot)$ and $\mathcal{X}_f$
     are chosen to mimic an infinite horizon.
   \end{sstOnlyFrame}
 \end{sstTitleBox}
@@ -41,6 +42,7 @@ What can go wrong with \textit{standard} MPC?
   \ssthl{\small\ Assumptions }
   \begin{sstOnlyFrame}[BrickRed]
 
+    % TODO: extend MPC stability with math from ampc L2.24
     \ssthl{ 1 }
     Stage cost is
     strictly positive and only zero at the origin
@@ -94,3 +96,6 @@ invariance-inducing controller,
 whose infinite-horizon cost can be expressed in closed-form.
 
 -  Extends to non-linear systems, but compute sets is difficult!
+
+% HACK: Stability and Recursive feasibility of MPC - Outline of the proof
+

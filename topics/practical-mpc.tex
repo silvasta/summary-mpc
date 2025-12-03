@@ -37,12 +37,11 @@ $\min (Hx_s - r)^\top Q_s (H x_s - r)$
 
 If $\exists$ multiple feasible $u_s$
 $\rightarrow$
-compute
+compute cheapest:
 $\min u_s^\top R_s u_s$
-(cheapest)
 \[
   \min_U |z_N - Hx_s|_{P_z}^2
-  \!+\! \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
+  + \sum_{i=1}^{N-1} | z_i - Hx_s |_{Q_z}^2
   + | u_i - u_s |_{R}^2
 \]
 
@@ -51,14 +50,14 @@ $\min u_s^\top R_s u_s$
 \subsubsection{Reference Tracking}
 
 \begin{align*}
-  &
   \begin{aligned}
     \Delta x_{k+1}
     & = x_{k+1} -x_s                          \\
     & = A\Delta x_k + B u_k - (A x_s + B u_s) \\
     & = A\Delta x_k + B\Delta u_k             \\
   \end{aligned}
-  \\&
+\end{align*}
+\begin{align*}
   \begin{aligned}
     G_x  x & \leq h_x \\
     G_u  u & \leq h_u
@@ -77,7 +76,7 @@ $x_s \in \mathcal{X}, u_s \in \mathcal{U}$,
 choose terminal weight $V_f(x)$ and constraint $\mathcal{X}_f$
 as in regulation case satisfying
 \[
-  V_f(x(k+1)) - V_f(x(k)) \leq -l(x(k), Kx(k))
+  V_f(x(k+1)) - V_f(x(k)) \leq -I(x(k), Kx(k))
 \]
 \[
   \text{and }
@@ -278,7 +277,8 @@ on the allowed operating range and are \textbf{rarely hard}
 
   \begin{sstOnlyFrame}
     \begin{equation}
-      \min_u\sum_{i=0}^{N-1}
+      \min_{uEPS}\sum_{i=0}^{N-1}
+      % TODO: reformulate more general with I(...) L2.37
       x_i^\top Q x_i + u_i^\top R u_i
       +\color{BrickRed}l_\epsilon(\epsilon_i)\color{black}
       +x_N^\top P x_i
@@ -342,4 +342,6 @@ and $\epsilon = 0$.
   any $v > \lambda^\star \geq 0$,
   where $\lambda^\star$ is optimal Lagrange multiplier for original problem
 \end{theorem}
+
+% HACK: Soft constraint  with ISS
 

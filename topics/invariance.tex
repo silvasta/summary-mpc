@@ -149,20 +149,20 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
 
 \begin{definition}[Robust Positive Invariant Set $\mathcal{O}^\mathcal{W}$]
   For the autonomous system
-  $x(k+1)=g(x(k),w(k))$,
+  $x(k+1)=f(x(k),w(k))$,
   the set $\mathcal{O}^\mathcal{W}$
   is robust positive invariant
   if:
   \[
     x\in\mathcal{O}^\mathcal{W}\Rightarrow
-    g(x,w) \in \mathcal{O}^\mathcal{W},
+    f(x,w) \in \mathcal{O}^\mathcal{W},
     \quad \forall w \in \mathcal{W}
   \]
 \end{definition}
-
-Given set $\Omega$ and dynamic system $x(k+1) = g(x(k), w(k))$,
+% TODO: (pre-)set darstellung
+Given set $\Omega$ and dynamic system $x(k+1) = f(x(k), w(k))$,
 \begin{align*}
-  \mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid g(x,w)\} \in
+  \mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid f(x,w)\} \in
   \Omega \ \forall w \in \mathcal{W}
 \end{align*}
 
