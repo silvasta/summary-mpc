@@ -1,0 +1,66 @@
+\subsection{Optimization}
+
+Because NMPC requires solving NLPs in real-time, algorithmic
+efficiency is critical.
+
+\textbf{Sequential Quadratic Programming (SQP)}
+The standard method for NMPC.
+It solves a sequence of Quadratic Programs (QP)
+that approximate the NLP locally using
+a quadratic cost and linearized constraints.
+
+\textbf{Sequential vs. Simultaneous Methods}
+
+\textbf{Sequential} (Single-shooting)
+Only control inputs are decision variables,
+states are eliminated via simulation.
+Results in small, dense QPs.
+
+\textbf{Simultaneous} (Multiple-shooting)
+Both states and inputs are decision variables.
+Results in large, sparse QPs.
+(Preferred in practice for better convergence
+and handling of unstable dynamics)
+
+\textbf{Real-Time Iteration (RTI)}
+To meet strict timing constraints, RTI performs only one SQP
+iteration per sampling time, using warm-starts from the previous step.
+
+\subsection{Robust NMPC}
+
+In linear systems, the error dynamics $e=x−z$
+are independent of the nominal state.
+In nonlinear systems, the \textbf{error dynamics} are \textbf{state-dependent},
+making robust design much harder.
+
+\subsubsection{Incremental Stability}
+
+\textbf{Incremental Lyapunov function}
+$V_\delta(x, z)$ such that:
+\[V_\delta(f(x,u), f(z,v)) \le \rho V_\delta(x, z)\]
+
+This characterizes how "close" the real trajectory $x$ stays to the
+nominal trajectory $z$.
+
+\textbf{Nonlinear Homothetic Tubes}
+The tube is defined as the level set of the
+incremental Lyapunov function:
+$\mathbb{X}_i = \{x \mid V_\delta(x, z_i) \le \delta_i\}$.
+The tube size $\delta_i$ is propagated dynamically:
+\[\delta_{i+1} = \tilde{\rho} \delta_i + \bar{w}(z_i, v_i)\]
+where $\bar{w}$ accounts for the worst-case model mismatch/disturbance.
+
+\textbf{Constraint Tightening}
+Nominal constraints are tightened
+based on the current tube size $\delta_i$,
+ensuring that if the nominal state is in the tightened set,
+the real state is guaranteed to satisfy original constraints.
+
+\subsection{Stochastic NMPC}
+
+SNMPC aims for \textbf{PRS} rather than worst-case tubes.
+
+The constraints are tightened using the PRS.
+The cost function is typically the \textbf{expected cost}
+conditioned on the current state.
+

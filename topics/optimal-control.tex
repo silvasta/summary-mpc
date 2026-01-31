@@ -138,6 +138,8 @@ $(x_0=x(0))$
   )x_0
 \]
 
+\input{topics/riccatti.tex}
+
 \subsubsection{Recursive Approach}
 
 use dynamic programming to solve problem backwards from $N$
@@ -222,25 +224,7 @@ of \textbf{numeric values} depending only on x(0),
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\input{topics/riccatti.tex}
-
 \subsection{Constrained Finite Time Optimal Control Problem}
-
-\begin{sstTitleBox}{
-    CFTOC
-  }
-  \begin{sstOnlyFrame}
-    \textbf{Cost Function} equal to
-    Linear Quadratic Optimal Control (\ref{oc:lq-oc})
-    % \vspace{-5mm}
-    \textbf{Constraints}
-    as in (\ref{oc:lq-oc})
-    \ssthl{ + }
-    $ x_N      \in \mathcal{X}_f$,
-    $ x_{i<N}  \in \mathcal{X}$,
-    $ u_i      \in \mathcal{U}$
-  \end{sstOnlyFrame}
-\end{sstTitleBox}
 
 \begin{sstTitleBox}[BrickRed]{
     Choice of P
@@ -264,6 +248,21 @@ of \textbf{numeric values} depending only on x(0),
 \[
   J(x(k)) = x_N^\top P x_N + \sum_{i=0}^{N-1}x_i^\top Q x_i + u_i R u_i
 \]
+\begin{sstTitleBox}{
+    CFTOC
+  }
+  \begin{sstOnlyFrame}
+    \textbf{Cost Function} equal to
+    Linear Quadratic Optimal Control (\ref{oc:lq-oc})
+    % \vspace{-5mm}
+    \textbf{Constraints}
+    as in (\ref{oc:lq-oc})
+    \ssthl{ + }
+    $ x_N      \in \mathcal{X}_f$,
+    $ x_{i<N}  \in \mathcal{X}$,
+    $ u_i      \in \mathcal{U}$
+  \end{sstOnlyFrame}
+\end{sstTitleBox}
 \subsubsection{Goal: Transform  into QP}
 \[
   \min_{z\in\mathbb{R}^n}
@@ -454,24 +453,4 @@ for $\mathcal{X},\mathcal{U}$
     \end{bmatrix}^\top                          \\
     \mathrm{subj. \ to \ } & GU \leq w + Ex(k)
 \end{aligned} \]
-
-%HACK:  transform cftoc to LP, l-norm substitution L4.p30
-
-\begin{sstTitleBox}[BrickRed]{
-    Choice of P
-  }
-  \begin{sstOnlyFrame}[BrickRed]
-    \ssthl{ 1 }
-    Match the infinite solution $P_N = P_\infty$
-
-    \ssthl{ 2 }
-    Use solution of the Lyapunov Equation (\ref{lipunov:dt})
-    if the system is asymptotically stable
-    (otherwise P not positive definite),
-    assumes no control needed after end of horizon.
-
-    \ssthl{ 3 }
-    Set $P=0$ und use instead constraint $x_{i+N}=0$
-  \end{sstOnlyFrame}
-\end{sstTitleBox}
 

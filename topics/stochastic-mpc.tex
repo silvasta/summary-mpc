@@ -1,0 +1,102 @@
+
+Stochastic MPC extends deterministic MPC to handle uncertainties
+modeled as random variables, such as additive noise or parameter
+variations. A core feature is replacing hard constraints with chance
+constraints to account for uncertainty.
+\[
+  \mathbb{P}(x_k \in \mathcal{X}) \geq 1 - \epsilon, \quad
+  \mathbb{P}(u_k \in \mathcal{U}) \geq 1 - \delta,
+\]
+This softens constraints, improving feasibility over robust MPC.
+
+\textbf{Mean Dynamics}
+$\bar{x}_{k+1} = A\bar{x}_k + B\bar{u}_k$ (Deterministic)
+
+\textbf{Variance Dynamics}
+$\Sigma_{k+1} = (A+BK)\Sigma_k(A+BK)^\top + \Sigma_w$
+
+The variance $\Sigma_k$ can be precomputed offline
+as it does not depend on the actual state measurements.
+
+\begin{sstTitleBox}{
+    Stochastic MPC
+  }
+
+  \begin{sstOnlyFrame}
+    \[J = \mathbb{E} \left[ \|x_N\|_P^2 + \sum_{k=0}^{N-1}
+    \|x_k\|_Q^2 + \|u_k\|_R^2 \right]\]
+    Using the property $\mathbb{E}[x^\top Q x] = \bar{x}^\top Q
+    \bar{x} + \text{tr}(Q \text{var}(x))$, the cost decomposes into:
+
+    \textbf{Nominal Cost}
+    A standard quadratic cost on the mean
+    trajectories $(\bar{x}, \bar{u})$.
+
+    \textbf{Constant Offset}
+    A term involving $\text{tr}(Q\Sigma_k)$
+    which depends only on the noise statistics and the gain $K$.
+
+    \textbf{Conclusion}
+    For a fixed $K$, optimizing the expected cost is equivalent
+    to optimizing the nominal cost of the mean system.
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \textbf{System dynamics}
+    $x_{i+1} = A x_i + B u_i + w_i$ (probabilistic)\\
+
+    \textbf{Chance constraints}
+    $\mathbb{P}(x_i \in \mathcal{X}, u_i \in \mathcal{U}) \geq 1 - \epsilon$\\
+
+    \textbf{Initial condition}
+    $x_0 = x_k$
+
+    \textbf{Terminal set}
+    $x_N \in \mathcal{X}_f$ (probabilistically)
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \textbf{Tube-like Feedback Policy}
+    (to control spread of trajectories)
+    \[u(k) = \bar{u}_k + K(x(k) - \bar{x}_k)\]
+    For tractability, approximations like affine feedback policies $u_i =
+    K x_i + v_i$ (where $v_i$ is optimized) are used to close the loop in
+    predictions.
+  \end{sstOnlyFrame}
+\end{sstTitleBox}
+
+For general distributions or polytopic sets, we use\\
+\textbf{Probabilistic Reachable Set}
+$\mathcal{F}_k^p$ such that
+$\text{Pr}(e(k) \in \mathcal{F}_k^p) \geq p$
+
+The constraint is satisfied if:
+$\bar{x}_k \in \mathcal{X} \ominus \mathcal{F}_k^p$
+
+\subsubsection{Feasibility}
+Large (unbounded) disturbances can drive the system into regions
+where the optimization problem becomes infeasible at the next time step.
+
+\subsubsection{Asymptotic Average Performance bound}
+
+Stability definition
+$\lim_{T \to \infty} \frac{1}{T} \sum \mathbb{E}[l(x,u)] \leq
+\text{tr}(P\Sigma_w)$
+
+\subsubsection{Recovery Initialization}
+If the measured state $x(k)$ is infeasible for the MPC, the solver is
+initialized with the \textbf{predicted mean} from the previous step
+($\bar{x}_{1|k-1}$) instead of the actual measurement. This ensures
+recursive feasibility but sacrifices performance.
+
+\subsubsection{Indirect Feedback SMPC}
+
+A more advanced formulation where the nominal state $z(k)$
+evolves independently of the measurement $x(k)$ in the constraints,
+but $x(k)$ enters the \textbf{cost function}.
+
+\textbf{- Pro}
+Guarantees recursive feasibility and satisfaction
+of closed-loop chance constraints.
+
+\textbf{- Con}
+The feedback is "weaker" than direct state-feedback MPC.
+

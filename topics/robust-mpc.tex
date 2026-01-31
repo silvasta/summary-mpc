@@ -1,6 +1,16 @@
 
 \textbf{Uncertain System}
-$x(k+1) = g(x(k), u(k), w(k); \theta)$
+\[
+  x(k+1) = g(x(k), u(k), w(k); \theta)
+\]
+\textbf{Min-Max Robust Formulation}
+\begin{align*}
+  \min_{U} &\max_{W} \sum_{i=1}^{N} \ell(x_{i|k}, u_{i|k})\\
+  &  \text{s.t.} \quad x_{i+1|k} = A x_{i|k} + B u_{i|k} + w_{i|k}, \\
+  &  \forall w_{i|k} \in \mathcal{W}
+  \quad x_{i|k} \in \mathcal{X}
+  \quad  u_{i|k} \in \mathcal{U}
+\end{align*}
 
 \subsubsection{Robust Constraint Satisfaction}
 
@@ -12,8 +22,7 @@ We then do MPC on the nominal system.
 \textbf{Goal}
 Ensure  constraints satisfied for the MPC sequence.
 
-\textbf{Disturbance reachable set}
-% MOVE: DRS to sets
+\ssthl{Disturbance reachable set}
 \quad
 $\mathcal{F}_i = \bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
 
@@ -79,15 +88,13 @@ $e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
         \begin{aligned}
           & z_0 = x(k)                                       \\
           & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
-          & u_i \in \mathcal{U} \ominus K(\mathcal{F}_i)     \\
+          & u_i \in \mathcal{U} \ominus K\mathcal{F}_i     \\
           % FIX: with L3.15
-          & z_N \in \mathcal{X}_f^{ct} \ominus \mathcal{F}_N \\
+          & z_N \in \mathcal{X}_f \ominus \mathcal{F}_N \\
       \end{aligned}\]
     \end{minipage}
   \end{sstOnlyFrame}
   \begin{sstOnlyFrame}
-    % MOVE: F_i to proper place
-    % HACK: control law, as default box content
     $\mathcal{F}_0:={0}$
     \quad
     $F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
@@ -96,11 +103,8 @@ $e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-% TODO: algorithm L3.15
-
 \subsection{Robust Tube MPC}
 
-% NEXT: L3.24 Tube MPC
 \textbf{Idea}
 Ignore noise and plan the nominal trajectory,
 bound maximum error at any time with RPI set
@@ -117,8 +121,6 @@ in the future.
 
 We must ensure that all possible state trajectories satisfy the constraints
 This is now equivalent to ensuring that $x_i \in z_i \oplus \mathcal{E}$
-
-(address input constraints later)
 
 What do we need to make this work?
 
@@ -140,7 +142,6 @@ $x_i \in z_i \oplus \mathcal{E} =
 \begin{sstTitleBox}{
   Tube MPC
 }
-
 \begin{sstOnlyFrame}
   \[
     \begin{aligned}

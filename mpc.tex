@@ -41,52 +41,38 @@
   %-----------------------------------------------------------------
   \section{Robust MPC}
   \input{topics/robust-mpc.tex}
-  % TODO: L3 check:
-  % - error dynamics, DRS
-  % - Constraint-tightening MPC
-  % - Homothetic tube-MPC
-
   %-----------------------------------------------------------------
   \section{Stochastic MPC}
-  % TODO: all, L4,5
-  % - Asymptotic Average Performance bounds
-  % - Stochastic setting
-  % - Probabilistic constraints & feasibility issues
-  % - Stochastic MPC with Recovery Initialization
-  % - Chance Constraints in Closed-Loop vs. in Prediction
-  % - Indirect Feedback SMPC
-
+  \input{topics/stochastic-mpc.tex}
   %-----------------------------------------------------------------
   \section{Nonlinear MPC}
-  % TODO: L6
-  % - Nominal Nonlinear MPC (NMPC) Problem
-  % - Soft-constrained NMPC for Bounded Uncertainties ++ ISS
-  % - Robust NMPC
-  % - Incremental ISS and stability of the error dynamics
-  % - Homothetic tube NMPC
-  % - Stochastic NMPC
-
+  \input{topics/nonlinear-mpc.tex}
+  %-----------------------------------------------------------------
+  \section{Parameter Uncertainty in MPC}
+  \input{topics/paramer-estimation-learning-based.tex}
+  %-----------------------------------------------------------------
+  \section{Safety Filter}
+  \input{topics/safety-filter.tex}
+  %-----------------------------------------------------------------
+  \section{Learning Based MPC}
+  \input{topics/iterative-learning-based.texb}
   %-----------------------------------------------------------------
   % Important Mathematical Tools
   %-----------------------------------------------------------------
-  \section{Invariance}
+  \section{Invariance (and more)}
   \input{topics/invariance.tex}
+  \input{topics/lyapunov.tex}
   %-----------------------------------------------------------------
   % Background
   %-----------------------------------------------------------------
+  \section{Optimization}
+  \input{topics/optimization.tex}
+  %-----------------------------------------------------------------
   \section{Introduction to Systems and Controls}
   \input{topics/models-and-systems.tex}
-  \input{topics/lyapunov.tex}
   %-----------------------------------------------------------------
   \section{Optimal Control}
   \input{topics/optimal-control.tex}
-  %-----------------------------------------------------------------
-  \section{Optimization}
-  % TODO: L6:Line Search – Descent Methods,SQP,RTI
-  \input{topics/optimization.tex}
-  %-----------------------------------------------------------------
-  \section{Implementation, needed?}
-  \input{topics/implementation.tex}
   %-----------------------------------------------------------------
   \iftoggle{do-multicol}{
 \end{multicols*}}{}
