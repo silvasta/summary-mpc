@@ -1,4 +1,3 @@
-
 Stochastic MPC extends deterministic MPC to handle uncertainties
 modeled as random variables, such as additive noise or parameter
 variations. A core feature is replacing hard constraints with chance
@@ -8,6 +7,7 @@ constraints to account for uncertainty.
   \mathbb{P}(u_k \in \mathcal{U}) \geq 1 - \delta,
 \]
 This softens constraints, improving feasibility over robust MPC.
+Chance constraints can be joint or separate (per state/input or timestep).
 
 \textbf{Mean Dynamics}
 $\bar{x}_{k+1} = A\bar{x}_k + B\bar{u}_k$ (Deterministic)
@@ -18,22 +18,36 @@ $\Sigma_{k+1} = (A+BK)\Sigma_k(A+BK)^\top + \Sigma_w$
 The variance $\Sigma_k$ can be precomputed offline
 as it does not depend on the actual state measurements.
 
+For general distributions or polytopic sets, we use
+\textbf{Probabilistic Reachable Set}
+$\mathcal{F}_k^p$ such that
+$\text{Pr}(e(k) \in \mathcal{F}_k^p) \geq p$,
+where $e_k = x_k - \bar{x}_k$.
+
+The constraint is satisfied if:
+$\bar{x}_k \in \mathcal{X} \ominus \mathcal{F}_k^p$
+
+For Gaussian noise ($w_i \sim \mathcal{N}(0, \Sigma_w)$),
+$\mathcal{F}_k^p$ can be an ellipsoid: $\{e \mid e^\top \Sigma_k^{-1}
+e \leq \chi_{n_x}^{-2}(p)\}$, where $\chi_{n_x}^{-2}$ is the inverse
+chi-squared quantile.
+
 \begin{sstTitleBox}{
     Stochastic MPC
   }
-
   \begin{sstOnlyFrame}
     \[J = \mathbb{E} \left[ \|x_N\|_P^2 + \sum_{k=0}^{N-1}
     \|x_k\|_Q^2 + \|u_k\|_R^2 \right]\]
     Using the property $\mathbb{E}[x^\top Q x] = \bar{x}^\top Q
-    \bar{x} + \text{tr}(Q \text{var}(x))$, the cost decomposes into:
+    \bar{x} + \text{tr}(Q \Sigma_x)$, the cost decomposes into:
 
     \textbf{Nominal Cost}
     A standard quadratic cost on the mean
     trajectories $(\bar{x}, \bar{u})$.
 
     \textbf{Constant Offset}
-    A term involving $\text{tr}(Q\Sigma_k)$
+    A term involving $\sum \text{tr}((Q + K^\top R K) \Sigma_k) +
+    \text{tr}(P \Sigma_N)$,
     which depends only on the noise statistics and the gain $K$.
 
     \textbf{Conclusion}
@@ -45,13 +59,14 @@ as it does not depend on the actual state measurements.
     $x_{i+1} = A x_i + B u_i + w_i$ (probabilistic)\\
 
     \textbf{Chance constraints}
-    $\mathbb{P}(x_i \in \mathcal{X}, u_i \in \mathcal{U}) \geq 1 - \epsilon$\\
+    $\mathbb{P}(x_i \in \mathcal{X}) \geq 1 - \epsilon$,
+    $\mathbb{P}(u_i \in \mathcal{U}) \geq 1 - \delta$\\
 
     \textbf{Initial condition}
     $x_0 = x_k$
 
     \textbf{Terminal set}
-    $x_N \in \mathcal{X}_f$ (probabilistically)
+    $\mathbb{P}(x_N \in \mathcal{X}_f) \geq 1 - \epsilon$ (probabilistically)
   \end{sstOnlyFrame}
   \begin{sstOnlyFrame}
     \textbf{Tube-like Feedback Policy}
@@ -59,35 +74,38 @@ as it does not depend on the actual state measurements.
     \[u(k) = \bar{u}_k + K(x(k) - \bar{x}_k)\]
     For tractability, approximations like affine feedback policies $u_i =
     K x_i + v_i$ (where $v_i$ is optimized) are used to close the loop in
-    predictions.
+    predictions. This contrasts with open-loop predictions, which
+    ignore feedback in the horizon and may lead to conservative results.
   \end{sstOnlyFrame}
 \end{sstTitleBox}
-
-For general distributions or polytopic sets, we use\\
-\textbf{Probabilistic Reachable Set}
-$\mathcal{F}_k^p$ such that
-$\text{Pr}(e(k) \in \mathcal{F}_k^p) \geq p$
-
-The constraint is satisfied if:
-$\bar{x}_k \in \mathcal{X} \ominus \mathcal{F}_k^p$
 
 \subsubsection{Feasibility}
 Large (unbounded) disturbances can drive the system into regions
 where the optimization problem becomes infeasible at the next time step.
 
-\subsubsection{Asymptotic Average Performance bound}
-
-Stability definition
+\subsubsection{Asymptotic Average Performance Bound}
+For a stabilizing gain $K$ satisfying the Lyapunov equation $P =
+(A+BK)^\top P (A+BK) + (Q + K^\top R K)$,
 $\lim_{T \to \infty} \frac{1}{T} \sum \mathbb{E}[l(x,u)] \leq
-\text{tr}(P\Sigma_w)$
+\text{tr}(P\Sigma_w)$.
 
-\subsubsection{Recovery Initialization}
+\subsubsection{Scenario Approach}
+For non-Gaussian uncertainties, sample $M$ disturbance scenarios
+$w^{(j)}$ and enforce constraints for each. Choose $M$ based on
+desired violation probability (e.g., via Chernoff bounds). This is
+computationally intensive but distribution-free.
+
+\textbf{Stochastic vs. Robust MPC}: Stochastic allows probabilistic
+violations for better performance/feasibility; robust ensures
+worst-case guarantees but can be conservative.
+
+\subsection{Recovery Initialization}
 If the measured state $x(k)$ is infeasible for the MPC, the solver is
 initialized with the \textbf{predicted mean} from the previous step
 ($\bar{x}_{1|k-1}$) instead of the actual measurement. This ensures
 recursive feasibility but sacrifices performance.
 
-\subsubsection{Indirect Feedback SMPC}
+\subsection{Indirect Feedback SMPC}
 
 A more advanced formulation where the nominal state $z(k)$
 evolves independently of the measurement $x(k)$ in the constraints,

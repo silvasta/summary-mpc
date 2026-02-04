@@ -1,13 +1,37 @@
+\subsection{Nominal NMPC}
+
+Nominal nonlinear MPC solves a non-convex optimization problem at each step:
+
+\[
+  \min_{X,U} l_f(x_N) + \sum_{i=0}^{N-1} l(x_i, u_i)
+\]
+
+s.t. $x_{i+1} = f(x_i, u_i)$, $i=0,\dots,N-1$,
+
+$x_i \in \mathbb{X}$, $u_i \in \mathbb{U}$, $i=0,\dots,N-1$,
+
+$x_N \in \mathbb{X}_f$, $x_0 = x(k)$.
+
+The control law is $\kappa_N(x) = u_0^*(x)$. Assumptions for
+recursive feasibility and asymptotic stability include:
+- Positive definite stage cost $l(x,u) \ge \alpha(\|x\|)$.
+- Terminal set $\mathbb{X}_f$ and cost $l_f$ ensuring local Lyapunov decrease.
+
+Soft-constrained variants add slack variables $\epsilon_i$ to handle
+infeasibility, e.g., penalizing violations in the cost.
+
 \subsection{Optimization}
 
 Because NMPC requires solving NLPs in real-time, algorithmic
-efficiency is critical.
+efficiency is critical. Optimality is characterized by KKT conditions
+(stationarity, primal/dual feasibility, complementarity).
 
 \textbf{Sequential Quadratic Programming (SQP)}
 The standard method for NMPC.
 It solves a sequence of Quadratic Programs (QP)
 that approximate the NLP locally using
-a quadratic cost and linearized constraints.
+a quadratic cost and linearized constraints. Hessian approximations
+(e.g., BFGS updates) are used in practice.
 
 \textbf{Sequential vs. Simultaneous Methods}
 
@@ -28,7 +52,7 @@ iteration per sampling time, using warm-starts from the previous step.
 
 \subsection{Robust NMPC}
 
-In linear systems, the error dynamics $e=x−z$
+In linear systems, the error dynamics $e=x-z$
 are independent of the nominal state.
 In nonlinear systems, the \textbf{error dynamics} are \textbf{state-dependent},
 making robust design much harder.
@@ -37,7 +61,7 @@ making robust design much harder.
 
 \textbf{Incremental Lyapunov function}
 $V_\delta(x, z)$ such that:
-\[V_\delta(f(x,u), f(z,v)) \le \rho V_\delta(x, z)\]
+\[V_\delta(f(x,u), f(z,v)) \le \rho V_\delta(x, z), \quad \rho < 1.\]
 
 This characterizes how "close" the real trajectory $x$ stays to the
 nominal trajectory $z$.
@@ -47,8 +71,10 @@ The tube is defined as the level set of the
 incremental Lyapunov function:
 $\mathbb{X}_i = \{x \mid V_\delta(x, z_i) \le \delta_i\}$.
 The tube size $\delta_i$ is propagated dynamically:
-\[\delta_{i+1} = \tilde{\rho} \delta_i + \bar{w}(z_i, v_i)\]
-where $\bar{w}$ accounts for the worst-case model mismatch/disturbance.
+\[\delta_{i+1} = \bar{\rho} \delta_i + \bar{w}(z_i, v_i)\]
+where $\bar{w}$ accounts for the worst-case model
+mismatch/disturbance. Terminal set must be robustly invariant under
+incremental stability.
 
 \textbf{Constraint Tightening}
 Nominal constraints are tightened
@@ -59,8 +85,17 @@ the real state is guaranteed to satisfy original constraints.
 \subsection{Stochastic NMPC}
 
 SNMPC aims for \textbf{PRS} rather than worst-case tubes.
+A set $\mathcal{F}_p$ is a PRS of level $p$ if $\Pr(e(i) \in
+\mathcal{F}_p) \ge p, \forall i$.
 
-The constraints are tightened using the PRS.
+The constraints are tightened using the PRS (e.g., $\bar{x}_k \in
+  \mathbb{X} \ominus \mathcal{F}_p^k$ for chance constraints $\Pr(x(k)
+\in \mathbb{X}) \ge p$).
+
 The cost function is typically the \textbf{expected cost}
-conditioned on the current state.
+conditioned on the current state (e.g., $\mathbb{E}[l(x,u) \mid x(k)]$).
+
+Indirect feedback schemes use nominal predictions $z_i$ and ancillary
+control $v_i$, with input $u(k) = K(x(k) - z(k)) + v_0^*$, ensuring
+probabilistic guarantees via PRS.
 

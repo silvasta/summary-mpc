@@ -15,7 +15,7 @@ we decouple the problem.
 
 \begin{enumerate}
   \item \textbf{Performance}
-    A controller (e.g. a Learning-based Controller, human or AI input,...)
+    A controller (e.g., a Learning-based Controller, human or AI input,...)
     focuses on the complex objectives and provides a suggested input $u_L(k)$.
   \item \textbf{Safety Filter} A verification module that sits between the
     controller and the system. It verifies $u_L(k)$ and modifies it
@@ -28,7 +28,7 @@ we decouple the problem.
 A central concept is the \textbf{Safe Set} $\mathcal{S}$
 (usually Maximal Control Invariant Set),
 which ensures states remain feasible indefinitely under
-\textbf{Safe Control Law} $\pi_S(x)$
+\textbf{Safe Control Law} $\pi_S(x)$.
 
 \subsection{Implementation Types}
 
@@ -51,6 +51,7 @@ the system from rushing toward the boundary of the safe set.
 It uses a parameter $\gamma \in (0,1]$ to reduce the
 \textit{remaining budget} until the boundary:
 \[V(f(x, u_0)) - V(x) \le \gamma(1 - V(x))\]
+where $V$ is a CBF (e.g., derived from a Lyapunov function).
 
 \subsection{Model Predictive Safety Filter (MPSF)}
 
@@ -60,7 +61,14 @@ the \textbf{Predictive Safety Filter} uses MPC techniques to look further ahead.
 
 \textbf{Mechanism}
 It plans a safe forward trajectory of $N$ steps
-that terminates in a safe set $\mathcal{X}_f$.
+that terminates in a safe set $\mathcal{X}_f$
+(ensuring recursive feasibility and invariance).
+
+\textbf{Implicit Safe Set:} The set of all states for which the MPSF
+is feasible, $\mathcal{X}_{feas}$, is itself a control invariant set.
+Crucially: $\mathcal{X}_f \subseteq \mathcal{X}_{feas} \subseteq
+\mathcal{C}$. MPSF allows exploring a much larger state space than
+$\mathcal{X}_f$.
 
 \textbf{The Formulation}
 \[\min_{u_0, \dots, u_{N-1}} \|u_0 - u_L(k)\|\]
@@ -76,15 +84,22 @@ $\mathcal{X}_{feas}$ than a simple ellipsoidal $\mathcal{S}$.
 
 \textbf{Uncertainty}
 In real-world applications
-(like the Quadrotor example),
+(like quadrotor control or autonomous racing),
 safety depends on a perfect model.
 To handle disturbances, the MPSF can be extended using
-\textbf{Robust Tube MPC} or \textbf{Stochastic MPC} techniques
-(e.g., constraint tightening).
+\textbf{Robust Tube MPC} (e.g., for bounded disturbances) or
+\textbf{Stochastic MPC} techniques
+(e.g., probabilistic constraint tightening).
 
 \textbf{Softening the Intervention}
 To prevent the filter from \textit{fighting} the learner,
 a barrier term can be added to the learner's own cost function
 to make it naturally prefer safe regions:
-$C_s(x,u) = C(x,u) - \gamma \log(1 - V(x))$
+\[C_s(x,u) = C(x,u) - \gamma \log(1 - V(x))\]
+
+\subsubsection{Advantages and Limitations}
+Invariance-based SFs scale to high dimensions and are computationally
+cheap but conservative.
+MPSFs reduce conservatism (larger safe sets) but require solving an
+MPC-like optimization online.
 

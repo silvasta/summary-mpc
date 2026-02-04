@@ -1,4 +1,6 @@
 
+\subsection{Iterative Learning MPC}
+
 In standard MPC, stability and recursive feasibility are guaranteed
 by terminal sets $\mathcal{X}_f$ and terminal costs $l_f$.
 IL-MPC constructs these \textit{ingredients} dynamically
@@ -9,7 +11,7 @@ The collection of all successful
 state trajectories recorded up to episode $e$.
 
 \textbf{Convex Safe Set} ($\mathcal{CS}^e$)
-The convex hull of $SS^e$.
+The convex hull of $\mathcal{SS}^e$.
 For linear systems,
 any convex combination of successful trajectories
 is also a feasible trajectory.
@@ -26,6 +28,11 @@ asymptotically stable, and the closed-loop cost
 is non-increasing across episodes, eventually converging to the
 infinite-horizon optimal solution.
 
+\textbf{Extensions}
+The framework can handle infeasible trajectories (via soft constraints),
+reference tracking, and nonlinear systems (e.g., using value functions
+for terminal costs and policies for warm-starting optimization).
+
 \subsection{Global Tuning Approaches (Bayesian Methods)}
 
 Used when the relationship between cost parameters (e.g., $Q, R, P$)
@@ -38,10 +45,12 @@ to represent the unknown performance function.
 An \textbf{Acquisition Function} (like Lower Confidence Bound - LCB)
 suggests the next parameters to test by balancing
 exploration (uncertainty) and exploitation (predicted performance).
+Example: Tuning MPCC for racing to minimize lap times.
 
 \textbf{Safe BO}
 Restricts exploration to parameters that are likely
-to maintain performance above a minimum safety threshold.
+to maintain performance above a minimum safety threshold
+(e.g., ensuring lap times do not exceed initial + $\delta$).
 
 \textbf{Contextual BO}
 Adapts the tuning to changing environments or system parameters
@@ -52,6 +61,7 @@ by treating model mismatches as a \textit{context} variable $\theta$.
 Uses \textbf{Thompson Sampling} to sample parameters
 from a posterior distribution and use them in the MPC,
 minimizing \textit{cumulative regret}.
+Provides bounds on regret and unsafe episodes.
 
 \subsection{Local Tuning Approaches (Differentiable MPC)}
 
@@ -66,13 +76,15 @@ with respect to cost or dynamics parameters.
 
 \textbf{RL-MPC}
 Uses Reinforcement Learning to update cost parameters $\theta$
-to minimize long-term cost.
+to minimize long-term cost on the true system,
+even with model mismatches.
 
 \textbf{ZipMPC}
 A student-teacher framework.
 A \textit{Student} (short-horizon MPC) is trained via imitation learning
 to mimic the behavior of a \textit{Teacher}
-(computationally expensive long-horizon MPC)
+(computationally expensive long-horizon MPC).
+Incorporates context (e.g., reference or dynamics parameters) for adaptation.
 
 \subsection{Approximate Explicit MPC}
 
@@ -100,6 +112,12 @@ constraints and horizon (high memory usage).
 Nonlinear systems generally lack an analytical explicit solution.
 Instead, we learn a function approximation $\tilde{\pi}(x) \approx \pi^*(x)$.
 
+\textbf{Data Collection}
+- Uniform grid sampling: Simple but suffers from curse of dimensionality.
+- Adaptive sampling: Focuses on high-error regions.
+- Closed-loop trajectories: Generates realistic data but may require
+online MPC evaluations.
+
 \textbf{Regression Techniques}
 Neural Networks (NN) or Kernel Interpolation are used
 to fit a model to a dataset of offline-solved MPC problems.
@@ -111,10 +129,36 @@ two approaches are used:
 \begin{enumerate}
   \item \textbf{Safety Filters}
     Project the approximate input $\tilde{u}$ onto a control invariant set
-    to ensure constraints are always met.
+    to ensure constraints are always met. Can handle parameter-varying systems.
   \item \textbf{Probabilistic Verification}
     Use the \textbf{Hoeffding Bound} to certify
     the controller’s success rate $\mu$ with a specific
     confidence level $(1-\delta_h)$ based on a finite number of test samples.
+    Deterministic guarantees (e.g., via Lipschitz constants) are
+    possible but hard to verify in practice.
 \end{enumerate}
+
+\textbf{Extensions}
+Include handling non-convex problems (e.g., obstacle avoidance) and
+integration with safety filters for robustness.
+
+\begin{sstTitleBox}[RoyalBlue]
+  {Iterative Learning Based MPC}
+  \begin{sstOnlyFrame}
+    \textbf{Sampled Safe Set} $\mathcal{SS}^e = \{ \bigcup_{j=0}^e
+    \bigcup_{k=0}^\infty x^j(k) \}$ \\
+    \textbf{Convex Safe Set} $\mathcal{CS}^e =
+    \text{Conv}(\mathcal{SS}^e)$. For linear systems, $\mathcal{CS}^e$
+    is \textbf{control invariant}. \\
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \textbf{Barycentric Terminal Cost} $P^e(x)$ for $x \in \mathcal{CS}^e$:
+    \begin{equation*}
+      P^e(x) = \min_{\lambda \ge 0} \sum_{j,k} \lambda_k^j
+      V_{k\to\infty}^j, \text{ s.t. } \sum \lambda = 1, \sum
+      \lambda_k^j x^j(k) = x
+    \end{equation*}
+    where $V_{k\to\infty}^j$ is the observed cost-to-go from state $x^j(k)$.
+  \end{sstOnlyFrame}
+\end{sstTitleBox}
 

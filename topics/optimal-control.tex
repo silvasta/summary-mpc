@@ -68,78 +68,78 @@
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsubsection{Batch Approach}
-
-express cost function in terms of $x(0)$ and input sequence $U$
+% \subsubsection{Batch Approach}
 %
-\[
-  \begin{bmatrix}
-    x_0    \\
-    x_1    \\
-    \vdots \\
-    x_N
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-    \mathbb{I} \\
-    A          \\
-    \vdots     \\
-    A^N
-  \end{bmatrix}
-  x(0) +
-  \begin{bmatrix}
-    0        & \cdots & 0 \\
-    B        & 0      & 0 \\
-    AB       & B      & 0 \\
-    \vdots   & \ddots & 0 \\
-    A^{N-1}B & \cdots & B
-  \end{bmatrix}
-  \begin{bmatrix}
-    u_0    \\
-    u_1    \\
-    \vdots \\
-    u_{N-1}
-\end{bmatrix} \]
+% express cost function in terms of $x(0)$ and input sequence $U$
+% %
+% \[
+%   \begin{bmatrix}
+%     x_0    \\
+%     x_1    \\
+%     \vdots \\
+%     x_N
+%   \end{bmatrix}
+%   =
+%   \begin{bmatrix}
+%     \mathbb{I} \\
+%     A          \\
+%     \vdots     \\
+%     A^N
+%   \end{bmatrix}
+%   x(0) +
+%   \begin{bmatrix}
+%     0        & \cdots & 0 \\
+%     B        & 0      & 0 \\
+%     AB       & B      & 0 \\
+%     \vdots   & \ddots & 0 \\
+%     A^{N-1}B & \cdots & B
+%   \end{bmatrix}
+%   \begin{bmatrix}
+%     u_0    \\
+%     u_1    \\
+%     \vdots \\
+%     u_{N-1}
+% \end{bmatrix} \]
+% %
+% $X:=\mathcal{S}^x x(0) + \mathcal{S}^u U$
+% \quad
+% $J(x(0),U) =
+% X^\top \overline{Q}X
+% + U^\top \overline{R}U$
 %
-$X:=\mathcal{S}^x x(0) + \mathcal{S}^u U$
-\quad
-$J(x(0),U) =
-X^\top \overline{Q}X
-+ U^\top \overline{R}U$
-
-$\overline{Q} := \mathop{\mathrm{blockdiag}}(Q,\dots, Q,P)$
-\quad
-$\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
-
-\textbf{Optimal Input}
-set $\nabla_UJ(x(0),U)=2HU+2F^\top x(0)=0$
-\[ U^\star(x(0)) =
-  - \bigl(
-    \underbrace{
-      (\mathcal{S}^u)^\top \overline{Q} \mathcal{S}^u + \overline{R}
-    }_{H\text{(Hessian)}^{-1}}
-  \bigr)
-  \underbrace{
-    (\mathcal{S}^u)^\top \overline{Q}\mathcal{S}^x
-  }_ {F^\top}
-  x(0)
-\]
-
-\textbf{Optimal Cost}
-$(x_0=x(0))$
-\[
-  \scriptstyle
-  J^\star(x_0) = x_0^\top (
-    \mathcal{S}_x^\top \overline{Q} \mathcal{S}_x
-    - \mathcal{S}_x^\top \overline{Q} \mathcal{S}_u
-    (\mathcal{S}_u^\top \overline{Q} \mathcal{S}_u
-    + \overline{R})^{-1}
-    \mathcal{S}_u^\top \overline{Q} \mathcal{S}_x
-  )x_0
-\]
-
-\input{topics/riccatti.tex}
-
+% $\overline{Q} := \mathop{\mathrm{blockdiag}}(Q,\dots, Q,P)$
+% \quad
+% $\overline{R} := \mathop{\mathrm{blockdiag}}(R,\dots, R)$
+%
+% \textbf{Optimal Input}
+% set $\nabla_UJ(x(0),U)=2HU+2F^\top x(0)=0$
+% \[ U^\star(x(0)) =
+%   - \bigl(
+%     \underbrace{
+%       (\mathcal{S}^u)^\top \overline{Q} \mathcal{S}^u + \overline{R}
+%     }_{H\text{(Hessian)}^{-1}}
+%   \bigr)
+%   \underbrace{
+%     (\mathcal{S}^u)^\top \overline{Q}\mathcal{S}^x
+%   }_ {F^\top}
+%   x(0)
+% \]
+%
+% \textbf{Optimal Cost}
+% $(x_0=x(0))$
+% \[
+%   \scriptstyle
+%   J^\star(x_0) = x_0^\top (
+%     \mathcal{S}_x^\top \overline{Q} \mathcal{S}_x
+%     - \mathcal{S}_x^\top \overline{Q} \mathcal{S}_u
+%     (\mathcal{S}_u^\top \overline{Q} \mathcal{S}_u
+%     + \overline{R})^{-1}
+%     \mathcal{S}_u^\top \overline{Q} \mathcal{S}_x
+%   )x_0
+% \]
+%
+% \input{topics/riccatti.tex}
+%
 \subsubsection{Recursive Approach}
 
 use dynamic programming to solve problem backwards from $N$
@@ -224,8 +224,6 @@ of \textbf{numeric values} depending only on x(0),
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsection{Constrained Finite Time Optimal Control Problem}
-
 \begin{sstTitleBox}[BrickRed]{
     Choice of P
   }
@@ -243,6 +241,7 @@ of \textbf{numeric values} depending only on x(0),
     Set $P=0$ und use instead constraint $x_{i+N}=0$
   \end{sstOnlyFrame}
 \end{sstTitleBox}
+\subsection{Constrained Finite Time Optimal Control Problem}
 
 \subsubsection{Quadratic Cost CFTOC}
 \[
@@ -268,189 +267,190 @@ of \textbf{numeric values} depending only on x(0),
   \min_{z\in\mathbb{R}^n}
   \textstyle\frac{1}{2}z^\top H z + q^\top z + r
 \quad\text{s.t. }Gz\leq h,\ Az = b\]
-
-\subsubsection{Construction of QP without Substitution}
-
-\textbf{Idea} Keep state equations as equality constraints
-
-\textbf{Define variable} $z =
-\begin{bmatrix}
-  x_1^\top & \dots x_N^\top & u_0^\top & \dots u_{N-1}^\top
-\end{bmatrix}^\top$
-
-\textbf{Equalities} from system dynamics
-$x_{i+1} = Ax_i + Bu_i$
-
-\[
-  G_{eq} =
-  \begin{bmatrix}
-    \begin{smallmatrix}
-      \mathbb{I}& & & \\
-      -A & \mathbb{I} && \\
-      &  \ddots & \ddots \\
-      &&-A & \mathbb{I}
-    \end{smallmatrix}
-    & \vline
-    \begin{smallmatrix}
-      -B \\
-      & \ddots \\
-      & &-B
-    \end{smallmatrix}
-  \end{bmatrix}
-  E_{eq} =
-  \begin{bsmallmatrix}
-    A      \\
-    0      \\
-    \vdots \\
-    0
-  \end{bsmallmatrix}
-\]
-
-\textbf{Inequalities}
-$G_{in}z \leq w_{in} + E_{in}x(k)$
-for $\mathcal{X},\mathcal{U}$
-
-\begin{minipage}[c]{0.5\linewidth}
-  $\mathcal{X} = \{x \mid A_x x \le \mathcal{X}_fq b_x\}$
-  $\mathcal{U}   = \{u \mid A_u u \leq b_u\}$
-  $\mathcal{X}_f = \{x \mid A_f x \leq b_f\}$
-\end{minipage}
-\begin{minipage}[b]{0.4\linewidth}
-  \[E_{in} =
-    \left[
-      \begin{smallmatrix}
-        -A_x \\
-        0 \\
-        \vdots \\
-        0 \\
-      \end{smallmatrix}
-  \right]\]
-\end{minipage}
-\[
-  G_{in} =
-  \left[
-    \begin{array}{l!{\color{RoyalBlue!50}\vrule}l}
-      \noalign{\arrayrulewidth=0.1mm}\arrayrulecolor{RoyalBlue!50}
-      %
-      \begin{smallmatrix}
-        0&&&
-      \end{smallmatrix}
-      &
-      \begin{smallmatrix}
-        0&&&
-      \end{smallmatrix}
-      \\ \hline
-      \begin{smallmatrix}
-        A_x&&&\\
-        &\ddots&\\
-        &&    A_x&\\
-        &&&    A_f
-      \end{smallmatrix}
-      &
-      \begin{smallmatrix}
-        0\ \ &&&\\
-        &\ \ddots\\
-        &&\ 0\ &\\
-        &&&\ \ 0
-      \end{smallmatrix}
-      \\ \hline
-      \begin{smallmatrix}
-        0\ \ &&&\\
-        &\ \ddots\\
-        &&\ 0\ &\\
-        &&&\ \ 0
-      \end{smallmatrix}
-      &
-      \begin{smallmatrix}
-        A_u&&\\
-        &\ddots&\\
-        &&A_u&\\
-        &&&A_u
-      \end{smallmatrix}
-    \end{array}
-  \right]
-  %
-  w_{in} =
-  \begin{bmatrix}
-    \noalign{\arrayrulewidth=0.1mm}\arrayrulecolor{RoyalBlue!50}
-    \begin{smallmatrix}
-      b_x\\
-    \end{smallmatrix}
-    \\ \hline
-    \begin{smallmatrix}
-      b_x\\
-      \vdots\\
-      b_x\\
-      b_f\\
-    \end{smallmatrix}
-    \\ \hline
-    \begin{smallmatrix}
-      b_u\\
-      \vdots\\
-      b_u\\
-      b_u\\
-    \end{smallmatrix}
-  \end{bmatrix}
-\]
-
-\textbf{Cost Matrix} $\bar{H} = \mathrm{diag}(Q,..., Q, P, R,..., R)$
-
-\textbf{Finally the resulting quadratic optimization problem}
-\[
-  \begin{aligned}
-    J^\star(x(k)) = \min_z  \left[ z^\top \ x(k)^\top \right]
-    \left[
-      \begin{smallmatrix} \bar{H} & 0 \\ 0 & Q
-    \end{smallmatrix}\right]
-    \left[ z^\top \ x(k)^\top \right]^\top \\
-    \text{s.t}
-    \quad G_{in}z \leq w_{in} + E_{in}x(k)
-    \quad  G_{eq}z = E_{eq}x(k)
-\end{aligned}\]
-
-\subsubsection{Construction of QP with substitution}
-
-\textbf{Idea} Substitute the state equations.
-
-\textbf{Step 1} Rewrite cost  as
-
-\[
-  \begin{aligned}
-    J(x(k)) = & U^\top HU+2x(k)^\top FU+x(k)^\top Y x(k) \\
-    =         &
-    \begin{bmatrix}
-      U^\top & x(k)^\top
-    \end{bmatrix}
-    \left[
-      \begin{smallmatrix}
-        H & F^\top \\
-        F & Y
-    \end{smallmatrix}\right]
-    \begin{bmatrix}
-      U^\top & x(k)^\top
-    \end{bmatrix}^\top
-\end{aligned} \]
-
-\textbf{Step 2} Rewrite constraints compaclty as $GU\le w+Ex(k)$
-
-\includegraphics[width=\columnwidth]{images/qp_with_substitution.png}
-
-\textbf{Step 3} Rewrite constrained problem as
-\[
-  \begin{aligned}
-    J^\star(x(k)) = \min_U
-    &
-    \begin{bmatrix}
-      U^\top & x(k)^\top
-    \end{bmatrix}
-    \left[
-      \begin{smallmatrix}
-        H & F^\top \\
-        F & Y
-    \end{smallmatrix}\right]
-    \begin{bmatrix}
-      U^\top & x(k)^\top
-    \end{bmatrix}^\top                          \\
-    \mathrm{subj. \ to \ } & GU \leq w + Ex(k)
-\end{aligned} \]
+%
+% \subsubsection{Construction of QP without Substitution}
+%
+% \textbf{Idea} Keep state equations as equality constraints
+%
+% \textbf{Define variable} $z =
+% \begin{bmatrix}
+%   x_1^\top & \dots x_N^\top & u_0^\top & \dots u_{N-1}^\top
+% \end{bmatrix}^\top$
+%
+% \textbf{Equalities} from system dynamics
+% $x_{i+1} = Ax_i + Bu_i$
+%
+% \[
+%   G_{eq} =
+%   \begin{bmatrix}
+%     \begin{smallmatrix}
+%       \mathbb{I}& & & \\
+%       -A & \mathbb{I} && \\
+%       &  \ddots & \ddots \\
+%       &&-A & \mathbb{I}
+%     \end{smallmatrix}
+%     & \vline
+%     \begin{smallmatrix}
+%       -B \\
+%       & \ddots \\
+%       & &-B
+%     \end{smallmatrix}
+%   \end{bmatrix}
+%   E_{eq} =
+%   \begin{bsmallmatrix}
+%     A      \\
+%     0      \\
+%     \vdots \\
+%     0
+%   \end{bsmallmatrix}
+% \]
+%
+% \textbf{Inequalities}
+% $G_{in}z \leq w_{in} + E_{in}x(k)$
+% for $\mathcal{X},\mathcal{U}$
+%
+% \begin{minipage}[c]{0.5\linewidth}
+%   $\mathcal{X} = \{x \mid A_x x \le \mathcal{X}_fq b_x\}$
+%   $\mathcal{U}   = \{u \mid A_u u \leq b_u\}$
+%   $\mathcal{X}_f = \{x \mid A_f x \leq b_f\}$
+% \end{minipage}
+% \begin{minipage}[b]{0.4\linewidth}
+%   \[E_{in} =
+%     \left[
+%       \begin{smallmatrix}
+%         -A_x \\
+%         0 \\
+%         \vdots \\
+%         0 \\
+%       \end{smallmatrix}
+%   \right]\]
+% \end{minipage}
+% \[
+%   G_{in} =
+%   \left[
+%     \begin{array}{l!{\color{RoyalBlue!50}\vrule}l}
+%       \noalign{\arrayrulewidth=0.1mm}\arrayrulecolor{RoyalBlue!50}
+%       %
+%       \begin{smallmatrix}
+%         0&&&
+%       \end{smallmatrix}
+%       &
+%       \begin{smallmatrix}
+%         0&&&
+%       \end{smallmatrix}
+%       \\ \hline
+%       \begin{smallmatrix}
+%         A_x&&&\\
+%         &\ddots&\\
+%         &&    A_x&\\
+%         &&&    A_f
+%       \end{smallmatrix}
+%       &
+%       \begin{smallmatrix}
+%         0\ \ &&&\\
+%         &\ \ddots\\
+%         &&\ 0\ &\\
+%         &&&\ \ 0
+%       \end{smallmatrix}
+%       \\ \hline
+%       \begin{smallmatrix}
+%         0\ \ &&&\\
+%         &\ \ddots\\
+%         &&\ 0\ &\\
+%         &&&\ \ 0
+%       \end{smallmatrix}
+%       &
+%       \begin{smallmatrix}
+%         A_u&&\\
+%         &\ddots&\\
+%         &&A_u&\\
+%         &&&A_u
+%       \end{smallmatrix}
+%     \end{array}
+%   \right]
+%   %
+%   w_{in} =
+%   \begin{bmatrix}
+%     \noalign{\arrayrulewidth=0.1mm}\arrayrulecolor{RoyalBlue!50}
+%     \begin{smallmatrix}
+%       b_x\\
+%     \end{smallmatrix}
+%     \\ \hline
+%     \begin{smallmatrix}
+%       b_x\\
+%       \vdots\\
+%       b_x\\
+%       b_f\\
+%     \end{smallmatrix}
+%     \\ \hline
+%     \begin{smallmatrix}
+%       b_u\\
+%       \vdots\\
+%       b_u\\
+%       b_u\\
+%     \end{smallmatrix}
+%   \end{bmatrix}
+% \]
+%
+% \textbf{Cost Matrix} $\bar{H} = \mathrm{diag}(Q,..., Q, P, R,..., R)$
+%
+% \textbf{Finally the resulting quadratic optimization problem}
+% \[
+%   \begin{aligned}
+%     J^\star(x(k)) = \min_z  \left[ z^\top \ x(k)^\top \right]
+%     \left[
+%       \begin{smallmatrix} \bar{H} & 0 \\ 0 & Q
+%     \end{smallmatrix}\right]
+%     \left[ z^\top \ x(k)^\top \right]^\top \\
+%     \text{s.t}
+%     \quad G_{in}z \leq w_{in} + E_{in}x(k)
+%     \quad  G_{eq}z = E_{eq}x(k)
+% \end{aligned}\]
+%
+% \subsubsection{Construction of QP with substitution}
+%
+% \textbf{Idea} Substitute the state equations.
+%
+% \textbf{Step 1} Rewrite cost  as
+%
+% \[
+%   \begin{aligned}
+%     J(x(k)) = & U^\top HU+2x(k)^\top FU+x(k)^\top Y x(k) \\
+%     =         &
+%     \begin{bmatrix}
+%       U^\top & x(k)^\top
+%     \end{bmatrix}
+%     \left[
+%       \begin{smallmatrix}
+%         H & F^\top \\
+%         F & Y
+%     \end{smallmatrix}\right]
+%     \begin{bmatrix}
+%       U^\top & x(k)^\top
+%     \end{bmatrix}^\top
+% \end{aligned} \]
+%
+% \textbf{Step 2} Rewrite constraints compaclty as $GU\le w+Ex(k)$
+%
+% \includegraphics[width=\columnwidth]{images/qp_with_substitution.png}
+%
+% \textbf{Step 3} Rewrite constrained problem as
+% \[
+%   \begin{aligned}
+%     J^\star(x(k)) = \min_U
+%     &
+%     \begin{bmatrix}
+%       U^\top & x(k)^\top
+%     \end{bmatrix}
+%     \left[
+%       \begin{smallmatrix}
+%         H & F^\top \\
+%         F & Y
+%     \end{smallmatrix}\right]
+%     \begin{bmatrix}
+%       U^\top & x(k)^\top
+%     \end{bmatrix}^\top                          \\
+%     \mathrm{subj. \ to \ } & GU \leq w + Ex(k)
+% \end{aligned} \]
+%
 

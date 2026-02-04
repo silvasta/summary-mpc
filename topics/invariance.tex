@@ -145,19 +145,13 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsection{MPC Context}
 Often used as a terminal set $\mathcal{X}_f = \mathcal{C}_\infty$ to
 guarantee recursive feasibility in MPC formulations.
 
-\subsection{Real-World Notes}
 For nonlinear systems, computing $\mathcal{C}_\infty$ is NP-hard;
 approximations (e.g., ellipsoidal sets) are common. In robust MPC,
 extend to robust positively invariant (RPI) sets for disturbance handling.
 
-\subsection{Extensions and Comparisons}
-- Similar to robust invariant sets in RMPC (e.g., tightened via
-Pontryagin difference).
-- For stochastic MPC, consider probabilistic safe sets.
 \subsection{Robust Invariance}
 
 \begin{definition}[Robust Positive Invariant Set $\mathcal{O}^\mathcal{W}$]
@@ -172,7 +166,6 @@ Pontryagin difference).
     \quad \forall w \in \mathcal{W}
   \]
 \end{definition}
-% TODO: (pre-)set darstellung
 Given set $\Omega$ and dynamic system $x(k+1) = f(x(k), w(k))$,
 \begin{align*}
   \mathrm{pre}^{\mathcal{W}}(\Omega) := & \{x \mid f(x,w)\} \in
@@ -246,4 +239,12 @@ $\mathcal{F}_n = \mathcal{F}_{n+1} = \mathcal{F}_\infty$
 %
 where $h_{\mathcal{W}^i}(F)$ is the \textbf{support function}
 $\sigma_\mathcal{C}(a)  = \sup_{x \in \mathcal{C}}a^T x$
+
+\subsection{Probabilistic Reachable Sets (PRS)}
+
+For a target probability $p$ ($Pr(x \in \mathcal{R}_k) \ge p$), a PRS
+can be constructed using the incremental Lyapunov function and
+Markov's inequality:
+\[ \mathcal{R}_k = \left\{ x \mid V_\delta(x, z(k)) \le
+\frac{1-\rho^k}{1-\rho} \frac{\bar{w}}{1-p} \right\} \]
 

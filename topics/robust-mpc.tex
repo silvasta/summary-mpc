@@ -1,37 +1,54 @@
 
-\textbf{Uncertain System}
+Nominal MPC has some \textbf{inherent robustness}, especially with
+soft constraints, providing Input-to-State Stability (ISS) with
+respect to small disturbances in an enlarged feasible set. However,
+it lacks guaranteed robust constraint satisfaction and quantitative
+stability for larger disturbances. Robust MPC explicitly accounts for
+known disturbance/model-error bounds to ensure robustness by design.
+
+\textbf{Uncertain System} (Additive Disturbance Case)
 \[
-  x(k+1) = g(x(k), u(k), w(k); \theta)
+  x(k+1) = A x(k) + B u(k) + w(k), \quad w(k) \in \mathcal{W}
 \]
-\textbf{Min-Max Robust Formulation}
+
+\subsubsection{Inherent Robustness of Nominal MPC}
+
+For linear systems with bounded additive disturbances,
+soft-constrained nominal MPC (with slack variables on state
+constraints and a contractive terminal set) is ISS in the soft
+feasible set $\mathcal{X}_N^\text{soft}$ for sufficiently small disturbances.
+
+Key: Optimal cost $V_N^*$ is continuous and serves as an ISS-Lyapunov
+function for small $w$.
+
+Limitations: No guarantees for large disturbances; hard constraints
+may be violated.
+
+\subsubsection{Min-Max Robust Formulation}
+
+A direct approach to robustness:
 \begin{align*}
-  \min_{U} &\max_{W} \sum_{i=1}^{N} \ell(x_{i|k}, u_{i|k})\\
-  &  \text{s.t.} \quad x_{i+1|k} = A x_{i|k} + B u_{i|k} + w_{i|k}, \\
-  &  \forall w_{i|k} \in \mathcal{W}
-  \quad x_{i|k} \in \mathcal{X}
-  \quad  u_{i|k} \in \mathcal{U}
+  \min_{U} &\max_{W} \sum_{i=0}^{N-1} \ell(x_{i}, u_{i}) + \ell_f(x_N)\\
+  &  \text{s.t.} \quad x_{i+1} = A x_{i} + B u_{i} + w_{i}, \\
+  &  \forall w_{i} \in \mathcal{W}, \quad x_{i} \in \mathcal{X},
+  \quad  u_{i} \in \mathcal{U}, \quad x_N \in \mathcal{X}_f
 \end{align*}
+This is computationally expensive (non-convex, scenario tree explodes).
 
-\subsubsection{Robust Constraint Satisfaction}
+\subsection{Robust Open-Loop MPC}
 
-\textbf{Idea}
-Compute a set of tighter constraints such that if the nominal
-system meets these constraints, then the uncertain system will too.
-We then do MPC on the nominal system.
+Predict open-loop inputs; tighten constraints using disturbance
+reachable sets assuming no future feedback.
 
-\textbf{Goal}
-Ensure  constraints satisfied for the MPC sequence.
+\ssthl{Disturbance reachable set} \quad $\mathcal{F}_i =
+\bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
 
-\ssthl{Disturbance reachable set}
-\quad
-$\mathcal{F}_i = \bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
-
-\begin{sstTitleBox}{Robust Open-Loop MPC}
+\begin{sstTitleBox}[RoyalBlue]{Robust Open-Loop MPC}
   \begin{sstOnlyFrame}
     \begin{minipage}[t]{0.55\linewidth}
       \[
         \begin{aligned}
-          \min_U \      & \sum_{i=0}^{N-1} l(x_i, u_i) + l_f(x_N) \\
+          \min_U \      & \sum_{i=0}^{N-1} \ell(x_i, u_i) + \ell_f(x_N) \\
           \text{s.t.}\  & x_{i+1} = Ax_i + Bu_i                   \\
       \end{aligned}\]
     \end{minipage}
@@ -47,40 +64,27 @@ $\mathcal{F}_i = \bigoplus_{j=0}^{i-1} A^j \mathcal{W}$
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsubsection{Closed Loop Robust MPC}
+Conservative as it ignores future feedback.
 
-\textbf{Idea}
-Separate the available control authority into two parts:
-\[
-  z(k+1)=Az(k)+Bv(k)
-\]
-steers noise-free \textit{nominal} system to origin
-\[
-  u_i=K(x_i-z_i)+v_i
-\]
-compensates for deviations,
-i.e. a \textit{tracking} controller,
-to keep the real trajectory
-close to the nominal system.
-% REMOVE: unneccesary robust  stuff
-% TODO: Error dynamics, short and compact
-$\Rightarrow$
-We fix the linear feedback controller K offline,
-and optimize over the nominal inputs $\{v_0,...,v_{N−1}\}$
-and nominal trajectory $\{z_0,...,z_N\}$,
-which results in a convex problem.
+\subsection{Closed-Loop Robust MPC (Constraint-Tightening)}
 
-$e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
+Separate control: nominal $z(k+1)=Az(k)+Bv(k)$ and error compensation
+$u_i = v_i + K(x_i - z_i)$, with $K$ stabilizing ($A_K = A+BK$ Schur stable).
 
-\subsection{Robust Constraint-Tightening MPC}
+Error dynamics: $e_{i+1} = A_K e_i + w_i$, assuming $e_0 = 0$ (since
+$z_0 = x(k)$).
 
-\begin{sstTitleBox}{Robust Constraint-Tightening MPC}
+Reachable sets: $\mathcal{F}_0 = \{0\}$, $\mathcal{F}_{i+1} = A_K
+\mathcal{F}_i \oplus \mathcal{W}$.
+
+\begin{sstTitleBox}[RoyalBlue]{Constraint-Tightening MPC}
   \begin{sstOnlyFrame}
     \begin{minipage}[t]{0.57\linewidth}
       \[
         \begin{aligned}
-          \min_{Z,V} \         & \sum_{i=0}^{N-1} l(z_i, v_i) + l_f(z_N) \\
-          \mathrm{subj.\ to}\  & z_{i+1} = Az_i + Bv_i                   \\
+          \min_{Z,V} \         & \sum_{i=0}^{N-1} \ell(z_i, v_i) +
+          \ell_f(z_N) \\
+          \mathrm{s.t.}\  & z_{i+1} = Az_i + Bv_i                   \\
       \end{aligned}\]
     \end{minipage}
     \begin{minipage}[t]{0.4\linewidth}
@@ -88,132 +92,156 @@ $e_{i+1} = x_{i+1}-z_{i+1} = (A+BK)e_i+w_i$
         \begin{aligned}
           & z_0 = x(k)                                       \\
           & z_i \in \mathcal{X} \ominus \mathcal{F}_i        \\
-          & u_i \in \mathcal{U} \ominus K\mathcal{F}_i     \\
-          % FIX: with L3.15
+          & v_i \in \mathcal{U} \ominus K\mathcal{F}_i     \\
           & z_N \in \mathcal{X}_f \ominus \mathcal{F}_N \\
       \end{aligned}\]
     \end{minipage}
   \end{sstOnlyFrame}
   \begin{sstOnlyFrame}
-    $\mathcal{F}_0:={0}$
-    \quad
-    $F_i := \mathcal{W}\oplus A_K\mathcal{W}\oplus\dots A_K^{i-1}\mathcal{W}$,
-    \[
-    \textbf{Control\ Law}\   u(k) = v_0^\star + K(x(k)-z_0) = v_0^\star\]
+    \textbf{Control Law}\\
+    $u(k) = v_0^\star(x) + K(x(k) - z_0^\star(x)) = v_0^\star(x)$
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \textbf{Properties}
+    Recursive feasibility, robust constraint satisfaction,
+    ISS w.r.t. $w$ on feasible set.
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\subsection{Robust Tube MPC}
+\subsection{Rigid Tube MPC}
 
-\textbf{Idea}
-Ignore noise and plan the nominal trajectory,
-bound maximum error at any time with RPI set
-$\mathcal{E}: \epsilon_i \in \mathcal{E}  ⇒ \epsilon_{i+1} \in \mathcal{E}$
+Use minimal RPI set $\mathcal{E} = \mathcal{F}_\infty =
+\lim_{i\to\infty} \mathcal{F}_i$ (smallest set invariant under error dynamics).
 
-Ideally $\mathcal{E}$ is selected as the minimum RPI set $F_\infty$
+Assume initial error $e_0 \in \mathcal{E}$, optimize $z_0$ s.t. $x
+\in z_0 \oplus \mathcal{E}$.
 
-We know that the real trajectory stays ‘nearby’ the nominal one $x_i
-\in z_i \oplus \mathcal{E}$
-because we plan to apply the controller $u_i = K (x_i − z_i) + v_i)$
-in the future.
+Tube: $x_i \in z_i \oplus \mathcal{E}$.
 
-(we won’t actually do this, but it’s a valid sub-optimal plan)
+Tighten uniformly: $z_i \in \mathcal{X} \ominus \mathcal{E}$, $v_i
+\in \mathcal{U} \ominus K \mathcal{E}$.
 
-We must ensure that all possible state trajectories satisfy the constraints
-This is now equivalent to ensuring that $x_i \in z_i \oplus \mathcal{E}$
-
-What do we need to make this work?
-
-\ssthl{Compute the set $\mathcal{E}$ that the error will remain inside}
-
-Previously we wanted the \textbf{maximum robust invariant set}, or
-the largest set in
-which our terminal control law works.
-
-We now want the \textbf{minimum robust invariant set}, or the
-smallest set that the
-state will remain inside despite the noise.
-
-Modify constraints on nominal trajectory $\{z_i\}$
-
-$x_i \in z_i \oplus \mathcal{E} =
-\{z_i + e | e \in \mathcal{E}\}$
-
-\begin{sstTitleBox}{
-  Tube MPC
-}
-\begin{sstOnlyFrame}
-  \[
-    \begin{aligned}
-      \textbf{Cost function} & \quad
-      J(Z,V):=\sum_{i=0}^{N-1}
-      l(z_i,v_i)+l_f(z_N)
-      \\
-      \textbf{Feasible set}  & \quad
-      \mathcal{Z}(x_0):=
-      \begin{cases}
-        z_{i+1} & = Az_i+Bv_i                         \\
-        z_i     & \in \mathcal{X}\ominus\mathcal{E}   \\
-        v_i     & \in \mathcal{U}\ominus K\mathcal{E} \\
-        z_N     & \in \mathcal{X}_f                   \\
-        x_0     & \in z_0\oplus\mathcal{E}            \\
-      \end{cases}
-      \\
-      \textbf{Optimization}  & \quad
-      (V^\star(x_0),Z^\star(x_0))=
-      \\
-      & \quad\argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x_0)\}
-      \\
-      \textbf{Control law}   & \quad
-      \mu_\text{tube}(x):=
-      K(x-z_0^\star(x))+v_0^\star(x)
-  \end{aligned}\]
-\end{sstOnlyFrame}
-
+\begin{sstTitleBox}[RoyalBlue]{Rigid Tube MPC}
+  \begin{sstOnlyFrame}
+    \[
+      \begin{aligned}
+        \textbf{Cost} & \quad
+        J(Z,V):=\sum_{i=0}^{N-1}
+        \ell(z_i,v_i)+\ell_f(z_N)
+        \\
+        \textbf{Feasible set}  & \quad
+        \mathcal{Z}(x):=
+        \begin{cases}
+          z_{i+1} & = Az_i+Bv_i                         \\
+          z_i     & \in \mathcal{X}\ominus\mathcal{E}   \\
+          v_i     & \in \mathcal{U}\ominus K\mathcal{E} \\
+          z_N     & \in \mathcal{X}_f \ominus \mathcal{E}                   \\
+          x     & \in z_0\oplus\mathcal{E}            \\
+        \end{cases}
+        \\
+        \textbf{Control}   & \quad
+        \mu_\text{rigid}(x):=
+        K(x-z_0^\star(x))+v_0^\star(x)
+        \\
+        \textbf{Optimization}
+    \end{aligned}\]
+    \[
+      (V^\star(x),Z^\star(x))=
+      \argmin_{V,Z}\{J(Z,V)|(Z,V)\in\mathcal{Z}(x)\}
+    \]
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \textbf{Properties}
+    Robust invariance of feasible set; state converges to $\mathcal{E}$.
+  \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\begin{theorem}[Robust Invariance of Tube MPC]
-The set $\mathcal{Z} := \{x|\mathcal{Z}(x)\neq \emptyset\}$
-is a robust invariant set of the system
-$x(k+1)= Ax(k)+B\mu_\text{tube}(x(k)) + w(k)$
-subject to the constraints
-$x, u \in \mathcal{X} \times \mathcal{U}$.
-\end{theorem}
+\subsection{Homothetic Tube MPC}
+For state/input-dependent uncertainty: $w(k) \in
+\mathcal{W}(x(k),u(k))$, e.g., $w = \Delta A x + \Delta B u + d$,
+$(\Delta A, \Delta B) \in \Omega$, $d \in \mathcal{D}$.
 
-\begin{theorem}[Robust Stability of Tube MPC]
-The state $x(k)$ of the system
-$x(k+1)= Ax(k)+B\mu_\text{tube}(x(k)) + w(k)$
-converges  to the  limit of the set $\mathcal{E}$.
-\end{theorem}
+Use scaled tubes: $\mathcal{F}_i = \{e \mid V(e) \leq \delta_i\}$,
+where $V(e) = \|e\|_M$ is a Lyapunov function (designed offline with
+contraction $\rho < 1$).
 
-\textbf{Tube MPC - Quick Summary}
+Predict $\delta = (\delta_0,\dots,\delta_N)$ online.
 
-To implement tube MPC:
+Tube propagation: $\delta_{i+1} \geq \rho \delta_i + \bar{w}(z_i,
+v_i)$, $\bar{w}(z,v) = \max_{w \in \mathcal{W}(z,v)} \|w\|_M$.
 
-\textbf{— Offline —}
+\begin{sstTitleBox}[RoyalBlue]{Homothetic Tube MPC}
+  \begin{sstOnlyFrame}
+    \[
+      \begin{aligned}
+        \min_{Z,V,\delta} \         & \sum_{i=0}^{N-1} \ell(z_i, v_i)
+        + \ell_f(z_N) \\
+        \mathrm{s.t.}\  & z_{i+1} = Az_i + Bv_i, \\
+        & \delta_{i+1} \geq \rho \delta_i + \bar{w}(z_i, v_i), \\
+        & z_i \in \mathcal{X} \ominus \mathcal{F}_i(\delta_i), \\
+        & v_i \in \mathcal{U} \ominus K \mathcal{F}_i(\delta_i), \\
+        & (z_N, \delta_N) \in \mathcal{X}_f, \\
+        & V(x - z_0) \leq \delta_0.
+    \end{aligned}\]
+  \end{sstOnlyFrame}
+  \begin{sstOnlyFrame}
+    \textbf{Control Law}\quad $u(k) = v_0^\star(x) + K(x(k) - z_0^\star(x))$
+  \end{sstOnlyFrame}
+\end{sstTitleBox}
 
-1. Stabilizing controller $K$
-so that $A + BK$ is (Schur) stable
+Offline: Solve LMI for $M, K$ ensuring $V$ decrease under uncertainty.
 
-2. Compute the minimal robust invariant set
-$E = F_\infty$ for the system
-$x(k+1) = (A + BK)x(k) + w(k), w \in \mathcal{W}^1$
+Constraints often SOCP via Cauchy-Schwarz.
 
-3. Compute tightened constraints
-$\bar{\mathcal{X}} := \mathcal{X} \ominus \mathcal{E},
-\bar{\mathcal{U}} := \mathcal{U} \ominus K\mathcal{E}$
+Properties: Less conservative; quantitative convergence to small RPI
+set $\{x \mid \|x\|_M \leq \max_{d\in\mathcal{D}} \|d\|_M / (1-\rho)\}$.
 
-4. Choose terminal weight function $l_f$
-and constraint $\mathcal{X}_f$
-satisfying assumptions* %TODO: insert link to assumptions
+\subsubsection{Comparison}
+Constraint-tightening: Fixed tubes, conservative for dependent uncertainty.
+Homothetic: Predicts tube sizes, reduces conservatism, higher computation.
 
-\textbf{— Online —}
+\subsubsection{Offline Design: LMIs \& Schur Complement}
 
-1. Measure / estimate state $x$
+To find $M$ and $K$ such that $\tilde{A}_K^T M \tilde{A}_K \le \rho^2
+M$ for all $\tilde{A}_K \in \text{vertex}(\Omega)$:
+1. \textbf{Schur Complement:} $
+\begin{bmatrix} \rho^2 M & \tilde{A}_K^T M \\ M \tilde{A}_K & M
+\end{bmatrix} \succeq 0$.
+2. \textbf{Change of Vars:} Set $E = M^{-1}$ and $Y = KE$ to get
+linear matrix inequalities (LMI):
+\[
+  \begin{bmatrix} \rho^2 E & (AE + \Delta A_i E + BY)^T \\ AE +
+    \Delta A_i E + BY & E
+  \end{bmatrix} \succeq 0
+\]
 
-2. Solve optimization problem for
-$(V^\star(x_0),Z^\star(x_0))$
+\subsubsection{Constraint Tightening (Ellipsoidal)}
 
-3. Set the input to
-$u  =  K(x-z_0^\star(x))+v_0^\star(x)$
+For a state constraint $a_j^T x \le b_j$, the tightened version is:
+$a_j^T z \le b_j - c_{x,j} \delta$ with $c_{x,j} = \|E^{1/2} a_j\|_2$.
+
+\subsection{Robust Stability (ISS)}
+
+A system is \textbf{ISS} in $\Gamma$ if there exist functions $\beta \in
+\mathcal{KL}$ and $\gamma \in \mathcal{K}$ such that:
+$\|x(k)\| \le \beta(\|x(0)\|, k) + \gamma(\|w\|_\infty)$.
+\begin{itemize}
+  \item \textbf{Soft Constraints} Achieve ISS by relaxing $\mathcal{X}$
+    with slacks $\epsilon$.
+  \item \textbf{Tube MPC} Achieves ISS; state $x$ converges to the RPI
+    set $\mathcal{E}$.
+  \item \textbf{Comparison} Fixed tubes (offline $\mathcal{F}_i$) are
+    simpler; homothetic tubes (online $\delta_i$) are less
+    conservative but require SOCP/LMI solvers.
+\end{itemize}
+
+\begin{sstOnlyFrame}
+  \textbf{Implementation Checklist:}
+  \begin{itemize}
+    \item [1] Design $K$ (LQR) and $M$ (Lyapunov) offline via LMIs.
+    \item [2] Pre-compute tightenings $c_{x,j}, c_{u,j}$.
+    \item [3] Solve QP (Fixed) or SOCP (Homothetic) online.
+    \item [4] Apply $u = v_0 + K(x-z_0)$.
+  \end{itemize}
+\end{sstOnlyFrame}
 

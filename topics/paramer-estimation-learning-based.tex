@@ -1,7 +1,23 @@
-
 The fundamental goal of LBMPC is to improve performance
 by learning unknown system dynamics $g(x, u)$ online
 while maintaining the stability and safety guarantees of robust MPC.
+
+\subsection{Overview of Methods}
+The main LBMPC approaches are:
+\begin{center}
+  \begin{tabular}{lccc}
+    \hline
+    Feature & RP-LBMPC & RA/SM-MPC & GP-MPC \\
+    \hline
+    Type & Robust & Robust & Stochastic \\
+    Regression & Any & Set-Memb. & BLR/GP \\
+    Uncert. Update & \checkmark & \checkmark & [\checkmark] \\
+    Guarantees & \checkmark & \checkmark & [Some] \\
+    \hline
+  \end{tabular}
+\end{center}
+RP-LBMPC: Robust Performance LBMPC; RA-MPC: Robust Adaptive MPC;
+SM-MPC: Set-Membership MPC; GP-MPC: Gaussian Process MPC.
 
 \subsection{Regression Techniques for Model Learning}
 
@@ -14,6 +30,12 @@ Non-parametric models (like GPs) use the data points themselves.
 \textbf{Robust vs. Stochastic}
 Robust methods (Set-Membership) provide hard bounds.
 Stochastic methods (BLR, GP) provide probability distributions.
+
+Classification:
+- Parametric Robust: Parametric Set-Membership.
+- Non-parametric Robust: Non-parametric Set-Membership (not typically covered).
+- Parametric Stochastic: Bayesian Linear Regression.
+- Non-parametric Stochastic: Gaussian Processes.
 
 \begin{enumerate}
   \item
@@ -40,14 +62,15 @@ Stochastic methods (BLR, GP) provide probability distributions.
 
 \subsection{Parameter Estimation Methods}
 
-\subsubsection{System Modeling}
-
-For parameter $\theta$ and  with $w_k, v_k$ disturbances/noise:
+For systems with parametric uncertainty in $\theta$ and
+disturbances/noise $w_k$ (assuming full state measurements,
+simplifying regression):
 \[
-  x_{k+1} = f(x_k, u_k, \theta) + w_k, \quad y_k = h(x_k, \theta) + v_k
+  x_{k+1} = f(x_k, u_k, \theta) + w_k
 \]
 Estimation refines $\theta$ using observed data. Divided into offline
-(pre-computed) and online (real-time) approaches.
+(pre-computed) and online (real-time) approaches. Links to regression
+techniques above for uncertainty quantification.
 
 \textbf{Offline Estimation}
 Uses historical data for initial $\theta$ fitting.
@@ -98,15 +121,17 @@ Robust MPC techniques (e.g., tube-based MPC).
 
 \textbf{Learned Nonlinear Model}
 \[
-  x_{i+1} = Ax_i + Bu_i + \mathcal{O}_k(x_i, ui)
+  x_{i+1} = Ax_i + Bu_i + \mathcal{O}_k(x_i, u_i)
 \]
-The \textit{Oracle} $\mathcal{O}_k$ represents the learned dynamics.
+The \textit{Oracle} $\mathcal{O}_k$ represents the learned estimate
+of dynamics $g$.
 The MPC \textbf{cost function} is evaluated using
 this model to achieve high performance.
 
 \textbf{Result}
 Even if the learned model is wrong,
 the nominal model ensures the system remains within the \textit{safe} tube.
+Guarantees: Robust stability and constraint satisfaction.
 
 \subsection{Robust Adaptive MPC (Set-Membership Update)}
 
@@ -125,11 +150,18 @@ where only the offsets $h$ are updated via a Linear Program (LP).
 Because $\Omega_{i+1} \subseteq \Omega_i$,
 the feasible region of the MPC is non-decreasing
 ($X_{feas}^{i+1} \supseteq X_{feas}^i$),
-ensuring \textbf{recursive feasibility}.
+ensuring \textbf{recursive feasibility} and robust stability.
 
 \subsection{Stochastic Learning-based MPC (Cautious MPC)}
 
 When using GPs, the uncertainty is propagated through the horizon.
+The MPC problem minimizes expected cost with chance constraints:
+\[
+  \min \mathbb{E} \left( l_f(x_N) + \sum_{i=0}^{N-1} l(x_i, u_i) \right)
+\]
+s.t. \(x_{i+1} = f(x_i, u_i) + B_d g(x_i, u_i) + B_w w_i\), \(g \sim
+\mathcal{GP}(m_g, \Sigma_g)\), \(w_i \sim \mathcal{N}(0, \Sigma_w)\),
+\(\Pr(x_i \in \mathcal{X}) \geq p_x\), \(\Pr(u_i \in \mathcal{U}) \geq p_u\).
 
 \textbf{Uncertainty Propagation}
 Since propagating a Gaussian through a nonlinear GP is hard,
@@ -148,4 +180,5 @@ Analytically compute mean and variance (possible for RBF kernels).
 The controller is \textit{cautious} because
 the variance $\Sigma(x)$ appears in the constraints
 (chance constraints) and the cost function.
+Guarantees: Probabilistic safety and performance improvement with learning.
 

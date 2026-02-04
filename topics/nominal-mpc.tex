@@ -28,10 +28,21 @@
 \end{sstTitleBox}
 
 What can go wrong with \textit{standard} MPC?
-
+\\
 - No feasibility guarantee, the problem may not have a solution
-
+\\
 - No stability guarantee, trajectories may not converge to  origin
+
+\textbf{Finite-horizon MPC may not satisfy constraints for all time!}
+\\
+\textbf{Finite-horizon MPC may not be stable!}
+\\
+-  An infinite-horizon provides stability and invariance.
+\\
+-  Infinite-horizon \textit{faked} by forcing final state
+into an invariant set for which there exists
+invariance-inducing controller,
+whose infinite-horizon cost can be expressed in closed-form.
 
 \begin{sstTitleBox}[BrickRed]
   {  Stability of MPC - Main Result}
@@ -81,18 +92,5 @@ What can go wrong with \textit{standard} MPC?
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
-\textbf{Finite-horizon MPC may not satisfy constraints for all time!}
-
-\textbf{Finite-horizon MPC may not be stable!}
-
--  An infinite-horizon provides stability and invariance.
-
--  Infinite-horizon \textit{faked} by forcing final state
-into an invariant set for which there exists
-invariance-inducing controller,
-whose infinite-horizon cost can be expressed in closed-form.
-
 -  Extends to non-linear systems, but compute sets is difficult!
-
-% HACK: Stability and Recursive feasibility of MPC - Outline of the proof
 
