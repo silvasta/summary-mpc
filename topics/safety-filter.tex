@@ -1,0 +1,90 @@
+Learning-based controllers (like Reinforcement Learning) or human
+operators are excellent at exploring complex tasks but often lack
+formal safety guarantees.
+\\
+The idea of \textbf{Safety Filters}
+is to filter the nominal input $u^\star$
+and produce a safe input $u$
+that minimally deviates from $u^\star$
+while ensuring the system state remains in a safe set.
+
+\subsection{Decoupling}
+
+Instead of building safety directly into a complex objective function,
+we decouple the problem.
+
+\begin{enumerate}
+  \item \textbf{Performance}
+    A controller (e.g. a Learning-based Controller, human or AI input,...)
+    focuses on the complex objectives and provides a suggested input $u_L(k)$.
+  \item \textbf{Safety Filter} A verification module that sits between the
+    controller and the system. It verifies $u_L(k)$ and modifies it
+    \textbf{minimally} only if required to ensure constraint satisfaction
+    for all future times.
+\end{enumerate}
+
+\subsection{Safe Set}
+
+A central concept is the \textbf{Safe Set} $\mathcal{S}$
+(usually Maximal Control Invariant Set),
+which ensures states remain feasible indefinitely under
+\textbf{Safe Control Law} $\pi_S(x)$
+
+\subsection{Implementation Types}
+
+\subsubsection{Switching SF}
+
+Binary choice. If $u_L$ leads to a safe state, use it.
+Otherwise, \textit{fall back} to the safe input $Kx$.
+This can lead to \textit{harsh} interventions.
+
+\subsubsection{Minimally Invasive SF}
+
+Formulated as a projection problem:
+\[\min_{u_0} \|u_0 - u_L(k)\| \quad \text{s.t.} \quad f(x(k), u_0)
+\in \mathcal{S}, \quad u_0 \in \mathcal{U}\]
+
+\subsubsection{Control Barrier Function (CBF) SF}
+
+Introduces a \textit{dampening} constraint to prevent
+the system from rushing toward the boundary of the safe set.
+It uses a parameter $\gamma \in (0,1]$ to reduce the
+\textit{remaining budget} until the boundary:
+\[V(f(x, u_0)) - V(x) \le \gamma(1 - V(x))\]
+
+\subsection{Model Predictive Safety Filter (MPSF)}
+
+While invariance-based filters are often restricted to small
+ellipsoidal sets (which are conservative),
+the \textbf{Predictive Safety Filter} uses MPC techniques to look further ahead.
+
+\textbf{Mechanism}
+It plans a safe forward trajectory of $N$ steps
+that terminates in a safe set $\mathcal{X}_f$.
+
+\textbf{The Formulation}
+\[\min_{u_0, \dots, u_{N-1}} \|u_0 - u_L(k)\|\]
+\[\text{s.t. } x_{i+1} = f(x_i, u_i), \quad (x_i, u_i) \in
+\mathcal{X} \times \mathcal{U}, \quad x_N \in \mathcal{X}_f\]
+\textbf{Benefit}
+Any state that is \textit{feasible} for this optimization
+is considered safe.
+This implicitly defines a much larger safe set
+$\mathcal{X}_{feas}$ than a simple ellipsoidal $\mathcal{S}$.
+
+\subsubsection{Robustness and Performance}
+
+\textbf{Uncertainty}
+In real-world applications
+(like the Quadrotor example),
+safety depends on a perfect model.
+To handle disturbances, the MPSF can be extended using
+\textbf{Robust Tube MPC} or \textbf{Stochastic MPC} techniques
+(e.g., constraint tightening).
+
+\textbf{Softening the Intervention}
+To prevent the filter from \textit{fighting} the learner,
+a barrier term can be added to the learner's own cost function
+to make it naturally prefer safe regions:
+$C_s(x,u) = C(x,u) - \gamma \log(1 - V(x))$
+

@@ -89,7 +89,7 @@ h_{Y_\alpha}(F_i) \leq f_i \ \forall i \in \{1\dots n\}$
 
 \begin{definition}[Maximal Control Invariant Set $\mathcal{C}_\infty$]
   A set that contains all $\mathcal{C}$
-  is the maximal positively invariant set
+  is the maximal control invariant set
   $\mathcal{C}_\infty \subset \mathcal{X}$
 
   \textbf{Intuition} For all states in $\mathcal{C}_\infty$
@@ -145,6 +145,19 @@ $\mathcal{C}\subseteq\pre(\mathcal{C})
   \end{sstOnlyFrame}
 \end{sstTitleBox}
 
+\subsection{MPC Context}
+Often used as a terminal set $\mathcal{X}_f = \mathcal{C}_\infty$ to
+guarantee recursive feasibility in MPC formulations.
+
+\subsection{Real-World Notes}
+For nonlinear systems, computing $\mathcal{C}_\infty$ is NP-hard;
+approximations (e.g., ellipsoidal sets) are common. In robust MPC,
+extend to robust positively invariant (RPI) sets for disturbance handling.
+
+\subsection{Extensions and Comparisons}
+- Similar to robust invariant sets in RMPC (e.g., tightened via
+Pontryagin difference).
+- For stochastic MPC, consider probabilistic safe sets.
 \subsection{Robust Invariance}
 
 \begin{definition}[Robust Positive Invariant Set $\mathcal{O}^\mathcal{W}$]

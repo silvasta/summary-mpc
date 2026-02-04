@@ -1,0 +1,120 @@
+
+In standard MPC, stability and recursive feasibility are guaranteed
+by terminal sets $\mathcal{X}_f$ and terminal costs $l_f$.
+IL-MPC constructs these \textit{ingredients} dynamically
+from previous trajectories:
+
+\textbf{Sampled Safe Set} ($\mathcal{SS}^e$)
+The collection of all successful
+state trajectories recorded up to episode $e$.
+
+\textbf{Convex Safe Set} ($\mathcal{CS}^e$)
+The convex hull of $SS^e$.
+For linear systems,
+any convex combination of successful trajectories
+is also a feasible trajectory.
+This set is \textbf{control invariant}.
+
+\textbf{Learned Terminal Cost} ($P^e(x)$)
+Defined as a barycentric function over the safe set.
+It assigns each point the minimum \textit{cost-to-go}
+based on a convex combination of previous costs.
+
+\textbf{Guarantees}
+Under linear dynamics, the resulting MPC is recursively feasible,
+asymptotically stable, and the closed-loop cost
+is non-increasing across episodes, eventually converging to the
+infinite-horizon optimal solution.
+
+\subsection{Global Tuning Approaches (Bayesian Methods)}
+
+Used when the relationship between cost parameters (e.g., $Q, R, P$)
+and a high-level performance metric (e.g., lap time) is unknown or
+non-analytical.
+
+\textbf{Bayesian Optimization (BO)}
+Uses a \textbf{Gaussian Process} as a surrogate model
+to represent the unknown performance function.
+An \textbf{Acquisition Function} (like Lower Confidence Bound - LCB)
+suggests the next parameters to test by balancing
+exploration (uncertainty) and exploitation (predicted performance).
+
+\textbf{Safe BO}
+Restricts exploration to parameters that are likely
+to maintain performance above a minimum safety threshold.
+
+\textbf{Contextual BO}
+Adapts the tuning to changing environments or system parameters
+(e.g., racing different cars)
+by treating model mismatches as a \textit{context} variable $\theta$.
+
+\textbf{Bayesian MPC}
+Uses \textbf{Thompson Sampling} to sample parameters
+from a posterior distribution and use them in the MPC,
+minimizing \textit{cumulative regret}.
+
+\subsection{Local Tuning Approaches (Differentiable MPC)}
+
+If the performance metric is differentiable,
+we can use gradient-based methods.
+
+\textbf{Differentiable MPC}
+Treats the entire MPC solver as a differentiable layer.
+This allows the computation of gradients of the
+optimal trajectories $\frac{\partial u^*}{\partial \theta}$
+with respect to cost or dynamics parameters.
+
+\textbf{RL-MPC}
+Uses Reinforcement Learning to update cost parameters $\theta$
+to minimize long-term cost.
+
+\textbf{ZipMPC}
+A student-teacher framework.
+A \textit{Student} (short-horizon MPC) is trained via imitation learning
+to mimic the behavior of a \textit{Teacher}
+(computationally expensive long-horizon MPC)
+
+\subsection{Approximate Explicit MPC}
+
+Standard MPC requires solving an optimization problem online, which
+may be too slow for high-frequency applications. Explicit MPC moves
+the computation offline.
+
+\subsubsection{Explicit MPC for Linear Systems}
+
+For linear systems with polyhedral constraints,
+the MPC solution is a \textbf{Multiparametric Quadratic Program (mp-QP)}.
+
+The state space is partitioned into polyhedral regions.
+In each region,
+the control law is a unique \textbf{Piecewise Affine (PWA)} function:
+$\pi^*(x) = K_i x + k_i$.
+
+\textbf{Pros/Cons}
+Online evaluation is just a \textit{point-in-polyhedron} search (very fast),
+but the number of regions grows exponentially with
+constraints and horizon (high memory usage).
+
+\subsubsection{Approximate Explicit MPC for Nonlinear Systems}
+
+Nonlinear systems generally lack an analytical explicit solution.
+Instead, we learn a function approximation $\tilde{\pi}(x) \approx \pi^*(x)$.
+
+\textbf{Regression Techniques}
+Neural Networks (NN) or Kernel Interpolation are used
+to fit a model to a dataset of offline-solved MPC problems.
+
+\textbf{Verification and Safety}
+Because approximation errors can break stability/safety,
+two approaches are used:
+
+\begin{enumerate}
+  \item \textbf{Safety Filters}
+    Project the approximate input $\tilde{u}$ onto a control invariant set
+    to ensure constraints are always met.
+  \item \textbf{Probabilistic Verification}
+    Use the \textbf{Hoeffding Bound} to certify
+    the controller’s success rate $\mu$ with a specific
+    confidence level $(1-\delta_h)$ based on a finite number of test samples.
+\end{enumerate}
+

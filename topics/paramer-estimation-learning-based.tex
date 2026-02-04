@@ -1,0 +1,151 @@
+
+The fundamental goal of LBMPC is to improve performance
+by learning unknown system dynamics $g(x, u)$ online
+while maintaining the stability and safety guarantees of robust MPC.
+
+\subsection{Regression Techniques for Model Learning}
+
+Before controlling the system, one must quantify the uncertainty.
+
+\textbf{Parametric vs. Non-parametric}
+Parametric models (like BLR) use a finite set of weights $\theta$.
+Non-parametric models (like GPs) use the data points themselves.
+
+\textbf{Robust vs. Stochastic}
+Robust methods (Set-Membership) provide hard bounds.
+Stochastic methods (BLR, GP) provide probability distributions.
+
+\begin{enumerate}
+  \item
+    \textbf{Bayesian Linear Regression (BLR)}
+    Assumes $y = \Phi(x)^\top \theta + w$.
+    It updates a Gaussian posterior
+    $p(\theta | \mathcal{D}) = \mathcal{N}(\mu_\theta, \Sigma_\theta)$
+    using Bayes' rule.
+  \item
+    \textbf{Gaussian Processes (GP)}
+    A non-parametric method
+    defined by a mean $m(x)$ and a kernel $k(x, x')$.
+    It provides a mean prediction $\hat{f}(x_*)$
+    and a variance $\text{var}[f(x_*)]$.
+  \item
+    \textbf{Set-Membership (SM) Estimation}
+    A robust approach.
+    Given a bound on noise $w \in \mathcal{W}$,
+    it computes a \textbf{non-falsified set} $\Delta_i$
+    of parameters consistent with the data.
+    The parameter set $\Omega_i$ is updated via intersection:
+    $\Omega_i = \Omega_{i-1} \cap \Delta_i$.
+\end{enumerate}
+
+\subsection{Parameter Estimation Methods}
+
+\subsubsection{System Modeling}
+
+For parameter $\theta$ and  with $w_k, v_k$ disturbances/noise:
+\[
+  x_{k+1} = f(x_k, u_k, \theta) + w_k, \quad y_k = h(x_k, \theta) + v_k
+\]
+Estimation refines $\theta$ using observed data. Divided into offline
+(pre-computed) and online (real-time) approaches.
+
+\textbf{Offline Estimation}
+Uses historical data for initial $\theta$ fitting.
+
+Least Squares (LS): Minimizes residual sum:
+$$
+\hat{\theta} = \arg\min_{\theta} \sum_{i=1}^N \| y_i - \phi_i^T \theta \|^2
+$$
+where $\phi_i$ is the regressor vector.
+
+Extensions:
+Recursive LS (RLS) for incremental updates,
+Bayesian methods for uncertainty quantification.
+
+\textbf{Online Estimation}
+Adapts $\theta$ during operation, enabling learning.
+
+Kalman Filter (KF)-based:
+Treats $\theta$ as augmented state, updating via prediction-correction.
+\[
+  \hat{\theta}_{k|k} = \hat{\theta}_{k|k-1} + K_k (y_k - \hat{y}_{k|k-1})
+\]
+where $K_k$ is Kalman gain.
+
+Machine Learning Integration:
+Gaussian Processes (GP) or Neural Networks (NN)
+for nonparametric estimation,
+capturing complex $\theta$ dynamics.
+GP models uncertainty as:
+\[
+  f(\cdot) \sim \mathcal{GP}(m(\cdot), k(\cdot, \cdot))
+\]
+with mean $m$ and kernel $k$.
+
+\subsection{Robust Performance LBMPC}
+
+Core objective is to \textbf{decouple} performance from safety.
+
+The controller uses two models simultaneously:
+
+\textbf{Nominal Linear Model}
+\[
+  z_{i+1} = Az_i + Bu_i
+\]
+Used to ensure safety.
+Constraints are tightened relative to this model using
+Robust MPC techniques (e.g., tube-based MPC).
+
+\textbf{Learned Nonlinear Model}
+\[
+  x_{i+1} = Ax_i + Bu_i + \mathcal{O}_k(x_i, ui)
+\]
+The \textit{Oracle} $\mathcal{O}_k$ represents the learned dynamics.
+The MPC \textbf{cost function} is evaluated using
+this model to achieve high performance.
+
+\textbf{Result}
+Even if the learned model is wrong,
+the nominal model ensures the system remains within the \textit{safe} tube.
+
+\subsection{Robust Adaptive MPC (Set-Membership Update)}
+
+While the Performance model can be any black box,
+\textbf{Uncertainty Set} $\mathcal{W}$ must be updated carefully
+to avoid losing feasibility.
+
+\textbf{Mechanism} As new data arrives, the set $\Omega$ shrinks.
+
+\textbf{Fixed Shape Parameter Set}
+To prevent the number of constraints from growing to infinity,
+the set $\Omega$ is over-approximated by a polytope of fixed shape,
+where only the offsets $h$ are updated via a Linear Program (LP).
+
+\textbf{Guarantee}
+Because $\Omega_{i+1} \subseteq \Omega_i$,
+the feasible region of the MPC is non-decreasing
+($X_{feas}^{i+1} \supseteq X_{feas}^i$),
+ensuring \textbf{recursive feasibility}.
+
+\subsection{Stochastic Learning-based MPC (Cautious MPC)}
+
+When using GPs, the uncertainty is propagated through the horizon.
+
+\textbf{Uncertainty Propagation}
+Since propagating a Gaussian through a nonlinear GP is hard,
+approximations are used:
+
+\textbf{Mean Equivalent}
+Treat GP input as deterministic at its mean.
+
+\textbf{Taylor Expansion}
+Linearize the GP mean around the current state mean.
+
+\textbf{Exact Moment Matching}
+Analytically compute mean and variance (possible for RBF kernels).
+
+\textbf{Cautious MPC}
+The controller is \textit{cautious} because
+the variance $\Sigma(x)$ appears in the constraints
+(chance constraints) and the cost function.
+
